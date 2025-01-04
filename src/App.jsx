@@ -1,18 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Landing } from "./pages";
-import { Navbar } from "./components";
+import { Landing, Signin } from "./pages";
 
 const App = () => {
   return (
     <div>
-      <Navbar />
-      <div>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/signin" element={<Signin />} />
+      </Routes>
     </div>
   );
 };

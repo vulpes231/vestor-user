@@ -1,11 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { Hero } from "../components";
+import { Hero, Navbar } from "../components";
 
 const Landing = () => {
   return (
-    <div className="mt-[70px] lg:mt-[134px]">
-      <Hero />
+    <div>
+      <Navbar />
+      <div className="mt-[70px] lg:mt-[134px]">
+        <Hero />
+      </div>
     </div>
   );
 };
