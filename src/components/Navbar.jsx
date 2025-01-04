@@ -30,7 +30,7 @@ const navLinks = [
 
 const Navbar = () => {
   return (
-    <header className="fixed top-0 z-[10] h-[134px] w-full">
+    <header className="fixed top-0 z-[10] h-[134px] w-full lg:shadow-md">
       <nav>
         <div className="hidden lg:flex justify-end bg-zinc-700 py-3 px-10 lg:px-32">
           <span className="flex items-center gap-6 uppercase font-medium text-slate-100">
