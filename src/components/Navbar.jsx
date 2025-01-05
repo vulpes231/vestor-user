@@ -35,9 +35,14 @@ const Navbar = () => {
       <nav>
         <div className="hidden lg:flex justify-end bg-zinc-700 py-3 px-10 lg:px-32">
           <span className="flex items-center gap-6 uppercase font-medium text-slate-100">
-            <Link className={styles.link}>log in</Link>
+            <Link to={"/signin"} className={styles.link}>
+              log in
+            </Link>
             <Link className={styles.link}>help center</Link>
-            <Link className={`bg-green-600 py-2 px-4 ${styles.link}`}>
+            <Link
+              to={"/signup"}
+              className={`bg-green-600 py-2 px-4 ${styles.link}`}
+            >
               open an account
             </Link>
           </span>
@@ -63,7 +68,7 @@ const Navbar = () => {
         <div
           className={
             toggle
-              ? "absolute top-0 w-full h-screen bg-black text-white mt-[70px] p-6 flex flex-col gap-6 uppercase font-bold"
+              ? "absolute top-0 w-full h-screen bg-black text-white mt-[70px] p-6 flex flex-col gap-6 uppercase font-bold md:hidden"
               : "hidden"
           }
         >

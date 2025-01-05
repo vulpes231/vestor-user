@@ -50,7 +50,9 @@ const Signin = () => {
           </form>
           <div className="flex flex-col gap-1">
             <p>Need a vestor account?</p>
-            <Link className={styles.formLink}>Sign up now! </Link>
+            <Link to={"/signup"} className={styles.formLink}>
+              Sign up now!{" "}
+            </Link>
           </div>
           <div className="lg:mt-20">
             <small className="text-[10px]">

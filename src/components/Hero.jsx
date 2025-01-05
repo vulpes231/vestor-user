@@ -20,7 +20,9 @@ const Hero = () => {
             <li>Unscripted support. No upsells</li>
             <li>
               Get started with a{" "}
-              <span className="underline">new account bonus</span>
+              <Link to={"/signup"} className="underline">
+                new account bonus
+              </Link>
             </li>
           </ul>
           <Link className="bg-black text-white py-3 px-7 uppercase font-bold rounded-3xl">
@@ -38,7 +40,10 @@ const Hero = () => {
         </figure>
       </div>
       <div className="flex items-center justify-center bg-black p-20">
-        <Link className="bg-white py-4 lg:py-6 px-10 text-black uppercase font-bold text-lg lg:text-xl rounded-3xl">
+        <Link
+          to={"/signup"}
+          className="bg-white py-4 lg:py-6 px-10 text-black uppercase font-bold text-lg lg:text-xl rounded-3xl"
+        >
           open an account
         </Link>
       </div>
