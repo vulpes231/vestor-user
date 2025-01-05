@@ -86,12 +86,14 @@ const Signup = () => {
   return (
     <div className="bg-stone-900 min-h-screen text-white ">
       {/* nav */}
-      <nav className="border-b border-zinc-600 flex justify-between items-center px-10 py-4">
-        <Logo customClass={"flex items-center"} />
-        <span className="cursor-pointer">
-          <MdHelp size={25} />
-        </span>
-      </nav>
+      <div className="border-b border-zinc-600">
+        <nav className=" flex justify-between items-center px-10 py-4 lg:max-w-[1200px] lg:mx-auto">
+          <Logo customClass={"flex items-center"} />
+          <span className="cursor-pointer">
+            <MdHelp size={25} />
+          </span>
+        </nav>
+      </div>
       <div className="px-8 py-16 flex flex-col gap-6 md:max-w-[450px] md:mx-auto mb-20">
         <h3 className="text-2xl">Let&apos;s get started</h3>
         <form action="" className="flex flex-col gap-6">
