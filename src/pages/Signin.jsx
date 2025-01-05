@@ -1,16 +1,27 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Logo from "../components/Logo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styles } from "../constants/styles";
 import { ErrorModal } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../features/loginSlice";
 
 const Signin = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
   const [error, setError] = useState("");
+
+  const { loginLoading, loginError, accessToken } = useSelector(
+    (state) => state.login
+  );
+
+  const year = new Date().getFullYear();
 
   const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,6 +38,8 @@ const Signin = () => {
     }
 
     console.log(form);
+    dispatch(loginUser(form));
+
     setForm({
       email: "",
       password: "",
@@ -34,6 +47,12 @@ const Signin = () => {
 
     setError("");
   };
+
+  useEffect(() => {
+    if (loginError) {
+      setError(loginError);
+    }
+  }, [loginError]);
 
   useEffect(() => {
     let timeout;
@@ -45,7 +64,17 @@ const Signin = () => {
     return () => clearTimeout(timeout);
   }, [error]);
 
-  const year = new Date().getFullYear();
+  useEffect(() => {
+    let timeout;
+    if (accessToken) {
+      JSON.stringify(sessionStorage.setItem("accessToken", accessToken));
+      timeout = setTimeout(() => {
+        navigate("/dashboard");
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [accessToken, navigate]);
+
   useEffect(() => {
     document.title = "Vestor - Login";
   }, []);
