@@ -1,11 +1,50 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import { Link } from "react-router-dom";
 import { styles } from "../constants/styles";
-import { loginbg } from "../assets";
+import { ErrorModal } from "../components";
 
 const Signin = () => {
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+
+  const handleInput = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    for (const key in form) {
+      if (form[key] === "") {
+        setError(`Please enter your ${key}`);
+        return;
+      }
+    }
+
+    console.log(form);
+    setForm({
+      email: "",
+      password: "",
+    });
+
+    setError("");
+  };
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
+
   const year = new Date().getFullYear();
   useEffect(() => {
     document.title = "Vestor - Login";
@@ -24,6 +63,10 @@ const Signin = () => {
                 className={styles.input}
                 type="text"
                 placeholder="Email address"
+                name="email"
+                value={form.email}
+                onChange={handleInput}
+                autoComplete="off"
               />
             </div>
             <div className={styles.formHolder}>
@@ -34,6 +77,9 @@ const Signin = () => {
                 className={styles.input}
                 type="password"
                 placeholder="Password"
+                name="password"
+                value={form.password}
+                onChange={handleInput}
               />
             </div>
             <div className="flex items-center gap-1">
@@ -43,7 +89,10 @@ const Signin = () => {
               />
               <small>Remember Me</small>
             </div>
-            <button className="bg-green-600 text-slate-100 p-2 font-bold rounded-sm">
+            <button
+              onClick={handleSubmit}
+              className="bg-green-600 text-slate-100 p-2 font-bold rounded-sm"
+            >
               Sign In
             </button>
             <Link className={styles.formLink}>Forgot Password?</Link>
@@ -63,6 +112,7 @@ const Signin = () => {
           </div>
         </div>
         <div className="w-full md:w-[70%] flex items-center h-full bgImg"></div>
+        {error && <ErrorModal error={error} />}
       </div>
     </div>
   );
