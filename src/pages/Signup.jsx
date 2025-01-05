@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import { MdHelp } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styles } from "../constants/styles";
-import { ErrorModal, Footer } from "../components";
+import { ErrorModal, Footer, LoadingModal } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, resetRegister } from "../features/registerSlice";
 
 const countries = [
   {
@@ -30,6 +32,9 @@ const countries = [
 ];
 
 const Signup = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     country: "",
     email: "",
@@ -38,6 +43,10 @@ const Signup = () => {
     confirmPassword: "",
   });
   const [error, setError] = useState("");
+
+  const { registerLoading, registerError, accessToken } = useSelector(
+    (state) => state.register
+  );
 
   const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -57,7 +66,10 @@ const Signup = () => {
       setError("Passwords do not match");
       return;
     }
+
+    dispatch(registerUser(form));
     console.log(form);
+
     setForm({
       country: "",
       email: "",
@@ -70,6 +82,12 @@ const Signup = () => {
   };
 
   useEffect(() => {
+    if (registerError) {
+      setError(registerError);
+    }
+  }, [registerError]);
+
+  useEffect(() => {
     let timeout;
     if (error) {
       timeout = setTimeout(() => {
@@ -78,6 +96,18 @@ const Signup = () => {
     }
     return () => clearTimeout(timeout);
   }, [error]);
+
+  useEffect(() => {
+    let timeout;
+    if (accessToken) {
+      JSON.stringify(sessionStorage.setItem("accessToken", accessToken));
+      timeout = setTimeout(() => {
+        navigate("/personal");
+        dispatch(resetRegister());
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [accessToken, navigate, dispatch]);
 
   useEffect(() => {
     document.title = "Vestor - Account Opening";
@@ -192,6 +222,7 @@ const Signup = () => {
       </div>
       <Footer />
       {error && <ErrorModal error={error} />}
+      {registerLoading && <LoadingModal text={"Creating User"} />}
     </div>
   );
 };

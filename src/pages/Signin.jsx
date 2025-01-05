@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import { Link, useNavigate } from "react-router-dom";
 import { styles } from "../constants/styles";
-import { ErrorModal } from "../components";
+import { ErrorModal, LoadingModal } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/loginSlice";
 
@@ -142,6 +142,7 @@ const Signin = () => {
         </div>
         <div className="w-full md:w-[70%] flex items-center h-full bgImg"></div>
         {error && <ErrorModal error={error} />}
+        {loginLoading && <LoadingModal text={"Logging In"} />}
       </div>
     </div>
   );
