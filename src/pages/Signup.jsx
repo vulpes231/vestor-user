@@ -4,7 +4,7 @@ import Logo from "../components/Logo";
 import { MdHelp } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { styles } from "../constants/styles";
-import { ErrorModal } from "../components";
+import { ErrorModal, Footer } from "../components";
 
 const countries = [
   {
@@ -92,7 +92,7 @@ const Signup = () => {
           <MdHelp size={25} />
         </span>
       </nav>
-      <div className="px-8 py-16 flex flex-col gap-6 md:max-w-[450px] md:mx-auto">
+      <div className="px-8 py-16 flex flex-col gap-6 md:max-w-[450px] md:mx-auto mb-20">
         <h3 className="text-2xl">Let&apos;s get started</h3>
         <form action="" className="flex flex-col gap-6">
           <div className={styles.formHolder}>
@@ -174,7 +174,7 @@ const Signup = () => {
           <div className="mt-6">
             <button
               onClick={handleSubmit}
-              className="py-1.5 px-6 bg-green-600 w-full"
+              className="py-2 px-6 bg-green-600 w-full"
             >
               Sign up
             </button>
@@ -188,6 +188,7 @@ const Signup = () => {
           </p>
         </form>
       </div>
+      <Footer />
       {error && <ErrorModal error={error} />}
     </div>
   );
