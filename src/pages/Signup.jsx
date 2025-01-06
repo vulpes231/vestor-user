@@ -70,13 +70,13 @@ const Signup = () => {
     dispatch(registerUser(form));
     console.log(form);
 
-    setForm({
-      country: "",
-      email: "",
-      username: "",
-      password: "",
-      confirmPassword: "",
-    });
+    // setForm({
+    //   country: "",
+    //   email: "",
+    //   username: "",
+    //   password: "",
+    //   confirmPassword: "",
+    // });
 
     setError("");
   };

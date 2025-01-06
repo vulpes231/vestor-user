@@ -41,7 +41,7 @@ const Navbar = () => {
             <Link className={styles.link}>help center</Link>
             <Link
               to={"/signup"}
-              className={`bg-green-600 py-2 px-4 ${styles.link}`}
+              className={`bg-green-600 py-2 px-4 ${styles.link} hover:text-slate-100 hover:bg-green-700`}
             >
               open an account
             </Link>
