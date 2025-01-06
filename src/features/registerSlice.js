@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { devServer, sendError } from "../constants/constant";
+import { devServer, liveServer, sendError } from "../constants/constant";
 
 const initialState = {
   registerLoading: false,
@@ -11,7 +12,7 @@ const initialState = {
 export const registerUser = createAsyncThunk(
   "register/registerUser",
   async (formData) => {
-    const url = `${devServer}/signup`;
+    const url = `${liveServer}/signup`;
     try {
       const response = await axios.post(url, formData, {
         headers: {

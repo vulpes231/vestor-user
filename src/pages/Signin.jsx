@@ -17,9 +17,8 @@ const Signin = () => {
   });
   const [error, setError] = useState("");
 
-  const { loginLoading, loginError, accessToken } = useSelector(
-    (state) => state.login
-  );
+  const { loginLoading, loginError, accessToken, country, isProfileComplete } =
+    useSelector((state) => state.login);
 
   const year = new Date().getFullYear();
 
@@ -40,10 +39,10 @@ const Signin = () => {
     console.log(form);
     dispatch(loginUser(form));
 
-    setForm({
-      email: "",
-      password: "",
-    });
+    // setForm({
+    //   email: "",
+    //   password: "",
+    // });
 
     setError("");
   };
@@ -68,12 +67,24 @@ const Signin = () => {
     let timeout;
     if (accessToken) {
       JSON.stringify(sessionStorage.setItem("accessToken", accessToken));
+
+      const userData = {
+        country: country,
+        isProfileComplete: isProfileComplete,
+      };
+
+      JSON.stringify(sessionStorage.setItem("userData", userData));
+
       timeout = setTimeout(() => {
-        navigate("/dashboard");
+        if (isProfileComplete) {
+          navigate("/dashboard");
+        } else {
+          navigate("/personal");
+        }
       }, 3000);
     }
     return () => clearTimeout(timeout);
-  }, [accessToken, navigate]);
+  }, [accessToken, navigate, country, isProfileComplete]);
 
   useEffect(() => {
     document.title = "Vestor - Login";

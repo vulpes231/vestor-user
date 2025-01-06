@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import { MdHelp } from "react-icons/md";
 import { styles } from "../constants/styles";
+import { getAccessToken } from "../constants/constant";
 
 const customStyles = {
   input:
@@ -32,6 +33,17 @@ const Steptwo = () => {
     e.preventDefault();
     console.log(form);
   };
+
+  const token = getAccessToken();
+
+  // console.log(token);
+
+  useEffect(() => {
+    if (!token) {
+      sessionStorage.clear();
+      window.location.href = "/signin";
+    }
+  }, [token]);
 
   useEffect(() => {
     document.title = "Vestor - Contact Information";
