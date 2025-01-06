@@ -1,7 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Dash, Landing, Signin, Signup, Steptwo } from "./pages";
+import {
+  Dash,
+  Identification,
+  Landing,
+  Signin,
+  Signup,
+  Steptwo,
+} from "./pages";
 
 const App = () => {
   return (
@@ -11,6 +18,7 @@ const App = () => {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/personal" element={<Steptwo />} />
+        <Route path="/identity" element={<Identification />} />
         <Route path="/dashboard" element={<Dash />} />
       </Routes>
     </div>

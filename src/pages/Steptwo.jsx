@@ -4,6 +4,7 @@ import Logo from "../components/Logo";
 import { MdHelp } from "react-icons/md";
 import { styles } from "../constants/styles";
 import { getAccessToken } from "../constants/constant";
+import { useNavigate } from "react-router-dom";
 
 const customStyles = {
   input:
@@ -11,6 +12,7 @@ const customStyles = {
 };
 
 const Steptwo = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     firstname: "",
     lastname: "",
@@ -24,19 +26,28 @@ const Steptwo = () => {
   });
 
   const [mailing, setMailing] = useState("yes");
+  const [error, setError] = useState("");
+  const [formSaved, setFormSaved] = useState(false);
 
   const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(form);
-  };
-
   const token = getAccessToken();
 
-  // console.log(token);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    for (const key in form) {
+      if (form[key] === "") {
+        setError(`Please enter your ${key}`);
+        return;
+      }
+    }
+    console.log(form);
+    sessionStorage.setItem("personal", JSON.stringify(form));
+    setFormSaved(true);
+  };
 
   useEffect(() => {
     if (!token) {
@@ -44,6 +55,13 @@ const Steptwo = () => {
       window.location.href = "/signin";
     }
   }, [token]);
+
+  useEffect(() => {
+    if (formSaved) {
+      navigate("/identity");
+      setFormSaved(false);
+    }
+  }, [formSaved, navigate]);
 
   useEffect(() => {
     document.title = "Vestor - Contact Information";
