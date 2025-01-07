@@ -4,7 +4,7 @@ import Logo from "../components/Logo";
 import { MdHelp } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { styles } from "../constants/styles";
-import { ErrorModal, Footer, LoadingModal } from "../components";
+import { ErrorModal, Footer, LoadingModal, Successmodal } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser, resetRegister } from "../features/registerSlice";
 
@@ -223,6 +223,7 @@ const Signup = () => {
       <Footer />
       {error && <ErrorModal error={error} />}
       {registerLoading && <LoadingModal text={"Creating User"} />}
+      {accessToken && <Successmodal successText={"Account Created."} />}
     </div>
   );
 };

@@ -81,7 +81,7 @@ const Steptwo = () => {
   }, [error]);
 
   useEffect(() => {
-    document.title = "Vestor - Contact Information";
+    document.title = "Vestor - Personal Information";
   }, []);
 
   return (
@@ -144,7 +144,10 @@ const Steptwo = () => {
           </div>
 
           <div className={`w-full ${styles.formHolder}`}>
-            <label htmlFor="">Apt / Suite / Other</label>
+            <label htmlFor="">
+              Apt / Suite / Other{" "}
+              <small className="text-[10px]">(Optional)</small>
+            </label>
             <input
               className={customStyles.input}
               type="text"

@@ -4,5 +4,14 @@ import Footer from "./Footer";
 import Hero from "./Hero";
 import LoadingModal from "./LoadingModal";
 import Navbar from "./Navbar";
+import Successmodal from "./Successmodal";
 
-export { Navbar, Hero, LoadingModal, ErrorModal, Footer, Dashnav };
+export {
+  Navbar,
+  Hero,
+  LoadingModal,
+  ErrorModal,
+  Footer,
+  Dashnav,
+  Successmodal,
+};
