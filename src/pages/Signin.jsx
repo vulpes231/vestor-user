@@ -66,14 +66,14 @@ const Signin = () => {
   useEffect(() => {
     let timeout;
     if (accessToken) {
-      JSON.stringify(sessionStorage.setItem("accessToken", accessToken));
+      sessionStorage.setItem("accessToken", JSON.stringify(accessToken));
 
       const userData = {
         country: country,
         isProfileComplete: isProfileComplete,
       };
 
-      JSON.stringify(sessionStorage.setItem("userData", userData));
+      sessionStorage.setItem("userData", JSON.stringify(userData));
 
       timeout = setTimeout(() => {
         if (isProfileComplete) {

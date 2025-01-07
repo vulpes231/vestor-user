@@ -5,6 +5,7 @@ import { MdHelp } from "react-icons/md";
 import { styles } from "../constants/styles";
 import { getAccessToken } from "../constants/constant";
 import { useNavigate } from "react-router-dom";
+import { ErrorModal } from "../components";
 
 const customStyles = {
   input:
@@ -13,6 +14,7 @@ const customStyles = {
 
 const Steptwo = () => {
   const navigate = useNavigate();
+  const [mailing, setMailing] = useState("yes");
   const [form, setForm] = useState({
     firstname: "",
     lastname: "",
@@ -22,10 +24,12 @@ const Steptwo = () => {
     state: "",
     zip: "",
     phone: "",
-    mailing: "",
+    mailing: mailing,
   });
 
-  const [mailing, setMailing] = useState("yes");
+  const userDataString = sessionStorage.getItem("userData");
+  const userData = userDataString ? JSON.parse(userDataString) : null;
+
   const [error, setError] = useState("");
   const [formSaved, setFormSaved] = useState(false);
 
@@ -39,14 +43,17 @@ const Steptwo = () => {
     e.preventDefault();
 
     for (const key in form) {
-      if (form[key] === "") {
+      // Check if the value is empty and the key is not "apt"
+      if (form[key] === "" && key !== "apt") {
         setError(`Please enter your ${key}`);
         return;
       }
     }
+
     console.log(form);
     sessionStorage.setItem("personal", JSON.stringify(form));
     setFormSaved(true);
+    setError("");
   };
 
   useEffect(() => {
@@ -62,6 +69,16 @@ const Steptwo = () => {
       setFormSaved(false);
     }
   }, [formSaved, navigate]);
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
 
   useEffect(() => {
     document.title = "Vestor - Contact Information";
@@ -179,7 +196,12 @@ const Steptwo = () => {
             </span>
             <span className={`w-full ${styles.formHolder}`}>
               <label htmlFor="">Country</label>
-              <input className={customStyles.input} type="text" readOnly />
+              <input
+                className={customStyles.input}
+                type="text"
+                readOnly
+                value={userData?.country}
+              />
             </span>
           </div>
           <div className={`w-full ${styles.formHolder}`}>
@@ -235,6 +257,7 @@ const Steptwo = () => {
           </button>
         </form>
       </div>
+      {error && <ErrorModal error={error} />}
     </section>
   );
 };
