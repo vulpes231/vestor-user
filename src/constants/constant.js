@@ -1,10 +1,12 @@
 const getAccessToken = () => {
   try {
     const accessTokenString = sessionStorage.getItem("accessToken");
+    console.log(accessTokenString);
     if (accessTokenString) {
-      return accessTokenString;
-    } else {
-      return null;
+      const accessToken = accessTokenString
+        ? JSON.parse(accessTokenString)
+        : null;
+      return accessToken;
     }
   } catch (error) {
     console.log(error.message);

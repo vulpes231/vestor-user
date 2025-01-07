@@ -1,5 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { devServer, getAccessToken, sendError } from "../constants/constant";
+import {
+  devServer,
+  getAccessToken,
+  liveServer,
+  sendError,
+} from "../constants/constant";
 import axios from "axios";
 
 const initialState = {
@@ -11,7 +17,7 @@ const initialState = {
 export const updateUser = createAsyncThunk(
   "updateuser/updateUser",
   async (formData) => {
-    const url = `${devServer}/user`;
+    const url = `${liveServer}/user`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.put(url, formData, {
