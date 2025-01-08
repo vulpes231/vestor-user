@@ -4,7 +4,7 @@ import { getAccessToken } from "../constants/constant";
 import Logo from "../components/Logo";
 
 import { Link, useNavigate } from "react-router-dom";
-import { Dashnav } from "../components";
+import { Dashcontent, Mobilenav, Sidebar } from "../components";
 
 const Dash = () => {
   const token = getAccessToken();
@@ -21,8 +21,10 @@ const Dash = () => {
     document.title = "Vestor - Dashboard";
   });
   return (
-    <div className="bg-black min-h-screen text-white">
-      <Dashnav />
+    <div className="bg-stone-900 h-screen text-white lg:p-6 flex gap-6">
+      <Sidebar />
+      <Dashcontent />
+      <Mobilenav />
     </div>
   );
 };

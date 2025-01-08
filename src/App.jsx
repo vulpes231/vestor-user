@@ -5,9 +5,12 @@ import {
   Dash,
   Identification,
   Landing,
+  Portfolio,
+  Settings,
   Signin,
   Signup,
   Steptwo,
+  Wallet,
 } from "./pages";
 
 const App = () => {
@@ -20,6 +23,9 @@ const App = () => {
         <Route path="/personal" element={<Steptwo />} />
         <Route path="/identity" element={<Identification />} />
         <Route path="/dashboard" element={<Dash />} />
+        <Route path="/wallet" element={<Wallet />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </div>
   );

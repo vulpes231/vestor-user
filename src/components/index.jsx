@@ -1,9 +1,11 @@
-import Dashnav from "./Dashnav";
+import Dashcontent from "./Dashcontent";
 import ErrorModal from "./ErrorModal";
 import Footer from "./Footer";
 import Hero from "./Hero";
 import LoadingModal from "./LoadingModal";
+import Mobilenav from "./Mobilenav";
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 import Successmodal from "./Successmodal";
 
 export {
@@ -12,6 +14,8 @@ export {
   LoadingModal,
   ErrorModal,
   Footer,
-  Dashnav,
   Successmodal,
+  Sidebar,
+  Dashcontent,
+  Mobilenav,
 };

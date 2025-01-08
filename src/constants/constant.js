@@ -22,7 +22,30 @@ const sendError = (error) => {
   }
 };
 
+const authLinks = [
+  {
+    id: "dashboard",
+    name: "dashboard",
+    path: "/dashboard",
+  },
+  {
+    id: "wallet",
+    name: "wallet",
+    path: "/wallet",
+  },
+  {
+    id: "portfolio",
+    name: "portfolio",
+    path: "/portfolio",
+  },
+  {
+    id: "settings",
+    name: "settings",
+    path: "/settings",
+  },
+];
+
 const liveServer = `https://vestor-server.onrender.com`;
 const devServer = `http://localhost:4000`;
 
-export { sendError, getAccessToken, liveServer, devServer };
+export { sendError, getAccessToken, liveServer, devServer, authLinks };
