@@ -15,14 +15,14 @@ const Assets = () => {
             <MdOutlineSavings size={25} />
             <h5 className="font-bold">Total Balance</h5>
           </span>
-          <h3 className={styles.money}>$10.00</h3>
+          <h3 className={styles.money}>439.00 USD</h3>
         </span>
         <span className={styles.card}>
           <span className="flex items-center gap-2">
             <RiMoneyDollarCircleFill size={25} />
             <h5 className="font-bold">Profits</h5>
           </span>
-          <h3 className={` text-green-600 ${styles.money}`}>$0.00</h3>
+          <h3 className={` text-green-600 ${styles.money}`}>0.00 USD</h3>
         </span>
         <span className={styles.card}>
           <span className="flex items-center gap-2">
