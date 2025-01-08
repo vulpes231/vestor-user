@@ -1,3 +1,4 @@
+import Assets from "./Assets";
 import Dashcontent from "./Dashcontent";
 import ErrorModal from "./ErrorModal";
 import Footer from "./Footer";
@@ -18,4 +19,5 @@ export {
   Sidebar,
   Dashcontent,
   Mobilenav,
+  Assets,
 };

@@ -33,9 +33,9 @@ const Sidebar = ({ activeLink, setActiveLink }) => {
                   key={link.id}
                   className={`${
                     activeLink === link.id
-                      ? "bg-green-600 text-white"
-                      : "text-slate-400"
-                  } flex items-center cursor-pointer gap-3 p-2 w-full`}
+                      ? "bg-green-600 text-white rounded-md font-semibold"
+                      : "text-slate-300"
+                  } flex items-center cursor-pointer gap-3 py-2 px-6 w-full`}
                   onClick={() => setActiveLink(link.id)}
                 >
                   <span>{icon}</span>
