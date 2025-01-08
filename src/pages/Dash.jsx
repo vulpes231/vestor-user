@@ -10,12 +10,12 @@ const Dash = ({ active, setActive }) => {
   const token = getAccessToken();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     sessionStorage.clear();
-  //     window.location.href = "/signin";
-  //   }
-  // }, [token]);
+  useEffect(() => {
+    if (!token) {
+      sessionStorage.clear();
+      window.location.href = "/signin";
+    }
+  }, [token]);
 
   useEffect(() => {
     document.title = "Vestor - Dashboard";

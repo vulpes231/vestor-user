@@ -21,7 +21,7 @@ const App = () => {
   const token = getAccessToken();
   return (
     <div className="bg-slate-700 h-screen text-white flex">
-      <div className={!token ? "lg:flex" : "hidden"}>
+      <div className={token ? "lg:flex" : "hidden"}>
         <Sidebar activeLink={activeLink} setActiveLink={setActiveLink} />
         <Mobilenav activeLink={activeLink} setActiveLink={setActiveLink} />
       </div>
