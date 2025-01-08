@@ -1,12 +1,12 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { getAccessToken } from "../constants/constant";
-import Logo from "../components/Logo";
 
-import { Link, useNavigate } from "react-router-dom";
-import { Dashcontent, Mobilenav, Sidebar } from "../components";
+import { useNavigate } from "react-router-dom";
+import { Dashcontent } from "../components";
 
-const Dash = () => {
+const Dash = ({ active, setActive }) => {
   const token = getAccessToken();
   const navigate = useNavigate();
 
@@ -21,10 +21,8 @@ const Dash = () => {
     document.title = "Vestor - Dashboard";
   });
   return (
-    <div className="bg-stone-900 h-screen text-white lg:p-6 flex gap-6">
-      <Sidebar />
+    <div>
       <Dashcontent />
-      <Mobilenav />
     </div>
   );
 };

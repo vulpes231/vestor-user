@@ -1,17 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { Mobilenav, Sidebar } from "../components";
 
 const Wallet = () => {
-  return (
-    <div className="bg-stone-900 h-screen text-white lg:p-6 flex gap-6">
-      <Sidebar />
-      <div className="h-full bg-red-200 w-full bg-opacity-25 overflow-auto p-6">
-        Wallet
-      </div>
-      <Mobilenav />
-    </div>
-  );
+  return <div className="p-6">Wallet</div>;
 };
 
 export default Wallet;

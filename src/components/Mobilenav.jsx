@@ -7,11 +7,12 @@ import { CgHomeAlt } from "react-icons/cg";
 import { MdHistoryEdu } from "react-icons/md";
 import { FaGear, FaPiggyBank } from "react-icons/fa6";
 
-const Mobilenav = () => {
+const Mobilenav = ({ activeLink, setActiveLink }) => {
   return (
-    <nav className="md:hidden w-full bg-stone-900 text-white h-[70px] bottom-0 left-0 fixed flex items-center justify-center">
+    <nav className="md:hidden w-full bg-stone-800 text-white h-[70px] bottom-0 left-0 fixed flex items-center justify-center">
       <ul className="flex items-center justify-evenly w-full">
         {authLinks.map((link) => {
+          console.log(activeLink);
           const icon =
             link.id === "dashboard" ? (
               <CgHomeAlt size={20} />
@@ -26,7 +27,10 @@ const Mobilenav = () => {
             <Link
               to={link.path}
               key={link.id}
-              className="flex flex-col items-center cursor-pointer"
+              className={`${
+                activeLink === link.id ? "text-green-600" : "text-slate-400"
+              } flex flex-col items-center cursor-pointer`}
+              onClick={() => setActiveLink(link.id)}
             >
               <span>{icon}</span>
               <span className="text-[10px] capitalize">{link.name}</span>
