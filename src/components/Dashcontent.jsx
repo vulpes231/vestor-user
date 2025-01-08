@@ -5,6 +5,7 @@ import { styles } from "../constants/styles";
 import { MdNotifications } from "react-icons/md";
 import { userpic } from "../assets";
 import Assets from "./Assets";
+import Dashchart from "./Dashchart";
 
 const Dashcontent = () => {
   return (
@@ -28,12 +29,8 @@ const Dashcontent = () => {
         </div>
         {/* assets */}
         <Assets />
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. At delectus
-          nulla, quasi odit ducimus tempora quaerat quae exercitationem dolor
-          aut. Porro voluptatem odio, eum provident nam non! Numquam, nesciunt
-          maiores!
-        </div>
+        {/* charts */}
+        <Dashchart />
       </div>
     </section>
   );
