@@ -45,6 +45,11 @@ const authLinks = [
   },
 ];
 
+// const tokenHeaders = {
+//   contentType: "application/json",
+//   Authorization: `Bearer`
+// };
+
 const liveServer = `https://vestor-server.onrender.com`;
 const devServer = `http://localhost:4000`;
 
