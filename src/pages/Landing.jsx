@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { Hero, Navbar } from "../components";
+import { About, Footer, Hero, Navbar, Whatwedo } from "../components";
 
 const Landing = () => {
   return (
@@ -8,7 +8,10 @@ const Landing = () => {
       <Navbar />
       <div className="mt-[70px] lg:mt-[134px]">
         <Hero />
+        <Whatwedo />
+        <About />
       </div>
+      <Footer />
     </div>
   );
 };

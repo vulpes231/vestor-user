@@ -24,6 +24,25 @@ export const getUserTrnxs = createAsyncThunk("trnx/getUserTrnxs", async () => {
   }
 });
 
+export const depositFunds = createAsyncThunk(
+  "trnx/depositFunds",
+  async (formData) => {
+    const url = `${devServer}/trnxs/deposit`;
+    try {
+      const accessToken = getAccessToken();
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Length": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      sendError(error);
+    }
+  }
+);
+
 const trnxSlice = createSlice({
   name: "trnx",
   initialState,

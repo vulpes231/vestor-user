@@ -1,3 +1,4 @@
+import About from "./About";
 import Assets from "./Assets";
 import Dashchart from "./Dashchart";
 import Dashcontent from "./Dashcontent";
@@ -9,6 +10,7 @@ import Mobilenav from "./Mobilenav";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Successmodal from "./Successmodal";
+import Whatwedo from "./Whatwedo";
 
 export {
   Navbar,
@@ -22,4 +24,6 @@ export {
   Mobilenav,
   Assets,
   Dashchart,
+  Whatwedo,
+  About,
 };

@@ -47,7 +47,7 @@ const Navbar = () => {
             </Link>
           </span>
         </div>
-        <div className="flex items-center justify-between bg-white shadow-sm py-4 px-10 lg:px-32">
+        <div className="flex items-center justify-between bg-white text-slate-900 shadow-sm py-4 px-10 lg:px-32">
           <span
             onClick={() => setToggle((prev) => !prev)}
             className="lg:hidden"
