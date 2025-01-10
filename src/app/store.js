@@ -5,6 +5,7 @@ import updateUserReducer from "../features/updateUserSlice";
 import userReducer from "../features/userSlice";
 import walletReducer from "../features/walletSlice";
 import trnxReducer from "../features/trnxSlice";
+import investReducer from "../features/investSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     user: userReducer,
     wallet: walletReducer,
     trnx: trnxReducer,
+    invest: investReducer,
   },
 });
 
