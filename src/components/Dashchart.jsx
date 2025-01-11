@@ -6,7 +6,7 @@ import Netgrowth from "./Netgrowth";
 
 const Dashchart = () => {
   return (
-    <section className="mb-24">
+    <section className="">
       <div className="grid md:grid-cols-3 h-[400px] gap-6 overflow-auto">
         <Netgrowth />
         <Dashwallet />

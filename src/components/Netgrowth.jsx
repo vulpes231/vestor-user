@@ -116,7 +116,7 @@ const options = {
 
 const Netgrowth = () => {
   return (
-    <div className="md:col-span-2 bg-stone-900 bg-opacity-40">
+    <div className="md:col-span-2 bg-stone-900 bg-opacity-40 hidden md:flex">
       <h3 className={`p-6 ${styles.dashTitle}`}>Net Growth</h3>
       <div className="p-6">
         {/* Line Chart */}

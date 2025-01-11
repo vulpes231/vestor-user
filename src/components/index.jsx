@@ -8,7 +8,9 @@ import Hero from "./Hero";
 import LoadingModal from "./LoadingModal";
 import Mobilenav from "./Mobilenav";
 import Navbar from "./Navbar";
+import Recenthistory from "./Recenthistory";
 import Sidebar from "./Sidebar";
+import Investstat from "./Investstat";
 import Successmodal from "./Successmodal";
 import Whatwedo from "./Whatwedo";
 
@@ -26,4 +28,7 @@ export {
   Dashchart,
   Whatwedo,
   About,
+  Recenthistory,
+  Investstat,
+  // Inves,
 };

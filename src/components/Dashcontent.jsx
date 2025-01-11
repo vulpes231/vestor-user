@@ -6,6 +6,8 @@ import { MdNotifications } from "react-icons/md";
 import { userpic } from "../assets";
 import Assets from "./Assets";
 import Dashchart from "./Dashchart";
+import Investstat from "./Investstat";
+import Recenthistory from "./Recenthistory";
 
 const Dashcontent = () => {
   return (
@@ -31,6 +33,15 @@ const Dashcontent = () => {
         <Assets />
         {/* charts */}
         <Dashchart />
+        {/* analytics */}
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="md:col-span-1">
+            <Investstat />
+          </div>
+          <div className="md:col-span-2">
+            <Recenthistory />
+          </div>
+        </div>
       </div>
     </section>
   );
