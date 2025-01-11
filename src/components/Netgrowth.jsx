@@ -61,6 +61,8 @@ const data = {
 // Chart options with customizations for dark background
 const options = {
   responsive: true,
+  maintainAspectRatio: false,
+
   plugins: {
     title: {
       display: false,
@@ -116,9 +118,9 @@ const options = {
 
 const Netgrowth = () => {
   return (
-    <div className="md:col-span-2 bg-stone-900 bg-opacity-40 hidden md:flex">
+    <div className="md:col-span-2 bg-stone-900 bg-opacity-40 hidden md:flex full-size-container">
       <h3 className={`p-6 ${styles.dashTitle}`}>Net Growth</h3>
-      <div className="p-6">
+      <div className="p-6 h-full">
         {/* Line Chart */}
         <Line data={data} options={options} />
       </div>

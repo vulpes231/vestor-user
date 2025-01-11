@@ -34,11 +34,11 @@ const Dashcontent = () => {
         {/* charts */}
         <Dashchart />
         {/* analytics */}
-        <div className="grid gap-6 md:grid-cols-3">
-          <div className="md:col-span-1">
+        <div className="grid gap-6 md:grid-cols-3  ">
+          <div className="md:col-span-1 border border-stone-400">
             <Investstat />
           </div>
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 border border-stone-400 overflow-auto">
             <Recenthistory />
           </div>
         </div>
