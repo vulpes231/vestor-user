@@ -42,7 +42,7 @@ const Hero = () => {
       <div className="flex items-center justify-center bg-black p-20">
         <Link
           to={"/signup"}
-          className="bg-white py-4 lg:py-6 px-10 text-black uppercase font-bold text-lg lg:text-xl rounded-3xl whitespace-nowrap"
+          className="bg-white py-3 lg:py-4 px-8 text-black uppercase font-bold text-lg lg:text-xl rounded-sm whitespace-nowrap"
         >
           open an account
         </Link>
