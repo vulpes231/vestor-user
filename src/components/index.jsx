@@ -13,8 +13,10 @@ import Sidebar from "./Sidebar";
 import Investstat from "./Investstat";
 import Successmodal from "./Successmodal";
 import Whatwedo from "./Whatwedo";
+import Transactions from "./Transactions";
 
 export {
+  Transactions,
   Navbar,
   Hero,
   LoadingModal,

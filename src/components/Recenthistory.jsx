@@ -1,30 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { bitcoin, eth, tether } from "../assets";
-
-const testData = [
-  {
-    id: 1,
-    date: "2025/11/01 12:56AM",
-    coin: "btc",
-    amount: 50,
-    type: "deposit",
-  },
-  {
-    id: 2,
-    date: "2025/11/01 03:35PM",
-    coin: "btc",
-    amount: 10,
-    type: "withdraw",
-  },
-  {
-    id: 3,
-    date: "2025/11/01 06:50PM",
-    coin: "usdt",
-    amount: 30,
-    type: "transfer",
-  },
-];
+import { testData } from "../constants/constant";
 
 const tableStyle = {
   th: "px-8 py-2",
@@ -32,7 +9,7 @@ const tableStyle = {
 
 const Recenthistory = () => {
   return (
-    <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-6">
+    <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-6 h-[300px]">
       <h3 className="text-lg capitalize font-bold p-4">Recent history</h3>
       <div className="overflow-auto">
         <table className="min-w-full">
@@ -49,7 +26,7 @@ const Recenthistory = () => {
               return (
                 <tr
                   key={data.id}
-                  className="text-left text-sm font-light text-slate-300 border-b "
+                  className="text-left text-sm font-light text-slate-300 border-b border-stone-700"
                 >
                   <td className={`${tableStyle.th} whitespace-nowrap`}>
                     {data.date}

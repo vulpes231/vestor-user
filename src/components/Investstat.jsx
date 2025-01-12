@@ -7,7 +7,7 @@ const style = {
 
 const Investstat = () => {
   return (
-    <div className="bg-stone-900 bg-opacity-40 p-6 flex flex-col gap-5 h-full justify-between">
+    <div className="bg-stone-900 bg-opacity-40 p-6 flex flex-col gap-5 h-[300px] justify-between">
       <h3 className="text-lg capitalize ">My Stats</h3>
       <div className="capitalize font-light text-xs">
         <span className={style.span}>

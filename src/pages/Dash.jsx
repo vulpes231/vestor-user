@@ -13,7 +13,7 @@ const Dash = ({ active, setActive }) => {
   useEffect(() => {
     if (!token) {
       sessionStorage.clear();
-      // window.location.href = "/signin";
+      window.location.href = "/signin";
     }
   }, [token]);
 

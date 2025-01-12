@@ -45,6 +45,33 @@ const authLinks = [
   },
 ];
 
+const testData = [
+  {
+    id: 1,
+    date: "2025/11/01 12:56AM",
+    coin: "btc",
+    amount: 50,
+    type: "deposit",
+    status: "completed",
+  },
+  {
+    id: 2,
+    date: "2025/11/01 03:35PM",
+    coin: "btc",
+    amount: 10,
+    type: "withdraw",
+    status: "pending",
+  },
+  {
+    id: 3,
+    date: "2025/11/01 06:50PM",
+    coin: "usdt",
+    amount: 30,
+    type: "transfer",
+    status: "completed",
+  },
+];
+
 // const tokenHeaders = {
 //   contentType: "application/json",
 //   Authorization: `Bearer`
@@ -53,4 +80,11 @@ const authLinks = [
 const liveServer = `https://vestor-server.onrender.com`;
 const devServer = `http://localhost:4000`;
 
-export { sendError, getAccessToken, liveServer, devServer, authLinks };
+export {
+  sendError,
+  getAccessToken,
+  liveServer,
+  devServer,
+  authLinks,
+  testData,
+};
