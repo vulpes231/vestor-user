@@ -80,7 +80,7 @@ const options = {
 
 const Dashwallet = () => {
   return (
-    <div className="bg-stone-900 bg-opacity-40">
+    <div className="bg-stone-900 bg-opacity-40 border border-stone-600">
       <span className="flex justify-between items-start p-6">
         <h3 className={`${styles.dashTitle}`}>my wallet</h3>
         {/* Coin List */}

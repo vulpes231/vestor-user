@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { bitcoin, tether } from "../assets";
 import { TbTransfer } from "react-icons/tb";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { PiHandDepositBold } from "react-icons/pi";
-import { Transactions } from "../components";
+import { Deposit, Transactions, Withdraw } from "../components";
 
 const walletStyles = {
   span: "flex items-center gap-1",
@@ -12,6 +12,10 @@ const walletStyles = {
 };
 
 const Wallet = () => {
+  const [depositModal, setDepositModal] = useState(false);
+  const [withdrawModal, setWithdrawModal] = useState(false);
+  const [transferModal, setTransferModal] = useState(false);
+
   return (
     <section className="p-6">
       <div className="flex flex-col gap-10">
@@ -24,10 +28,19 @@ const Wallet = () => {
             </span>
 
             <span className="bg-stone-800 p-2 flex items-center gap-6 ">
-              <button className={walletStyles.button}>
+              <button
+                onClick={() => {
+                  setDepositModal(true);
+                  console.log("depositactive");
+                }}
+                className={walletStyles.button}
+              >
                 <PiHandDepositBold /> deposit
               </button>
-              <button className={walletStyles.button}>
+              <button
+                onClick={() => setWithdrawModal(true)}
+                className={walletStyles.button}
+              >
                 {" "}
                 <BiMoneyWithdraw /> withdraw
               </button>
@@ -40,11 +53,17 @@ const Wallet = () => {
             </span>
 
             <span className="bg-stone-800 p-2 flex items-center gap-6">
-              <button className={walletStyles.button}>
+              <button
+                onClick={() => setTransferModal(true)}
+                className={walletStyles.button}
+              >
                 {" "}
                 <TbTransfer /> transfer
               </button>
-              <button className={walletStyles.button}>
+              <button
+                onClick={() => setWithdrawModal(true)}
+                className={walletStyles.button}
+              >
                 <BiMoneyWithdraw /> withdraw
               </button>
             </span>
@@ -54,6 +73,8 @@ const Wallet = () => {
           <Transactions />
         </div>
       </div>
+      {depositModal && <Deposit setDeposit={setDepositModal} />}
+      {withdrawModal && <Withdraw setWithdraw={setWithdrawModal} />}
     </section>
   );
 };

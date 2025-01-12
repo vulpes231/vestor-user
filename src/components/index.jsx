@@ -14,9 +14,15 @@ import Investstat from "./Investstat";
 import Successmodal from "./Successmodal";
 import Whatwedo from "./Whatwedo";
 import Transactions from "./Transactions";
+import Withdraw from "./Withdraw";
+import Transfer from "./Transfer";
+import Deposit from "./Deposit";
 
 export {
   Transactions,
+  Withdraw,
+  Transfer,
+  Deposit,
   Navbar,
   Hero,
   LoadingModal,

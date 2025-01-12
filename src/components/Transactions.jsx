@@ -9,6 +9,7 @@ const trxStyles = {
 
 const Transactions = () => {
   const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 8;
 
   // Calculate the starting and ending indices for the current page
@@ -32,8 +33,8 @@ const Transactions = () => {
     <section>
       <div className="flex flex-col gap-10 ">
         <h3>Transactions</h3>
-        <div className="bg-stone-900 bg-opacity-40 mb-20">
-          <table className="min-w-full">
+        <div className="bg-stone-900 bg-opacity-40 mb-20 overflow-auto border border-stone-600">
+          <table className="min-w-full ">
             <thead className="uppercase text-left border-b border-stone-400">
               <tr>
                 <th className={trxStyles.td}>date</th>

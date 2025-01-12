@@ -9,7 +9,7 @@ const tableStyle = {
 
 const Recenthistory = () => {
   return (
-    <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-6 h-[300px]">
+    <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-6 h-[300px] border-b border-stone-600">
       <h3 className="text-lg capitalize font-bold p-4">Recent history</h3>
       <div className="overflow-auto">
         <table className="min-w-full">
@@ -26,7 +26,7 @@ const Recenthistory = () => {
               return (
                 <tr
                   key={data.id}
-                  className="text-left text-sm font-light text-slate-300 border-b border-stone-700"
+                  className="text-left text-sm font-light text-slate-300 "
                 >
                   <td className={`${tableStyle.th} whitespace-nowrap`}>
                     {data.date}
