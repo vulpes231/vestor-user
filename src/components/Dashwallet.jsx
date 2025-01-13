@@ -63,7 +63,11 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: "bottom",
+      position: "top",
+      align: "center",
+      labels: {
+        boxWidth: 20,
+      },
     },
     tooltip: {
       callbacks: {
@@ -110,7 +114,7 @@ const Dashwallet = () => {
         </ul>
       </span>
       {/* Doughnut Chart */}
-      <div className="w-full max-w-[250px] mx-auto">
+      <div className="w-full relative flex items-center justify-center">
         <Doughnut data={data} options={options} />
       </div>
     </div>
