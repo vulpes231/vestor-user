@@ -2,9 +2,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const depositStyles = {
-  formHolder: "flex flex-col gap-2",
+  formHolder: "flex flex-col gap-1",
   label: "font-bold text-sm",
   input: "border border-stone-500 bg-transparent p-2 outline-none",
   select: "border border-stone-500 bg-transparent p-2",
@@ -27,10 +29,12 @@ const paymentMethods = [
 ];
 
 const DepositModal = ({ setDeposit }) => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     coin: "",
     network: "",
     amount: "",
+    memo: "",
   });
 
   const handleInput = (e) => {
@@ -46,6 +50,7 @@ const DepositModal = ({ setDeposit }) => {
     }
 
     console.log(form);
+    navigate(`/confirm/${form.coin}/${form.amount}/${form.network}`); ///
   };
 
   const renderNetworkOptions = () => {
@@ -124,6 +129,21 @@ const DepositModal = ({ setDeposit }) => {
               name="amount"
               value={form.amount}
               onChange={handleInput}
+              autoComplete="off"
+            />
+          </div>
+          <div className={depositStyles.formHolder}>
+            <label className={depositStyles.label} htmlFor="memo">
+              Memo <small>(optional)</small>
+            </label>
+            <input
+              className={depositStyles.input}
+              type="text"
+              placeholder="memo"
+              name="memo"
+              value={form.memo}
+              onChange={handleInput}
+              autoComplete="off"
             />
           </div>
           <button

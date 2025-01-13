@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { getAccessToken, testData } from "../constants/constant";
+import { getAccessToken } from "../constants/constant";
 import { bitcoin, eth, tether } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserTrnxs } from "../features/trnxSlice";
+import LoadingModal from "./LoadingModal";
 
 const trxStyles = {
   td: "px-6 py-6",
@@ -13,21 +14,21 @@ const Transactions = () => {
   const accessToken = getAccessToken();
   const dispatch = useDispatch();
 
-  const { userTrnxs } = useSelector((state) => state.trnx);
-
-  // console.log(userTrnxs);
+  const { userTrnxs, getTrnxLoading } = useSelector((state) => state.trnx);
 
   const [currentPage, setCurrentPage] = useState(1);
-
   const itemsPerPage = 8;
 
-  // Calculate the starting and ending indices for the current page
+  // Only calculate pagination if `userTrnxs` is an array
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = userTrnxs.slice(indexOfFirstItem, indexOfLastItem);
+
+  const currentItems = Array.isArray(userTrnxs)
+    ? userTrnxs.slice(indexOfFirstItem, indexOfLastItem)
+    : [];
 
   const handleNext = () => {
-    if (currentPage < Math.ceil(userTrnxs.length / itemsPerPage)) {
+    if (currentPage < Math.ceil(userTrnxs?.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -43,6 +44,10 @@ const Transactions = () => {
       dispatch(getUserTrnxs());
     }
   }, [dispatch, accessToken]);
+
+  if (getTrnxLoading) {
+    return <LoadingModal text={"Fetching Transactions"} />;
+  }
 
   return (
     <section>
@@ -60,8 +65,8 @@ const Transactions = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((data) => {
-                return (
+              {currentItems.length > 0 ? (
+                currentItems.map((data) => (
                   <tr
                     key={data._id}
                     className="border-b border-slate-600 text-sm text-slate-200"
@@ -71,9 +76,9 @@ const Transactions = () => {
                       <span className="flex items-center gap-1 uppercase">
                         <img
                           src={
-                            data.coin === "bitcoin"
+                            data.coin === "btc" || data.coin == "bitcoin"
                               ? bitcoin
-                              : data.coin === "tether"
+                              : data.coin === "usdt"
                               ? tether
                               : eth
                           }
@@ -111,8 +116,14 @@ const Transactions = () => {
                       </span>
                     </td>
                   </tr>
-                );
-              })}
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className={`text-center ${trxStyles.td}`}>
+                    No transactions found.
+                  </td>
+                </tr>
+              )}
             </tbody>
             <tfoot>
               <tr>
@@ -127,14 +138,14 @@ const Transactions = () => {
                     </button>
                     <span className="self-center text-white">
                       Page {currentPage} of{" "}
-                      {Math.ceil(testData.length / itemsPerPage)}
+                      {Math.ceil(userTrnxs?.length / itemsPerPage)}
                     </span>
                     <button
                       onClick={handleNext}
                       className="px-4 py-2 bg-gray-700 text-white rounded-lg disabled:opacity-50"
                       disabled={
                         currentPage ===
-                        Math.ceil(testData.length / itemsPerPage)
+                        Math.ceil(userTrnxs?.length / itemsPerPage)
                       }
                     >
                       Next

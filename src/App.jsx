@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import {
+  Confirmdeposit,
   Dash,
   Identification,
   Landing,
@@ -47,6 +48,10 @@ const App = () => {
           <Route
             path="/settings"
             element={<Settings setActive={setActiveLink} />}
+          />
+          <Route
+            path="/confirm/:coin/:amount/:network"
+            element={<Confirmdeposit setActive={setActiveLink} />}
           />
         </Routes>
       </div>

@@ -1,3 +1,4 @@
+import Confirmdeposit from "./Confirmdeposit";
 import Dash from "./Dash";
 import Identification from "./Identification";
 import Landing from "./Landing";
@@ -17,5 +18,6 @@ export {
   Identification,
   Wallet,
   Portfolio,
+  Confirmdeposit,
   Settings,
 };
