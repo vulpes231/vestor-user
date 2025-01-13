@@ -17,8 +17,10 @@ import Transactions from "./Transactions";
 import Withdraw from "./Withdraw";
 import Transfer from "./Transfer";
 import Deposit from "./Deposit";
+import Trades from "./Trades";
 
 export {
+  Trades,
   Transactions,
   Withdraw,
   Transfer,
