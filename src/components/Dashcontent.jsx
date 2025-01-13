@@ -52,11 +52,11 @@ const Dashcontent = () => {
           <Dashchart />
         </div>
         {/* analytics */}
-        <div className="grid gap-6 md:grid-cols-3  ">
-          <div className="md:col-span-1 border border-stone-700">
+        <div className="grid gap-6 md:grid-cols-3 h-full">
+          <div className="md:col-span-1 border border-stone-700 bg-stone-900 bg-opacity-40">
             <Investstat />
           </div>
-          <div className="md:col-span-2 border border-stone-700 overflow-auto mb-16">
+          <div className="md:col-span-2 border border-stone-700 overflow-auto mb-16 bg-stone-900 bg-opacity-40 h-full">
             <Recenthistory />
           </div>
         </div>

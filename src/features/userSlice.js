@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   devServer,
@@ -38,7 +39,7 @@ export const getUserInfo = createAsyncThunk("user/getUserInfo", async () => {
 export const changePassword = createAsyncThunk(
   "user/changePassword",
   async (formData) => {
-    const url = `${devServer}/user/changepass`;
+    const url = `${liveServer}/user/changepass`;
     try {
       const accessToken = getAccessToken();
       const response = await axios.post(url, formData, {

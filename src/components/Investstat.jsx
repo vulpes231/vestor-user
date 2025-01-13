@@ -7,7 +7,7 @@ const style = {
 
 const Investstat = () => {
   return (
-    <div className="bg-stone-900 bg-opacity-40 p-6 flex flex-col gap-5 h-[300px] justify-between border-b border-stone-600">
+    <div className=" p-6 flex flex-col gap-5 ">
       <h3 className="text-lg capitalize ">My Stats</h3>
       <div className="capitalize font-light text-xs">
         <span className={style.span}>
@@ -27,6 +27,11 @@ const Investstat = () => {
         <p>overall profit</p>
         <p>$0.00</p>
       </span>
+      <small className="text-slate-400 text-xs">
+        Options involve risk and are not suitable for all investors as the
+        special risks inherent to options trading may expose investors to
+        potentially significant losses.{" "}
+      </small>
     </div>
   );
 };

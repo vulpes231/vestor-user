@@ -1,15 +1,62 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { bitcoin, eth, tether } from "../assets";
-import { testData } from "../constants/constant";
+import { getAccessToken, testData } from "../constants/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserTrnxs } from "../features/trnxSlice";
 
 const tableStyle = {
   th: "px-8 py-2",
 };
 
 const Recenthistory = () => {
+  const accessToken = getAccessToken();
+  const dispatch = useDispatch();
+
+  const { getTrnxLoading, getTrnxError, userTrnxs } = useSelector(
+    (state) => state.trnx
+  );
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
+
+  // Only calculate pagination if `userTrnxs` is an array
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const currentItems = Array.isArray(userTrnxs)
+    ? userTrnxs.slice(indexOfFirstItem, indexOfLastItem)
+    : [];
+
+  const handleNext = () => {
+    if (currentPage < Math.ceil(userTrnxs?.length / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getUserTrnxs());
+    }
+  }, [accessToken, dispatch]);
+
+  if (getTrnxLoading) {
+    return (
+      <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-6 border-b border-stone-600">
+        <h3 className="text-lg capitalize font-bold p-4">Recent history</h3>
+        <p className="text-center">Fetching User Transactions...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-6 h-[300px] border-b border-stone-600">
+    <div className="flex flex-col gap-6 border-b border-stone-600 h-full">
       <h3 className="text-lg capitalize font-bold p-4">Recent history</h3>
       <div className="overflow-auto">
         <table className="min-w-full">
@@ -22,11 +69,11 @@ const Recenthistory = () => {
             </tr>
           </thead>
           <tbody>
-            {testData.map((data) => {
+            {currentItems.map((data) => {
               return (
                 <tr
-                  key={data.id}
-                  className="text-left text-sm font-light text-slate-300 "
+                  key={data._id}
+                  className="text-left text-sm font-light text-slate-300 border-b border-stone-600"
                 >
                   <td className={`${tableStyle.th} whitespace-nowrap`}>
                     {data.date}
@@ -35,7 +82,7 @@ const Recenthistory = () => {
                     <span className="flex items-center gap-1">
                       <img
                         src={
-                          data.coin == "btc"
+                          data.coin == "btc" || data.coin == "bitcoin"
                             ? bitcoin
                             : data.coin == "usdt"
                             ? tether
