@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { devServer, getAccessToken, sendError } from "../constants/constant";
+import {
+  devServer,
+  getAccessToken,
+  liveServer,
+  sendError,
+} from "../constants/constant";
 import axios from "axios";
 
 const initialState = {
@@ -15,7 +20,7 @@ const initialState = {
 };
 
 export const getUserInfo = createAsyncThunk("user/getUserInfo", async () => {
-  const url = `${devServer}/user`;
+  const url = `${liveServer}/user`;
   try {
     const accessToken = getAccessToken();
     const response = await axios.get(url, {
@@ -50,7 +55,7 @@ export const changePassword = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
-  const url = `${devServer}/user/logout`;
+  const url = `${liveServer}/user/logout`;
   try {
     const accessToken = getAccessToken();
     const response = await axios.post(

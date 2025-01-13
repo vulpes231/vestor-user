@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { devServer, getAccessToken, sendError } from "../constants/constant";
+import {
+  devServer,
+  getAccessToken,
+  liveServer,
+  sendError,
+} from "../constants/constant";
 import axios from "axios";
 
 const initialState = {
@@ -18,7 +23,7 @@ const initialState = {
 };
 
 export const getUserTrnxs = createAsyncThunk("trnx/getUserTrnxs", async () => {
-  const url = `${devServer}/trnx`;
+  const url = `${liveServer}/trnx`;
   try {
     const accessToken = getAccessToken();
     const response = await axios.get(url, {
