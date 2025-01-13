@@ -18,9 +18,15 @@ import Withdraw from "./Withdraw";
 import Transfer from "./Transfer";
 import Deposit from "./Deposit";
 import Trades from "./Trades";
+import Userprofile from "./Userprofile";
+import Changepass from "./Changepass";
+import Verifyidentity from "./Verifyidentity";
 
 export {
   Trades,
+  Userprofile,
+  Changepass,
+  Verifyidentity,
   Transactions,
   Withdraw,
   Transfer,

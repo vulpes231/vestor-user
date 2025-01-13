@@ -18,8 +18,9 @@ const Dash = ({ active, setActive }) => {
   }, [token]);
 
   useEffect(() => {
+    setActive("dashboard");
     document.title = "Vestor - Dashboard";
-  });
+  }, [setActive]);
   return (
     <div>
       <Dashcontent />

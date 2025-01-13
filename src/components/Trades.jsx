@@ -34,8 +34,8 @@ const tradeStyle = {
 
 const Trades = () => {
   return (
-    <div className="flex flex-col gap-10 bg-stone-900 bg-opacity-40 overflow-auto mb-20">
-      <h3 className="p-6">Recent Trades</h3>
+    <div className="flex flex-col bg-stone-900 bg-opacity-40 overflow-auto mb-20 border border-stone-600 text-sm">
+      <h3 className="p-4 font-bold text-lg">Recent Trades</h3>
       <table className="min-w-full">
         <thead className="bg-white text-slate-800">
           <tr className="text-left uppercase font-bold ">
@@ -49,7 +49,10 @@ const Trades = () => {
         <tbody>
           {myTrades.map((trade) => {
             return (
-              <tr key={trade.id} className="border-b border-stone-600">
+              <tr
+                key={trade.id}
+                className="border-b border-stone-600 text-slate-300"
+              >
                 <td className={tradeStyle.th}>{trade.date}</td>
                 <td className={tradeStyle.th}>{trade.market}</td>
                 <td className={tradeStyle.th}>{trade.amount} USD</td>

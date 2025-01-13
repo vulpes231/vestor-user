@@ -32,10 +32,22 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/personal" element={<Steptwo />} />
           <Route path="/identity" element={<Identification />} />
-          <Route path="/dashboard" element={<Dash />} />
-          <Route path="/wallet" element={<Wallet />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/dashboard"
+            element={<Dash setActive={setActiveLink} />}
+          />
+          <Route
+            path="/wallet"
+            element={<Wallet setActive={setActiveLink} />}
+          />
+          <Route
+            path="/portfolio"
+            element={<Portfolio setActive={setActiveLink} />}
+          />
+          <Route
+            path="/settings"
+            element={<Settings setActive={setActiveLink} />}
+          />
         </Routes>
       </div>
     </div>

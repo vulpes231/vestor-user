@@ -1,7 +1,12 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 
-const Settings = () => {
+const Settings = ({ setActive }) => {
+  useEffect(() => {
+    setActive("settings");
+    document.title = "Vestor - Settings";
+  }, [setActive]);
   return <div className="p-6">Settings</div>;
 };
 

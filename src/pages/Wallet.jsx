@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { bitcoin, tether } from "../assets";
 import { TbTransfer } from "react-icons/tb";
 import { BiMoneyWithdraw } from "react-icons/bi";
@@ -11,10 +12,15 @@ const walletStyles = {
   button: "flex items-center gap-1 text-slate-400 text-xs capitalize",
 };
 
-const Wallet = () => {
+const Wallet = ({ setActive }) => {
   const [depositModal, setDepositModal] = useState(false);
   const [withdrawModal, setWithdrawModal] = useState(false);
   const [transferModal, setTransferModal] = useState(false);
+
+  useEffect(() => {
+    setActive("wallet");
+    document.title = "Vestor - Wallet";
+  }, [setActive]);
 
   return (
     <section className="p-6">
