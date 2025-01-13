@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "./Logo";
 import { Link } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
@@ -8,8 +8,53 @@ import { authLinks } from "../constants/constant";
 import { CgHomeAlt } from "react-icons/cg";
 import { MdHistoryEdu } from "react-icons/md";
 import { FaGear, FaPiggyBank } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser, resetLogout } from "../features/userSlice";
+import ErrorModal from "./ErrorModal";
+import LoadingModal from "./LoadingModal";
 
 const Sidebar = ({ activeLink, setActiveLink }) => {
+  const dispatch = useDispatch();
+
+  const [error, setError] = useState("");
+
+  const { logoutLoading, logoutError, loggedOut } = useSelector(
+    (state) => state.user
+  );
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logoutUser());
+  };
+
+  useEffect(() => {
+    if (logoutError) {
+      setError(logoutError);
+    }
+  }, [logoutError]);
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
+
+  useEffect(() => {
+    let timeout;
+    if (loggedOut) {
+      timeout = setTimeout(() => {
+        sessionStorage.clear();
+        dispatch(resetLogout());
+        window.location.href = "/signin";
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [loggedOut, dispatch]);
+
   return (
     <aside className="max-h-screen hidden lg:flex w-[270px] ">
       <div className="flex flex-col justify-between h-full p-4 w-full">
@@ -45,11 +90,13 @@ const Sidebar = ({ activeLink, setActiveLink }) => {
             })}
           </ul>
         </span>
-        <span className="flex items-center gap-1">
+        <button onClick={handleLogout} className="flex items-center gap-1">
           <MdLogout />
-          <button>Logout</button>
-        </span>
+          <span>Logout</span>
+        </button>
       </div>
+      {error && <ErrorModal error={error} />}
+      {logoutLoading && <LoadingModal text={"Logging out"} />}
     </aside>
   );
 };

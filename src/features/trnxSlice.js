@@ -18,7 +18,7 @@ const initialState = {
 };
 
 export const getUserTrnxs = createAsyncThunk("trnx/getUserTrnxs", async () => {
-  const url = `${devServer}/trnxs`;
+  const url = `${devServer}/trnx`;
   try {
     const accessToken = getAccessToken();
     const response = await axios.get(url, {
@@ -36,7 +36,7 @@ export const getUserTrnxs = createAsyncThunk("trnx/getUserTrnxs", async () => {
 export const depositFunds = createAsyncThunk(
   "trnx/depositFunds",
   async (formData) => {
-    const url = `${devServer}/trnxs/deposit`;
+    const url = `${devServer}/trnx/deposit`;
     try {
       const accessToken = getAccessToken();
       const response = await axios.post(url, formData, {
@@ -55,7 +55,7 @@ export const depositFunds = createAsyncThunk(
 export const withdrawFunds = createAsyncThunk(
   "trnx/withdrawFunds",
   async (formData) => {
-    const url = `${devServer}/trnxs/withdraw`;
+    const url = `${devServer}/trnx/withdraw`;
     try {
       const accessToken = getAccessToken();
       const response = await axios.post(url, formData, {
@@ -74,7 +74,7 @@ export const withdrawFunds = createAsyncThunk(
 export const transferFunds = createAsyncThunk(
   "trnx/transferFunds",
   async (formData) => {
-    const url = `${devServer}/trnxs/transfer`;
+    const url = `${devServer}/trnx/transfer`;
     try {
       const accessToken = getAccessToken();
       const response = await axios.post(url, formData, {
@@ -118,7 +118,7 @@ const trnxSlice = createSlice({
       .addCase(getUserTrnxs.fulfilled, (state, action) => {
         state.getTrnxLoading = false;
         state.getTrnxError = false;
-        state.userTrnxs = action.payload;
+        state.userTrnxs = action.payload.userTrnxs;
       })
       .addCase(getUserTrnxs.rejected, (state, action) => {
         state.getTrnxLoading = false;

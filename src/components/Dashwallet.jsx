@@ -84,38 +84,11 @@ const options = {
 
 const Dashwallet = () => {
   return (
-    <div className="bg-stone-900 bg-opacity-40 border border-stone-600">
-      <span className="flex justify-between items-start p-6">
-        <h3 className={`${styles.dashTitle}`}>my wallet</h3>
-        {/* Coin List */}
-        <ul className="flex flex-col gap-2">
-          {acceptedCoins.map((coin) => {
-            return (
-              <li
-                key={coin.id}
-                className="flex items-center gap-6 justify-between text-slate-400"
-              >
-                <div className="flex gap-1">
-                  <img
-                    src={coin.img}
-                    alt={coin.name}
-                    className={
-                      coin.shortName === "eth" ? "w-[15px]" : "w-[20px]"
-                    }
-                  />
-                  <span className="uppercase text-[14px] flex gap-2">
-                    {coin.shortName}
-                  </span>
-                </div>
-                <span className="text-end">${coin.balance.toFixed(2)}</span>
-              </li>
-            );
-          })}
-        </ul>
-      </span>
-      {/* Doughnut Chart */}
-      <div className="w-full relative flex items-center justify-center">
-        <Doughnut data={data} options={options} />
+    <div>
+      <div className="bg-stone-900 bg-opacity-40 border border-stone-600">
+        <div className="flex justify-between items-start p-6">
+          <h3 className={`${styles.dashTitle}`}>available plans</h3>
+        </div>
       </div>
     </div>
   );

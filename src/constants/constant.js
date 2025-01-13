@@ -1,7 +1,7 @@
 const getAccessToken = () => {
   try {
     const accessTokenString = sessionStorage.getItem("accessToken");
-    console.log(accessTokenString);
+
     if (accessTokenString) {
       const accessToken = accessTokenString
         ? JSON.parse(accessTokenString)

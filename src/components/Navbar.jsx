@@ -68,7 +68,7 @@ const Navbar = () => {
         <div
           className={
             toggle
-              ? "absolute top-0 w-full h-screen bg-black text-white mt-[70px] p-6 flex flex-col gap-6 uppercase font-bold md:hidden"
+              ? "absolute top-0 w-full h-screen bg-black text-white mt-[70px] p-6 flex flex-col gap-6 uppercase font-bold lg:hidden"
               : "hidden"
           }
         >

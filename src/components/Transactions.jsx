@@ -1,13 +1,22 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import { testData } from "../constants/constant";
+import React, { useEffect, useState } from "react";
+import { getAccessToken, testData } from "../constants/constant";
 import { bitcoin, eth, tether } from "../assets";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserTrnxs } from "../features/trnxSlice";
 
 const trxStyles = {
   td: "px-6 py-6",
 };
 
 const Transactions = () => {
+  const accessToken = getAccessToken();
+  const dispatch = useDispatch();
+
+  const { userTrnxs } = useSelector((state) => state.trnx);
+
+  // console.log(userTrnxs);
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 8;
@@ -15,10 +24,10 @@ const Transactions = () => {
   // Calculate the starting and ending indices for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = testData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = userTrnxs.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNext = () => {
-    if (currentPage < Math.ceil(testData.length / itemsPerPage)) {
+    if (currentPage < Math.ceil(userTrnxs.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -28,6 +37,12 @@ const Transactions = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getUserTrnxs());
+    }
+  }, [dispatch, accessToken]);
 
   return (
     <section>
@@ -48,7 +63,7 @@ const Transactions = () => {
               {currentItems.map((data) => {
                 return (
                   <tr
-                    key={data.id}
+                    key={data._id}
                     className="border-b border-slate-600 text-sm text-slate-200"
                   >
                     <td className={trxStyles.td}>{data.date}</td>
@@ -56,9 +71,9 @@ const Transactions = () => {
                       <span className="flex items-center gap-1 uppercase">
                         <img
                           src={
-                            data.coin === "btc"
+                            data.coin === "bitcoin"
                               ? bitcoin
-                              : data.coin === "usdt"
+                              : data.coin === "tether"
                               ? tether
                               : eth
                           }

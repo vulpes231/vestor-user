@@ -77,7 +77,7 @@ const Signin = () => {
 
       timeout = setTimeout(() => {
         if (isProfileComplete) {
-          navigate("/dashboard");
+          window.location.href = "/dashboard";
         } else {
           navigate("/personal");
         }
@@ -92,7 +92,7 @@ const Signin = () => {
   return (
     <div className="bg-black text-slate-100 h-screen">
       <div className="flex flex-col md:flex-row-reverse md:items-center h-full">
-        <div className="flex flex-col gap-6 p-8 w-full md:w-[30%]">
+        <div className="flex flex-col gap-6 p-8 w-full md:w-[40%]">
           <Logo customClass={"flex items-center gap-1"} />
           <form action="" className="flex flex-col gap-4">
             <div className={styles.formHolder}>

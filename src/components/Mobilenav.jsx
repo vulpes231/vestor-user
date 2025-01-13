@@ -12,7 +12,6 @@ const Mobilenav = ({ activeLink, setActiveLink }) => {
     <nav className="lg:hidden w-full bg-stone-800 text-white h-[70px] bottom-0 left-0 fixed flex items-center justify-center z-50">
       <ul className="flex items-center justify-evenly w-full">
         {authLinks.map((link) => {
-          console.log(activeLink);
           const icon =
             link.id === "dashboard" ? (
               <CgHomeAlt size={20} />

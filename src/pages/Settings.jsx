@@ -10,7 +10,7 @@ const Settings = ({ setActive }) => {
   }, [setActive]);
   return (
     <div className="p-6 flex flex-col gap-10">
-      <h3>Settings</h3>
+      <h3 className="md:font-bold md:text-2xl">Settings</h3>
       <div className="grid gap-6 md:grid-cols-2 mb-20">
         <Userprofile />
         <Changepass />

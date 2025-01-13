@@ -6,6 +6,9 @@ import { TbTransfer } from "react-icons/tb";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { PiHandDepositBold } from "react-icons/pi";
 import { Deposit, Transactions, Withdraw } from "../components";
+import { getAccessToken } from "../constants/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserWallets } from "../features/walletSlice";
 
 const walletStyles = {
   span: "flex items-center gap-1",
@@ -13,9 +16,53 @@ const walletStyles = {
 };
 
 const Wallet = ({ setActive }) => {
+  const accessToken = getAccessToken();
+  const dispatch = useDispatch();
   const [depositModal, setDepositModal] = useState(false);
   const [withdrawModal, setWithdrawModal] = useState(false);
   const [transferModal, setTransferModal] = useState(false);
+
+  const { userWallets } = useSelector((state) => state.wallet);
+
+  const myWallets =
+    userWallets &&
+    userWallets.map((wallet) => {
+      return (
+        <div
+          key={wallet._id}
+          className="bg-stone-900 bg-opacity-40  flex flex-col gap-4 justify-between"
+        >
+          <div className="p-6">
+            <h3>{wallet.name}</h3>
+            <p className="text-4xl">${wallet.balance.toFixed(2)}</p>
+          </div>
+          <span className="bg-stone-800 p-2 flex items-center gap-6 ">
+            <button
+              onClick={() => {
+                setDepositModal(true);
+                console.log("depositactive");
+              }}
+              className={walletStyles.button}
+            >
+              <PiHandDepositBold /> deposit
+            </button>
+            <button
+              onClick={() => setWithdrawModal(true)}
+              className={walletStyles.button}
+            >
+              {" "}
+              <BiMoneyWithdraw /> withdraw
+            </button>
+          </span>
+        </div>
+      );
+    });
+
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getUserWallets());
+    }
+  }, [dispatch, accessToken]);
 
   useEffect(() => {
     setActive("wallet");
@@ -25,56 +72,8 @@ const Wallet = ({ setActive }) => {
   return (
     <section className="p-6">
       <div className="flex flex-col gap-10">
-        <h3>My Wallets</h3>
-        <div className="grid gap-6 md:grid-cols-3">
-          <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-4 justify-between">
-            <span className="p-6">
-              <h3>Deposit wallet</h3>
-              <p className="text-4xl">$0.00</p>
-            </span>
-
-            <span className="bg-stone-800 p-2 flex items-center gap-6 ">
-              <button
-                onClick={() => {
-                  setDepositModal(true);
-                  console.log("depositactive");
-                }}
-                className={walletStyles.button}
-              >
-                <PiHandDepositBold /> deposit
-              </button>
-              <button
-                onClick={() => setWithdrawModal(true)}
-                className={walletStyles.button}
-              >
-                {" "}
-                <BiMoneyWithdraw /> withdraw
-              </button>
-            </span>
-          </div>
-          <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-4 justify-between">
-            <span className="p-6">
-              <h3>Investment wallet</h3>
-              <p className="text-4xl">$0.00</p>
-            </span>
-
-            <span className="bg-stone-800 p-2 flex items-center gap-6">
-              <button
-                onClick={() => setTransferModal(true)}
-                className={walletStyles.button}
-              >
-                {" "}
-                <TbTransfer /> transfer
-              </button>
-              <button
-                onClick={() => setWithdrawModal(true)}
-                className={walletStyles.button}
-              >
-                <BiMoneyWithdraw /> withdraw
-              </button>
-            </span>
-          </div>
-        </div>
+        <h3 className="md:font-bold md:text-2xl">Wallets</h3>
+        <div className="grid gap-6 md:grid-cols-3">{myWallets}</div>
         <div>
           <Transactions />
         </div>
