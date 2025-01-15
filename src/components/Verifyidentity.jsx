@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 
@@ -7,8 +8,14 @@ const identityStyle = {
   select: "bg-transparent p-2 outline-none border border-stone-500",
 };
 
-const Verifyidentity = () => {
+const Verifyidentity = ({ userInfo }) => {
+  // console.log(userInfo);
   const [status, setStatus] = useState("not verified");
+  const [form, setForm] = useState({
+    idType: "",
+    idNumber: "",
+    image: "",
+  });
 
   return (
     <div className="bg-stone-900 bg-opacity-40 flex flex-col gap-6 p-6 text-slate-300 border border-stone-600">
@@ -17,14 +24,14 @@ const Verifyidentity = () => {
         Status:{" "}
         <span
           className={`${
-            status == "not verified"
+            !userInfo.isKYCVerified
               ? "text-red-500"
               : status == "verification pending"
               ? "text-yellow-500"
               : "text-green-500"
           } capitalize`}
         >
-          {status}
+          {userInfo.isKYCVerified ? "verified" : "not verified"}
         </span>
       </p>
       <form action="" className="flex flex-col gap-4">

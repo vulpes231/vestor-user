@@ -5,7 +5,7 @@ import { bitcoin, tether } from "../assets";
 import { TbTransfer } from "react-icons/tb";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { PiHandDepositBold } from "react-icons/pi";
-import { Deposit, Transactions, Withdraw } from "../components";
+import { Deposit, Transactions, Transfer, Withdraw } from "../components";
 import { getAccessToken } from "../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserWallets } from "../features/walletSlice";
@@ -82,6 +82,7 @@ const Wallet = ({ setActive }) => {
       </div>
       {depositModal && <Deposit setDeposit={setDepositModal} />}
       {withdrawModal && <Withdraw setWithdraw={setWithdrawModal} />}
+      {transferModal && <Transfer setWithdraw={setTransferModal} />}
     </section>
   );
 };
