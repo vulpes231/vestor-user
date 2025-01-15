@@ -4,12 +4,14 @@ import { styles } from "../constants/styles";
 import { getAccessToken } from "../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getInvestmentPlans } from "../features/investSlice";
+import { Activateplan } from "../pages";
 
 const Dashwallet = () => {
   const accessToken = getAccessToken();
   const dispatch = useDispatch();
 
   const [activatePlanModal, setActivatePlanModal] = useState(false);
+  const [planData, setPlanData] = useState(false);
 
   const { getPlanLoading, getPlanError, plans } = useSelector(
     (state) => state.invest
@@ -21,20 +23,22 @@ const Dashwallet = () => {
       return (
         <div
           key={plan._id}
-          className="p-6 bg-stone-900 bg-opacity-40 flex gap-2 border border-stone-600 justify-between"
+          className="p-6 bg-stone-900 bg-opacity-40 flex flex-col gap-2 border border-stone-600 justify-between"
         >
-          <p className="flex flex-col">
-            <small className="text-xs text-slate-400">Level</small>
-            <span className="capitalize">{plan.packageName}</span>
-          </p>
-          <p className="flex flex-col">
-            <small className="text-xs text-slate-400">ROI(%)</small>
-            <span className="capitalize">{plan.yield}%</span>
-          </p>
-          <p className="flex flex-col">
-            <small className="text-xs text-slate-400">Period</small>
-            <span className="capitalize">{plan.period}days</span>
-          </p>
+          <span className="flex justify-between w-full">
+            <p className="flex flex-col">
+              <small className="text-xs text-slate-400">Level</small>
+              <span className="capitalize">{plan.packageName}</span>
+            </p>
+            <p className="flex flex-col">
+              <small className="text-xs text-slate-400">ROI(%)</small>
+              <span className="capitalize">{plan.yield}%</span>
+            </p>
+            <p className="flex flex-col">
+              <small className="text-xs text-slate-400">Period</small>
+              <span className="capitalize">{plan.period}days</span>
+            </p>
+          </span>
           <button
             type="button"
             onClick={() => handleActivate(plan)}
@@ -47,8 +51,15 @@ const Dashwallet = () => {
     });
 
   function handleActivate(plan) {
-    console.log(plan);
+    // console.log(plan);
+    setPlanData(plan);
     setActivatePlanModal(true);
+    console.log(activatePlanModal);
+  }
+
+  function closeModal() {
+    setActivatePlanModal(false);
+    setPlanData(false);
   }
 
   useEffect(() => {
@@ -60,8 +71,8 @@ const Dashwallet = () => {
   if (getPlanLoading) {
     return (
       <div>
-        <div className="bg-stone-900 bg-opacity-40 border border-stone-600 ">
-          <div className="flex">
+        <div className="bg-stone-900 bg-opacity-40 border border-stone-600 p-6 flex-col flex ">
+          <div className="flex ">
             <h3 className={`${styles.dashTitle}`}>available plans</h3>
           </div>
           <p>Fetching plans...</p>
@@ -78,6 +89,9 @@ const Dashwallet = () => {
         </div>
         <div className="flex flex-col gap-4">{myPlans}</div>
       </div>
+      {activatePlanModal && (
+        <Activateplan planData={planData} close={closeModal} />
+      )}
     </div>
   );
 };

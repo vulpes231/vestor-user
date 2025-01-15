@@ -1,3 +1,4 @@
+import Activateplan from "./Activateplan";
 import Confirmdeposit from "./Confirmdeposit";
 import Dash from "./Dash";
 import Identification from "./Identification";
@@ -11,6 +12,7 @@ import Wallet from "./Wallet";
 
 export {
   Landing,
+  Activateplan,
   Signin,
   Signup,
   Dash,

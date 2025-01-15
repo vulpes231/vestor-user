@@ -21,7 +21,7 @@ const BitcoinChart = () => {
 
   return (
     <div
-      className="md:col-span-2 bg-stone-900 bg-opacity-40"
+      className="md:col-span-2 bg-stone-900 bg-opacity-40 min-h-[500px]"
       id="bitcoin-chart-container"
     ></div>
   );
