@@ -1,7 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { ErrorModal, LoadingModal } from "../components";
+import { buyPlans } from "../features/investSlice";
+import { useNavigate } from "react-router-dom";
 const modalStyles = {
   input: "border border-stone-600 p-2 outline-none bg-transparent",
   holder: "flex flex-col gap-1",
@@ -9,9 +13,71 @@ const modalStyles = {
 };
 
 const Activateplan = ({ planData, close }) => {
-  console.log(planData);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    amount: "",
+  });
+  const [error, setError] = useState("");
+
+  const { buyPlanLoading, buyPlanError, planBought } = useSelector(
+    (state) => state.invest
+  );
+
+  const handleInput = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log(form)
+    if (!form.amount) {
+      console.log("enter amount");
+      setError("Amount is required");
+      return;
+    }
+
+    if (parseFloat(form.amount) < planData.minPool) {
+      console.log("Insufficient");
+      setError(`Minimum of $${planData.minPool} required!`);
+      return;
+    }
+
+    const data = {
+      planId: planData._id,
+      amount: form.amount,
+    };
+
+    dispatch(buyPlans(data));
+  };
+
+  useEffect(() => {
+    if (buyPlanError) {
+      setError(buyPlanError);
+    }
+  }, [buyPlanError]);
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
+
+  useEffect(() => {
+    let timeout;
+    if (planBought) {
+      timeout = setTimeout(() => {
+        navigate("/trade");
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [planBought, navigate]);
   return (
-    <section className="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-black bg-opacity-80 z-[1000] p-6 md:p-0">
+    <section className="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-black bg-opacity-80  p-6 md:p-0">
       <div className="bg-stone-900 border border-stone-600 p-6 w-full md:w-[350px] rounded-lg">
         <span className="flex justify-between items-center mb-8">
           <h3 className="font-bold text-lg md:text-2xl capitalize">
@@ -61,13 +127,22 @@ const Activateplan = ({ planData, close }) => {
               className={modalStyles.input}
               type="text"
               placeholder="Enter amount to invest"
+              onChange={handleInput}
+              value={form.amount}
+              name="amount"
+              autoComplete="off"
             />
           </div>
-          <button className="bg-green-600 text-white p-2 rounded-3xl mt-5">
+          <button
+            onClick={handleSubmit}
+            className="bg-green-600 text-white p-2 rounded-3xl mt-5"
+          >
             Invest
           </button>
         </form>
       </div>
+      {error && <ErrorModal error={error} />}
+      {buyPlanLoading && <LoadingModal text={"Activating plan"} />}
     </section>
   );
 };

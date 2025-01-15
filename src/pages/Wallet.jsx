@@ -30,10 +30,12 @@ const Wallet = ({ setActive }) => {
       return (
         <div
           key={wallet._id}
-          className="bg-stone-900 bg-opacity-40  flex flex-col gap-4 justify-between"
+          className="bg-stone-900 bg-opacity-40 flex flex-col"
         >
-          <div className="p-6">
-            <h3>{wallet.name}</h3>
+          <div className="p-6 flex flex-col gap-2">
+            <h3 className="font-bold text-slate-400 capitalize">
+              {wallet.walletName} wallet
+            </h3>
             <p className="text-4xl">${wallet.balance.toFixed(2)}</p>
           </div>
           <span className="bg-stone-800 p-2 flex items-center gap-6 ">
@@ -47,11 +49,11 @@ const Wallet = ({ setActive }) => {
               <PiHandDepositBold /> deposit
             </button>
             <button
-              onClick={() => setWithdrawModal(true)}
+              onClick={() => setTransferModal(true)}
               className={walletStyles.button}
             >
               {" "}
-              <BiMoneyWithdraw /> withdraw
+              <BiMoneyWithdraw /> transfer
             </button>
           </span>
         </div>

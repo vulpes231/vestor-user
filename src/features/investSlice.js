@@ -57,7 +57,7 @@ export const getUserBots = createAsyncThunk("invest/getUserBots", async () => {
 export const buyPlans = createAsyncThunk(
   "invest/buyPlans",
   async (formData) => {
-    const url = `${devServer}/pool`;
+    const url = `${liveServer}/pool`;
     try {
       const accessToken = getAccessToken();
       const response = await axios.post(url, formData, {
