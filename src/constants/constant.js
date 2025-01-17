@@ -43,6 +43,11 @@ const authLinks = [
     name: "settings",
     path: "/settings",
   },
+  {
+    id: "withdraw",
+    name: "withdraw",
+    path: "/withdraw",
+  },
 ];
 
 const testData = [

@@ -5,7 +5,7 @@ import { authLinks } from "../constants/constant";
 import { Link } from "react-router-dom";
 import { CgHomeAlt } from "react-icons/cg";
 import { MdHistoryEdu } from "react-icons/md";
-import { FaGear, FaPiggyBank } from "react-icons/fa6";
+import { FaGear, FaMoneyBillTransfer, FaPiggyBank } from "react-icons/fa6";
 
 const Mobilenav = ({ activeLink, setActiveLink }) => {
   return (
@@ -21,6 +21,8 @@ const Mobilenav = ({ activeLink, setActiveLink }) => {
               <MdHistoryEdu size={20} />
             ) : link.id === "settings" ? (
               <FaGear size={20} />
+            ) : link.id === "withdraw" ? (
+              <FaMoneyBillTransfer size={20} />
             ) : null;
           return (
             <Link

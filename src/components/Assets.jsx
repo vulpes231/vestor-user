@@ -8,16 +8,20 @@ import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { getAccessToken } from "../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getBalance } from "../features/walletSlice";
+import { getTotalProfit, getUserTrades } from "../features/tradeSlice";
 
 const Assets = () => {
   const accessToken = getAccessToken();
   const dispatch = useDispatch();
 
   const { balance } = useSelector((state) => state.wallet);
+  const { userTrades, totalProfit } = useSelector((state) => state.trade);
 
   useEffect(() => {
     if (accessToken) {
       dispatch(getBalance());
+      dispatch(getUserTrades());
+      dispatch(getTotalProfit());
     }
   }, [dispatch, accessToken]);
   return (
@@ -36,14 +40,16 @@ const Assets = () => {
           <RiMoneyDollarCircleFill size={25} />
           <h5 className="font-bold">Profits</h5>
         </span>
-        <h3 className={` text-green-600 ${styles.money}`}>0.00 USD</h3>
+        <h3 className={` text-green-600 ${styles.money}`}>
+          {totalProfit || `0.00`} USD
+        </h3>
       </span>
       <span className={styles.card}>
         <span className="flex items-center gap-2">
           <FaChartLine size={25} />
           <h5 className="font-bold">Trades</h5>
         </span>
-        <h3 className={styles.money}>0</h3>
+        <h3 className={styles.money}>{userTrades?.length || 0}</h3>
       </span>
     </div>
   );

@@ -1,7 +1,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { getAccessToken } from "../constants/constant";
+import { getUserInfo } from "../features/userSlice";
+import { FaUserLock } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const withdrawStyles = {
   formHolder: "flex flex-col gap-2",
@@ -10,12 +15,19 @@ const withdrawStyles = {
   select: "border border-stone-500 bg-transparent p-2",
 };
 
-const Withdrawmodal = ({ setWithdraw }) => {
+const Withdrawmodal = ({ setWithdraw, setActive }) => {
+  const dispatch = useDispatch();
+  const accessToken = getAccessToken();
   const [form, setForm] = useState({
     from: "",
     address: "",
     amount: "",
   });
+
+  const { withdrawLoading, withdrawError, withdrawSucess } = useSelector(
+    (state) => state.trnx
+  );
+  const { userInfo } = useSelector((state) => state.user);
 
   const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,15 +44,47 @@ const Withdrawmodal = ({ setWithdraw }) => {
     console.log(form);
   };
 
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getUserInfo());
+    }
+  }, [accessToken, dispatch]);
+
+  useEffect(() => {
+    document.title = "Vestor - Withdraw";
+    setActive("withdraw");
+  }, [setActive]);
+
+  if (!userInfo.isKYCVerified) {
+    return (
+      <div className="p-6 flex flex-col gap-6 h-full items-center justify-center bg-black bg-opacity-50">
+        <FaUserLock className="w-20 h-20" />
+        <h3 className="text-xl">
+          Account status:{" "}
+          <span
+            className={
+              userInfo?.isKYCVerified ? "text-green-600" : "text-red-600"
+            }
+          >
+            {userInfo?.isKYCVerified ? "Verified" : "Not Verified"}
+          </span>
+        </h3>
+        <p className="text-center">
+          Verify your account to enjoy full features.{" "}
+          <br className="sm:hidden" />
+          <Link to={"/settings"} className="text-green-600 underline">
+            Complete verification
+          </Link>{" "}
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-white text-slate-100 bg-opacity-30">
-      <div className="bg-stone-900 rounded-md p-6 w-full md:w-[350px] border border-stone-600">
+    <div className=" w-full h-screen flex items-center justify-center bg-black bg-opacity-50 text-slate-100 p-6 md:p-0">
+      <div className="bg-black bg-opacity-45 rounded-md p-6 w-full md:w-[350px] border border-stone-600">
         <div className="flex items-center justify-between">
           <h3>Withdraw</h3>
-          <MdClose
-            className="cursor-pointer"
-            onClick={() => setWithdraw(false)}
-          />
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className={withdrawStyles.formHolder}>
@@ -55,13 +99,13 @@ const Withdrawmodal = ({ setWithdraw }) => {
             >
               <option value="">Select Wallet</option>
               <option value="deposit">deposit wallet</option>
-              <option value="invest">Investment wallet</option>
+              <option value="invest">Invest wallet</option>
             </select>
           </div>
 
           <div className={withdrawStyles.formHolder}>
             <label className={withdrawStyles.label} htmlFor="Address">
-              Address
+              Recipient Wallet Address
             </label>
             <input
               className={withdrawStyles.input}

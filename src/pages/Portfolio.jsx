@@ -14,6 +14,7 @@ import {
 } from "../features/tradeSlice";
 import { getUserInfo } from "../features/userSlice";
 import { Link } from "react-router-dom";
+import { getUserWallets } from "../features/walletSlice";
 
 const portFolioStyle = {
   title: "font-bold text-lg whitespace-nowrap",
@@ -26,12 +27,18 @@ const Portfolio = ({ setActive }) => {
 
   const { activeTradeCount, userTrades } = useSelector((state) => state.trade);
   const { userInfo } = useSelector((state) => state.user);
+  const { userWallets } = useSelector((state) => state.wallet);
+
+  const investWallet = userWallets.find(
+    (wallet) => wallet.walletName === "invest"
+  );
 
   useEffect(() => {
     if (accessToken) {
       dispatch(getActiveTradeCount());
       dispatch(getUserTrades());
       dispatch(getUserInfo());
+      dispatch(getUserWallets());
     }
   }, [dispatch, accessToken]);
 
@@ -73,7 +80,9 @@ const Portfolio = ({ setActive }) => {
             <FaSignal className={portFolioStyle.icon} />
             <h3 className={portFolioStyle.title}>Portfolio Balance</h3>
           </span>
-          <p className="text-4xl text-slate-400 px-2">$0.00</p>
+          <p className="text-4xl text-slate-400 px-2">
+            ${investWallet?.balance?.toFixed(2) || `0.00`}
+          </p>
         </div>
 
         <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-4 justify-between border border-stone-600 p-6">

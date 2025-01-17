@@ -7,7 +7,7 @@ import { MdLogout } from "react-icons/md";
 import { authLinks } from "../constants/constant";
 import { CgHomeAlt } from "react-icons/cg";
 import { MdHistoryEdu } from "react-icons/md";
-import { FaGear, FaPiggyBank } from "react-icons/fa6";
+import { FaGear, FaMoneyBillTransfer, FaPiggyBank } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, resetLogout } from "../features/userSlice";
 import ErrorModal from "./ErrorModal";
@@ -71,6 +71,8 @@ const Sidebar = ({ activeLink, setActiveLink }) => {
                   <MdHistoryEdu />
                 ) : link.id === "settings" ? (
                   <FaGear />
+                ) : link.id === "withdraw" ? (
+                  <FaMoneyBillTransfer />
                 ) : null;
               return (
                 <Link

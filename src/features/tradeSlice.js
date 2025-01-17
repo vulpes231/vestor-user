@@ -23,7 +23,7 @@ const initialState = {
 export const getUserTrades = createAsyncThunk(
   "trade/getUserTrades",
   async () => {
-    const url = `${devServer}/trade`;
+    const url = `${liveServer}/trade`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.get(url, {
@@ -43,7 +43,7 @@ export const getUserTrades = createAsyncThunk(
 export const getActiveTradeCount = createAsyncThunk(
   "trade/getActiveTradeCount",
   async () => {
-    const url = `${devServer}/trade/active`;
+    const url = `${liveServer}/trade/active`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.get(url, {
@@ -63,7 +63,7 @@ export const getActiveTradeCount = createAsyncThunk(
 export const getTotalProfit = createAsyncThunk(
   "trade/getTotalProfit",
   async () => {
-    const url = `${devServer}/trade/profit`;
+    const url = `${liveServer}/trade/profit`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.get(url, {

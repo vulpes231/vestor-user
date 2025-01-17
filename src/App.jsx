@@ -13,7 +13,7 @@ import {
   Steptwo,
   Wallet,
 } from "./pages";
-import { Mobilenav, Sidebar } from "./components";
+import { Mobilenav, Sidebar, Withdraw } from "./components";
 import { getAccessToken } from "./constants/constant";
 
 const App = () => {
@@ -48,6 +48,10 @@ const App = () => {
           <Route
             path="/settings"
             element={<Settings setActive={setActiveLink} />}
+          />
+          <Route
+            path="/withdraw"
+            element={<Withdraw setActive={setActiveLink} />}
           />
           <Route
             path="/confirm/:coin/:amount/:network"
