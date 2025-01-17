@@ -9,7 +9,7 @@ import { FaGear, FaPiggyBank } from "react-icons/fa6";
 
 const Mobilenav = ({ activeLink, setActiveLink }) => {
   return (
-    <nav className="lg:hidden w-full bg-stone-800 text-white h-[70px] bottom-0 left-0 fixed flex items-center justify-center z-50">
+    <nav className="lg:hidden w-full bg-black bg-opacity-80 text-white h-[70px] bottom-0 left-0 fixed flex items-center justify-center z-50">
       <ul className="flex items-center justify-evenly w-full">
         {authLinks.map((link) => {
           const icon =

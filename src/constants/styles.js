@@ -13,7 +13,7 @@ const styles = {
   formSpan: "text-yellow-500",
   label: "text-slate-300",
   dashTitle: "text-lg capitalize",
-  card: "flex flex-col gap-4 bg-stone-900 bg-opacity-40 px-6 py-8 rounded-sm border-b border-stone-600",
+  card: "flex flex-col gap-4 bg-black bg-opacity-60 px-6 py-8 rounded-sm border-b border-stone-600",
   money: "text-slate-300 text-3xl",
 };
 

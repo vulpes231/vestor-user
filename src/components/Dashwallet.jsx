@@ -5,6 +5,8 @@ import { getAccessToken } from "../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getInvestmentPlans } from "../features/investSlice";
 import { Activateplan } from "../pages";
+import { getUserInfo } from "../features/userSlice";
+import ErrorModal from "./ErrorModal";
 
 const Dashwallet = () => {
   const accessToken = getAccessToken();
@@ -12,10 +14,13 @@ const Dashwallet = () => {
 
   const [activatePlanModal, setActivatePlanModal] = useState(false);
   const [planData, setPlanData] = useState(false);
+  const [error, setError] = useState("");
 
   const { getPlanLoading, getPlanError, plans } = useSelector(
     (state) => state.invest
   );
+
+  const { userInfo } = useSelector((state) => state.user);
 
   const myPlans =
     plans &&
@@ -23,7 +28,7 @@ const Dashwallet = () => {
       return (
         <div
           key={plan._id}
-          className="p-6 bg-stone-900 bg-opacity-40 flex flex-col gap-2 border border-stone-600 justify-between"
+          className="p-6 bg-black bg-opacity-50 flex flex-col gap-2 border border-stone-600 justify-between"
         >
           <span className="flex justify-between w-full">
             <p className="flex flex-col">
@@ -51,7 +56,11 @@ const Dashwallet = () => {
     });
 
   function handleActivate(plan) {
-    // console.log(plan);
+    if (!userInfo.isKYCVerified) {
+      setError("Account not verified!");
+      return;
+    }
+
     setPlanData(plan);
     setActivatePlanModal(true);
     console.log(activatePlanModal);
@@ -65,13 +74,24 @@ const Dashwallet = () => {
   useEffect(() => {
     if (accessToken) {
       dispatch(getInvestmentPlans());
+      dispatch(getUserInfo());
     }
   }, [accessToken, dispatch]);
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error]);
 
   if (getPlanLoading) {
     return (
       <div>
-        <div className="bg-stone-900 bg-opacity-40 border border-stone-600 p-6 flex-col flex ">
+        <div className="bg-black bg-opacity-50 border border-stone-600 p-6 flex-col flex ">
           <div className="flex ">
             <h3 className={`${styles.dashTitle}`}>available plans</h3>
           </div>
@@ -84,7 +104,7 @@ const Dashwallet = () => {
   return (
     <div>
       <div className="  flex flex-col gap-4">
-        <div className="flex justify-between items-start p-2 bg-stone-900 bg-opacity-40">
+        <div className="flex justify-between items-start p-2 bg-black bg-opacity-50">
           <h3 className={`${styles.dashTitle}`}>available plans</h3>
         </div>
         <div className="flex flex-col gap-4">{myPlans}</div>
@@ -92,6 +112,8 @@ const Dashwallet = () => {
       {activatePlanModal && (
         <Activateplan planData={planData} close={closeModal} />
       )}
+
+      {error && <ErrorModal error={error} />}
     </div>
   );
 };
