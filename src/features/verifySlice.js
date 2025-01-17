@@ -20,9 +20,9 @@ export const verifyUser = createAsyncThunk(
     const url = `${devServer}/verify`;
     const accessToken = getAccessToken();
     try {
-      const response = await axios.put(url, formData, {
+      const response = await axios.post(url, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
         },
       });

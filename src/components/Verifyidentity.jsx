@@ -8,40 +8,75 @@ import { resetVerifyUser, verifyUser } from "../features/verifySlice";
 import Successmodal from "./Successmodal";
 
 const identityStyle = {
-  formHolder: "flex flex-col gap-1",
+  formHolder: "flex flex-col gap-1 w-full",
   input: "bg-transparent p-2 outline-none border border-stone-500",
-  select: "bg-transparent p-2 outline-none border border-stone-500",
+  select: "bg-transparent p-2.5 outline-none border border-stone-500",
 };
 
 const Verifyidentity = ({ userInfo }) => {
   const dispatch = useDispatch();
-  const [status, setStatus] = useState("not verified");
   const [form, setForm] = useState({
     idType: "",
     idNumber: "",
-    image: "",
+    dob: "",
+    employment: "",
+    image: null,
   });
 
   const [error, setError] = useState("");
+  const [imageError, setImageError] = useState("");
 
   const { verifyUserLoading, verifyUserError, verifyRequested } = useSelector(
     (state) => state.verify
   );
 
   const handleInput = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      const file = files[0];
+      if (file) {
+        if (file.size > 5000000) {
+          // 5MB limit
+          setImageError("File size should not exceed 5MB.");
+          return;
+        }
+        if (!["image/jpeg", "image/png"].includes(file.type)) {
+          setImageError("Only JPEG and PNG files are allowed.");
+          return;
+        }
+        setImageError(""); // Reset image error if file is valid
+      }
+      setForm({ ...form, [name]: files[0] });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError(""); // Reset previous errors
 
+    // Validate all fields
     for (const key in form) {
-      if (form[key] === "") {
-        setError(`${key} required!`);
+      if (!form[key] && key !== "image") {
+        setError(`${key} is required!`);
         return;
       }
     }
-    dispatch(verifyUser(form));
+
+    if (!form.image) {
+      setError("Image is required!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("idType", form.idType);
+    formData.append("idNumber", form.idNumber);
+    formData.append("dob", form.dob);
+    formData.append("employment", form.employment);
+    formData.append("image", form.image);
+
+    dispatch(verifyUser(formData));
   };
 
   useEffect(() => {
@@ -64,78 +99,109 @@ const Verifyidentity = ({ userInfo }) => {
     let timeout;
     if (verifyRequested) {
       timeout = setTimeout(() => {
-        resetVerifyUser();
-        window.location.reload();
+        dispatch(resetVerifyUser());
+        setForm({
+          idType: "",
+          idNumber: "",
+          dob: "",
+          employment: "",
+          image: null,
+        });
       }, 3000);
     }
     return () => clearTimeout(timeout);
-  }, [verifyRequested]);
+  }, [verifyRequested, dispatch]);
+
   return (
-    <div className="bg-stone-900 bg-opacity-40 flex flex-col gap-6 p-6 text-slate-300 border border-stone-600">
+    <div className="bg-stone-900 bg-opacity-40 flex flex-col gap-6 p-6 text-slate-300 border border-stone-600 mb-20">
       <h3 className="font-bold text-white">Account Verification</h3>
       <p>
         Status:{" "}
         <span
           className={`${
-            !userInfo.isKYCVerified
-              ? "text-red-500"
-              : status == "verification pending"
-              ? "text-yellow-500"
-              : "text-green-500"
+            !userInfo.isKYCVerified ? "text-red-500" : "text-green-500"
           } capitalize`}
         >
           {userInfo.isKYCVerified ? "verified" : "not verified"}
         </span>
       </p>
-      <form action="" className="flex flex-col gap-4">
-        <small>Upload a clear image of your government issued ID Card</small>
-        <div className={identityStyle.formHolder}>
-          <label htmlFor="">ID type</label>
-          <select className={identityStyle.select} name="">
-            <option value="">Select ID</option>
-            <option value="license">Driver License</option>
-            <option value="passport">International Passport</option>
-            <option value="state">State ID</option>
-          </select>
+      <form
+        encType="multipart/form-data"
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 lg:p-6"
+      >
+        <small>Upload a clear image of your government-issued ID Card</small>
+        <div className="flex flex-col md:flex-row gap-6 items-center">
+          <div className={identityStyle.formHolder}>
+            <label htmlFor="idType">ID type</label>
+            <select
+              className={identityStyle.select}
+              name="idType"
+              onChange={handleInput}
+              value={form.idType}
+            >
+              <option value="">Select ID</option>
+              <option value="license">Driver License</option>
+              <option value="passport">International Passport</option>
+              <option value="state">State ID</option>
+            </select>
+          </div>
+          <div className={identityStyle.formHolder}>
+            <label htmlFor="idNumber">ID Number</label>
+            <input
+              className={identityStyle.input}
+              type="text"
+              placeholder="Enter ID Number"
+              name="idNumber"
+              onChange={handleInput}
+              value={form.idNumber}
+            />
+          </div>
         </div>
+        <div className="flex flex-col md:flex-row gap-6 items-center">
+          <div className={identityStyle.formHolder}>
+            <label htmlFor="dob">DOB</label>
+            <input
+              className={identityStyle.input}
+              type="date"
+              name="dob"
+              onChange={handleInput}
+              value={form.dob}
+            />
+          </div>
+          <div className={identityStyle.formHolder}>
+            <label htmlFor="employment">Employment</label>
+            <select
+              className={identityStyle.select}
+              name="employment"
+              onChange={handleInput}
+              value={form.employment}
+            >
+              <option value="">Select Employment</option>
+              <option value="employed">Employed</option>
+              <option value="student">Student</option>
+              <option value="retired">Retired</option>
+              <option value="unemployed">Unemployed</option>
+            </select>
+          </div>
+        </div>
+
         <div className={identityStyle.formHolder}>
-          <label htmlFor="">ID Number</label>
+          <label htmlFor="image">Upload ID Image</label>
           <input
             className={identityStyle.input}
-            type="text"
-            placeholder="Enter ID Number"
+            type="file"
+            name="image"
+            onChange={handleInput}
           />
+          {imageError && <small className="text-red-500">{imageError}</small>}
         </div>
-        <div className={identityStyle.formHolder}>
-          <label htmlFor="">DOB</label>
-          <input
-            className={identityStyle.input}
-            type="text"
-            placeholder="Enter ID Number"
-          />
-        </div>
-        <div className={identityStyle.formHolder}>
-          <label htmlFor="">Marital status</label>
-          <input
-            className={identityStyle.input}
-            type="text"
-            placeholder="Enter ID Number"
-          />
-        </div>
-        <div className={identityStyle.formHolder}>
-          <label htmlFor="">Social security number</label>
-          <input
-            className={identityStyle.input}
-            type="text"
-            placeholder="Enter ID Number"
-          />
-        </div>
-        <div className={identityStyle.formHolder}>
-          <label htmlFor="">Upload ID Image</label>
-          <input className={identityStyle.input} type="file" />
-        </div>
-        <button className="p-2 border-none bg-green-600 text-white rounded-3xl">
-          Verify account
+        <button
+          type="submit"
+          className="p-2 border-none bg-green-600 text-white rounded-3xl"
+          disabled={verifyUserLoading}
+        >
+          {verifyUserLoading ? "Verifying..." : "Verify account"}
         </button>
       </form>
       {error && <ErrorModal error={error} />}
