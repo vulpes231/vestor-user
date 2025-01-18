@@ -77,12 +77,7 @@ const testData = [
   },
 ];
 
-// const tokenHeaders = {
-//   contentType: "application/json",
-//   Authorization: `Bearer`
-// };
-
-const liveServer = `https://vestor-server.onrender.com`;
+const liveServer = `https://server.vestor.markets`; //https://vestor-server.onrender.com //https://server.vestor.markets
 const devServer = `http://localhost:4000`;
 
 export {

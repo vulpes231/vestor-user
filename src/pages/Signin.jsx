@@ -77,7 +77,7 @@ const Signin = () => {
 
       timeout = setTimeout(() => {
         if (isProfileComplete) {
-          window.location.href = "/dashboard";
+          navigate("/dashboard");
         } else {
           navigate("/personal");
         }

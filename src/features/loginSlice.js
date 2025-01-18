@@ -14,12 +14,13 @@ const initialState = {
 export const loginUser = createAsyncThunk(
   "login/loginUser",
   async (formData) => {
-    const url = `${liveServer}/auth`;
+    const url = `${liveServer}/auth/`;
     try {
       const response = await axios.post(url, formData, {
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       });
       console.log(response.data);
       return response.data;
