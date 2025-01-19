@@ -17,8 +17,14 @@ const Signin = () => {
   });
   const [error, setError] = useState("");
 
-  const { loginLoading, loginError, accessToken, country, isProfileComplete } =
-    useSelector((state) => state.login);
+  const {
+    loginLoading,
+    loginError,
+    accessToken,
+    country,
+    isProfileComplete,
+    email,
+  } = useSelector((state) => state.login);
 
   const year = new Date().getFullYear();
 
@@ -71,20 +77,21 @@ const Signin = () => {
       const userData = {
         country: country,
         isProfileComplete: isProfileComplete,
+        email: email,
       };
 
       sessionStorage.setItem("userData", JSON.stringify(userData));
 
       timeout = setTimeout(() => {
         if (isProfileComplete) {
-          window.location.href = "/dashboard";
+          navigate("/otpcode");
         } else {
           navigate("/personal");
         }
       }, 3000);
     }
     return () => clearTimeout(timeout);
-  }, [accessToken, navigate, country, isProfileComplete]);
+  }, [accessToken, navigate, country, isProfileComplete, email]);
 
   useEffect(() => {
     document.title = "Vestor - Login";

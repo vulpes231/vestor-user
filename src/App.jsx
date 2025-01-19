@@ -6,6 +6,7 @@ import {
   Dash,
   Identification,
   Landing,
+  Loginotp,
   Portfolio,
   Settings,
   Signin,
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/personal" element={<Steptwo />} />
           <Route path="/identity" element={<Identification />} />
+          <Route path="/otpcode" element={<Loginotp />} />
           <Route
             path="/dashboard"
             element={<Dash setActive={setActiveLink} />}

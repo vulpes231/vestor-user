@@ -8,6 +8,7 @@ import trnxReducer from "../features/trnxSlice";
 import investReducer from "../features/investSlice";
 import tradeReducer from "../features/tradeSlice";
 import verifyReducer from "../features/verifySlice";
+import otpReducer from "../features/otpSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     invest: investReducer,
     trade: tradeReducer,
     verify: verifyReducer,
+    otp: otpReducer,
   },
 });
 

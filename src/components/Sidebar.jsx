@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, resetLogout } from "../features/userSlice";
 import ErrorModal from "./ErrorModal";
 import LoadingModal from "./LoadingModal";
+import Successmodal from "./Successmodal";
 
 const Sidebar = ({ activeLink, setActiveLink }) => {
   const dispatch = useDispatch();
@@ -99,6 +100,7 @@ const Sidebar = ({ activeLink, setActiveLink }) => {
       </div>
       {error && <ErrorModal error={error} />}
       {logoutLoading && <LoadingModal text={"Logging out"} />}
+      {loggedOut && <Successmodal successText={"Logout success."} />}
     </aside>
   );
 };

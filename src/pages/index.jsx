@@ -3,6 +3,7 @@ import Confirmdeposit from "./Confirmdeposit";
 import Dash from "./Dash";
 import Identification from "./Identification";
 import Landing from "./Landing";
+import Loginotp from "./Loginotp";
 import Portfolio from "./Portfolio";
 import Settings from "./Settings";
 import Signin from "./Signin";
@@ -12,6 +13,7 @@ import Wallet from "./Wallet";
 
 export {
   Landing,
+  Loginotp,
   Activateplan,
   Signin,
   Signup,

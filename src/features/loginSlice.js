@@ -9,12 +9,13 @@ const initialState = {
   accessToken: false,
   country: false,
   isProfileComplete: false,
+  email: false,
 };
 
 export const loginUser = createAsyncThunk(
   "login/loginUser",
   async (formData) => {
-    const url = `${liveServer}/auth/`;
+    const url = `${devServer}/auth/`;
     try {
       const response = await axios.post(url, formData, {
         headers: {
@@ -40,6 +41,7 @@ const loginSlice = createSlice({
       state.accessToken = false;
       state.isProfileComplete = false;
       state.country = false;
+      state.email = false;
     },
   },
   extraReducers: (builder) => {
@@ -52,6 +54,7 @@ const loginSlice = createSlice({
         state.accessToken = action.payload.accessToken;
         state.isProfileComplete = action.payload.isProfileComplete;
         state.country = action.payload.country;
+        state.email = action.payload.email;
         state.loginError = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -59,6 +62,7 @@ const loginSlice = createSlice({
         state.accessToken = false;
         state.isProfileComplete = false;
         state.country = false;
+        state.email = false;
         state.loginError = action.error.message;
       });
   },
