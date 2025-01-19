@@ -13,27 +13,32 @@ const Loginotp = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ otp: "" });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [otpSent, setOtpSent] = useState(false);
 
   const { otpLoading, otpError, loginOtp } = useSelector((state) => state.otp);
   const { userInfo } = useSelector((state) => state.user);
 
   const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+
+    setIsDisabled(e.target.value.length !== 6);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError(""); // Clear previous error messages
+    setError("");
 
     if (!form.otp) {
       setError("OTP required!");
       return;
     }
 
-    // Verify OTP
     if (loginOtp === form.otp) {
+      setSuccess(true);
       dispatch(resetLoginOtp());
-      window.location.href = "/dashboard"; // Using useNavigate for routing
+      window.location.href = "/dashboard";
     } else {
       setError("Incorrect OTP Code!");
     }
@@ -62,16 +67,15 @@ const Loginotp = () => {
   }, [dispatch, accessToken]);
 
   useEffect(() => {
-    if (userInfo) {
-      const data = {
-        email: userInfo.email,
-      };
+    if (userInfo && !otpSent) {
+      const data = { email: userInfo.email };
       dispatch(getLoginCode(data));
+      setOtpSent(true);
     }
-  }, [dispatch, userInfo]);
+  }, [userInfo, otpSent, dispatch]);
 
   useEffect(() => {
-    document.title = "Vestor - Login OTP"; // Update the document title
+    document.title = "Vestor - Login OTP";
   }, []);
 
   return (
@@ -93,26 +97,26 @@ const Loginotp = () => {
           pattern="[0-9]{6}"
           maxLength={6}
           required
-          placeholder="123456" // Provide a pattern for better user experience
+          placeholder="123456"
         />
         <small className="text-xs text-stone-400">
           Didn&apos;t receive the code? Check your spam or junk folder.
         </small>
         <button
           type="submit"
-          disabled={otpLoading || !form.otp || form.otp.length !== 6} // Disable button if OTP is incorrect or empty
-          className="bg-green-600 text-slate-100 p-2 mt-4"
+          disabled={isDisabled}
+          className={`${
+            isDisabled ? "bg-gray-500" : "bg-green-600"
+          } text-slate-100 p-2 mt-4`}
         >
           Verify OTP
         </button>
       </form>
 
       {/* Modal Components */}
-      {otpLoading && <LoadingModal text="Verifying OTP Code..." />}
+      {otpLoading && <LoadingModal text="Sending OTP Code..." />}
       {error && <ErrorModal error={error} />}
-      {loginOtp && loginOtp === form.otp && (
-        <Successmodal successText="Login verified!" />
-      )}
+      {success && <Successmodal successText="Login verified!" />}
     </section>
   );
 };

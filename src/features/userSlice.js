@@ -56,7 +56,7 @@ export const changePassword = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
-  const url = `${devServer}/user/logout`;
+  const url = `${liveServer}/user/logout`;
   try {
     const accessToken = getAccessToken();
     const response = await axios.post(
