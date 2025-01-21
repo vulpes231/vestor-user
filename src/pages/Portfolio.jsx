@@ -29,9 +29,8 @@ const Portfolio = ({ setActive }) => {
   const { userInfo } = useSelector((state) => state.user);
   const { userWallets } = useSelector((state) => state.wallet);
 
-  const investWallet = userWallets.find(
-    (wallet) => wallet.walletName === "invest"
-  );
+  const investWallet =
+    userWallets && userWallets.find((wallet) => wallet.walletName === "invest");
 
   useEffect(() => {
     if (accessToken) {
