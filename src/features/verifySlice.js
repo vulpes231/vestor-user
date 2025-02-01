@@ -17,7 +17,7 @@ const initialState = {
 export const verifyUser = createAsyncThunk(
   "verify/verifyUser",
   async (formData) => {
-    const url = `${liveServer}/verify/`;
+    const url = `https://vestor-server.onrender.com/verify`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.post(url, formData, {

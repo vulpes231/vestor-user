@@ -23,7 +23,7 @@ const initialState = {
 };
 
 export const getUserTrnxs = createAsyncThunk("trnx/getUserTrnxs", async () => {
-  const url = `${liveServer}/trnx`;
+  const url = `${devServer}/trnx`;
   try {
     const accessToken = getAccessToken();
     const response = await axios.get(url, {
@@ -41,7 +41,7 @@ export const getUserTrnxs = createAsyncThunk("trnx/getUserTrnxs", async () => {
 export const depositFunds = createAsyncThunk(
   "trnx/depositFunds",
   async (formData) => {
-    const url = `${liveServer}/trnx/deposit`;
+    const url = `${devServer}/trnx/deposit`;
     try {
       const accessToken = getAccessToken();
       const response = await axios.post(url, formData, {

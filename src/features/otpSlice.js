@@ -17,7 +17,7 @@ const initialState = {
 export const getLoginCode = createAsyncThunk(
   "otp/getLoginCode",
   async (formData) => {
-    const url = `${liveServer}/otp`;
+    const url = `${devServer}/otp`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.post(url, formData, {
@@ -52,7 +52,7 @@ const otpSlice = createSlice({
       .addCase(getLoginCode.fulfilled, (state, action) => {
         state.otpLoading = false;
         state.otpError = false;
-        state.loginOtp = action.payload.code;
+        state.loginOtp = action.payload.otp;
       })
       .addCase(getLoginCode.rejected, (state, action) => {
         state.otpLoading = false;

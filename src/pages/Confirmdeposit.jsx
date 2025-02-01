@@ -6,31 +6,30 @@ import { bitcoin, tether } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
 import { depositFunds, resetDeposit } from "../features/trnxSlice";
 import { ErrorModal, LoadingModal, Successmodal } from "../components";
-
-const addresses = [
-  {
-    id: "bitcoin",
-    address: "3xu782jjklsksdhdu8903032i67uihsd",
-  },
-  {
-    id: "trc20",
-    address: "0x1dshjssoopw08ejsuwboo902js22",
-  },
-  {
-    id: "erc20",
-    address: "0x1dshjs682jsjsjkejsu6378wijse",
-  },
-];
+import { getUserInfo } from "../features/userSlice";
+import { getAccessToken } from "../constants/constant";
 
 const Confirmdeposit = ({ setActive }) => {
   const dispatch = useDispatch();
   const { coin, amount, memo, network } = useParams();
 
-  const [error, setError] = useState();
+  const accessToken = getAccessToken();
+
+  const [error, setError] = useState("");
+  const [copy, setCopy] = useState(false);
 
   const { depositLoading, depositError, depositSucess } = useSelector(
     (state) => state.trnx
   );
+  const { userInfo } = useSelector((state) => state.user);
+
+  const handleCopy = () => {
+    const textToCopy = userInfo?.depositAddress;
+    if (textToCopy) {
+      navigator.clipboard.writeText(textToCopy);
+      setCopy(true);
+    }
+  };
 
   const handleDeposit = (e) => {
     e.preventDefault();
@@ -69,14 +68,25 @@ const Confirmdeposit = ({ setActive }) => {
   }, [depositSucess, dispatch]);
 
   useEffect(() => {
+    let timeout;
+    if (copy) {
+      timeout = setTimeout(() => {
+        setCopy(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [copy]);
+
+  useEffect(() => {
     setActive("wallet");
-  }, [setActive]);
+    if (accessToken) {
+      dispatch(getUserInfo());
+    }
+  }, [setActive, dispatch, accessToken]);
 
   useEffect(() => {
     document.title = "Vestor - Confirm Payment";
-  });
-
-  const address = addresses.find((adr) => adr.id === network);
+  }, []);
 
   console.log(coin, amount, memo, network);
   return (
@@ -118,17 +128,20 @@ const Confirmdeposit = ({ setActive }) => {
               <span className="font-bold text-white uppercase">
                 {coin === "btc" ? "0.0000" : amount} {coin}
               </span>{" "}
-              to:{" "}
+              to: {userInfo?.depositAddress}
             </p>
             <span className="flex items-center gap-4">
               <input
                 type="text"
                 readOnly
-                value={address.address}
+                value={userInfo?.depositAddress}
                 className="p-2 border border-stone-600 bg-transparent w-full text-slate-400 text-md font-light"
               />
-              <button className="px-4 py-2 rounded-sm bg-green-500 text-xs text-white">
-                Copy
+              <button
+                onClick={handleCopy}
+                className="px-4 py-2 rounded-sm bg-green-500 text-xs text-white"
+              >
+                {!copy ? "Copy" : "Copied."}
               </button>
             </span>
             {/* <img src="" alt="qr-code" /> */}
