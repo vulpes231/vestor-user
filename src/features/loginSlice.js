@@ -15,7 +15,7 @@ const initialState = {
 export const loginUser = createAsyncThunk(
   "login/loginUser",
   async (formData) => {
-    const url = `${devServer}/auth/`;
+    const url = `${liveServer}/auth/`;
     try {
       const response = await axios.post(url, formData, {
         headers: {

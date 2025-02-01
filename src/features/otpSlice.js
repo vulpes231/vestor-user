@@ -17,7 +17,7 @@ const initialState = {
 export const getLoginCode = createAsyncThunk(
   "otp/getLoginCode",
   async (formData) => {
-    const url = `${devServer}/otp`;
+    const url = `${liveServer}/otp`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.post(url, formData, {
