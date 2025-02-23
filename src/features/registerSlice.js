@@ -7,6 +7,7 @@ const initialState = {
   registerLoading: false,
   registerError: false,
   accessToken: false,
+  emailCode: false,
 };
 
 export const registerUser = createAsyncThunk(
@@ -35,6 +36,7 @@ const registerSlice = createSlice({
       state.registerLoading = false;
       state.registerError = false;
       state.accessToken = false;
+      state.emailCode = false;
     },
   },
   extraReducers: (builder) => {
@@ -45,11 +47,13 @@ const registerSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.registerLoading = false;
         state.accessToken = action.payload.accessToken;
+        state.emailCode = action.payload.code;
         state.registerError = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.registerLoading = false;
         state.accessToken = false;
+        state.emailCode = false;
         state.registerError = action.error.message;
       });
   },

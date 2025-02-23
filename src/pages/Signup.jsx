@@ -44,9 +44,8 @@ const Signup = () => {
   });
   const [error, setError] = useState("");
 
-  const { registerLoading, registerError, accessToken } = useSelector(
-    (state) => state.register
-  );
+  const { registerLoading, registerError, accessToken, emailCode } =
+    useSelector((state) => state.register);
 
   const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -99,11 +98,12 @@ const Signup = () => {
 
   useEffect(() => {
     let timeout;
-    if (accessToken) {
+    if (accessToken && emailCode) {
       JSON.stringify(sessionStorage.setItem("accessToken", accessToken));
+      JSON.stringify(sessionStorage.setItem("emailCode", emailCode));
       timeout = setTimeout(() => {
-        navigate("/personal");
         dispatch(resetRegister());
+        navigate("/verifymail");
       }, 3000);
     }
     return () => clearTimeout(timeout);

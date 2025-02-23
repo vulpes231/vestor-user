@@ -9,6 +9,8 @@ import Settings from "./Settings";
 import Signin from "./Signin";
 import Signup from "./Signup";
 import Steptwo from "./Steptwo";
+import Ticket from "./Ticket";
+import Verifyemail from "./Verifyemail";
 import Wallet from "./Wallet";
 
 export {
@@ -24,4 +26,6 @@ export {
   Portfolio,
   Confirmdeposit,
   Settings,
+  Verifyemail,
+  Ticket,
 };

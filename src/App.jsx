@@ -12,6 +12,7 @@ import {
   Signin,
   Signup,
   Steptwo,
+  Verifyemail,
   Wallet,
 } from "./pages";
 import { Mobilenav, Sidebar, Withdraw } from "./components";
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/personal" element={<Steptwo />} />
           <Route path="/identity" element={<Identification />} />
+          <Route path="/verifymail" element={<Verifyemail />} />
           <Route path="/otpcode" element={<Loginotp />} />
           <Route
             path="/dashboard"

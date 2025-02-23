@@ -1,23 +1,21 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getLoginCode, resetLoginOtp } from "../features/otpSlice";
 import { ErrorModal, LoadingModal, Successmodal } from "../components";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../constants/constant";
 import { getUserInfo } from "../features/userSlice";
 
-const Loginotp = () => {
+const Verifyemail = () => {
   const accessToken = getAccessToken();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [form, setForm] = useState({ otp: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const userInfoString = sessionStorage.getItem("userData");
-
-  const userInfo = JSON.parse(userInfoString);
+  const emailCode = JSON.parse(sessionStorage.getItem("emailCode"));
 
   const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,15 +32,11 @@ const Loginotp = () => {
       return;
     }
 
-    console.log("server", userInfo.otpCode);
-    console.log("form", form.otp);
-
-    if (userInfo.otpCode === form.otp) {
+    if (emailCode === form.otp) {
       setSuccess(true);
-      dispatch(resetLoginOtp());
-      window.location.href = "/dashboard";
+      navigate("/personal");
     } else {
-      setError("Incorrect OTP Code!");
+      setError("Incorrect Verification Code!");
     }
   };
 
@@ -57,7 +51,13 @@ const Loginotp = () => {
   }, [error]);
 
   useEffect(() => {
-    document.title = "Vestor - Login OTP";
+    if (accessToken) {
+      dispatch(getUserInfo());
+    }
+  }, [dispatch, accessToken]);
+
+  useEffect(() => {
+    document.title = "Vestor - Verify Email";
   }, []);
 
   return (
@@ -67,7 +67,8 @@ const Loginotp = () => {
         className="flex flex-col gap-6 p-6 w-[380px] bg-stone-800"
       >
         <label htmlFor="otp" className="text-sm">
-          Enter the OTP code sent to your registered email.
+          Enter the your email verification code to verify that this is an
+          active mail address
         </label>
         <input
           type="text"
@@ -91,7 +92,7 @@ const Loginotp = () => {
             isDisabled ? "bg-gray-500" : "bg-green-600"
           } text-slate-100 p-2 mt-4`}
         >
-          Verify OTP
+          Verify Email
         </button>
       </form>
 
@@ -101,4 +102,4 @@ const Loginotp = () => {
   );
 };
 
-export default Loginotp;
+export default Verifyemail;

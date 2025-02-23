@@ -24,6 +24,8 @@ const Signin = () => {
     country,
     isProfileComplete,
     email,
+    otpCode,
+    isEmailVerified,
   } = useSelector((state) => state.login);
 
   const year = new Date().getFullYear();
@@ -44,11 +46,6 @@ const Signin = () => {
 
     console.log(form);
     dispatch(loginUser(form));
-
-    // setForm({
-    //   email: "",
-    //   password: "",
-    // });
 
     setError("");
   };
@@ -78,16 +75,22 @@ const Signin = () => {
         country: country,
         isProfileComplete: isProfileComplete,
         email: email,
+        otpCode: otpCode,
+        isEmailVerified: isEmailVerified,
       };
 
       sessionStorage.setItem("userData", JSON.stringify(userData));
 
       timeout = setTimeout(() => {
-        if (isProfileComplete) {
-          navigate("/otpcode");
-        } else {
+        setForm({
+          email: "",
+          password: "",
+        });
+        if (!isProfileComplete) {
           navigate("/personal");
         }
+
+        navigate("/otpcode");
       }, 3000);
     }
     return () => clearTimeout(timeout);
