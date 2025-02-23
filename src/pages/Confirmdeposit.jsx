@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { bitcoin, tether } from "../assets";
@@ -8,6 +8,7 @@ import { depositFunds, resetDeposit } from "../features/trnxSlice";
 import { ErrorModal, LoadingModal, Successmodal } from "../components";
 import { getUserInfo } from "../features/userSlice";
 import { getAccessToken } from "../constants/constant";
+import { QRCodeSVG } from "qrcode.react";
 
 const Confirmdeposit = ({ setActive }) => {
   const dispatch = useDispatch();
@@ -88,27 +89,42 @@ const Confirmdeposit = ({ setActive }) => {
     document.title = "Vestor - Confirm Payment";
   }, []);
 
-  console.log(coin, amount, memo, network);
+  // Format QR code URI for crypto payment
+  const generateQRCodeValue = () => {
+    if (coin === "btc" && userInfo?.depositAddress) {
+      // Bitcoin URI format
+      return `bitcoin:${userInfo.depositAddress}?amount=${amount}&label=${
+        memo || ""
+      }`;
+    } else if (coin === "usdt" && userInfo?.depositAddress) {
+      // Tether or other coin URI format (adjust accordingly)
+      return `ethereum:${userInfo.depositAddress}?amount=${amount}&label=${
+        memo || ""
+      }`;
+    } else {
+      return "";
+    }
+  };
+
   return (
-    <div className=" flex md:items-center md:justify-center h-screen w-full">
-      <div className="bg-stone-900 text-slate-100 w-full md:w-[380px] lg:w-[480px]  p-6 flex flex-col gap-4">
+    <div className="flex md:items-center md:justify-center h-screen w-full">
+      <div className="bg-stone-900 text-slate-100 w-full md:w-[380px] lg:w-[480px] p-6 flex flex-col gap-4">
         <h3 className="text-2xl font-bold">Complete payment</h3>
         <ul className="text-xs pl-6 font-light text-slate-400 flex flex-col gap-2 list-disc">
           <li>
-            After payment funds will be added automatically to your account
+            After payment, funds will be added automatically to your account
             after a minimum of 2 confirmations.
           </li>
 
           <li>
-            Do Not try to Send Less than required amount of coin as it may cause
-            the transaction to fail
+            Do Not try to Send Less than the required amount of coin as it may
+            cause the transaction to fail.
           </li>
-          <li>If there are any error contact admin to resolve.</li>
+          <li>If there are any errors, contact admin to resolve.</li>
         </ul>
 
         <div>
           <span className="flex flex-col gap-2">
-            {" "}
             <div className="flex gap-2">
               <span> Payment method:</span>
               <span className="uppercase font-bold flex items-center gap-1">
@@ -121,7 +137,7 @@ const Confirmdeposit = ({ setActive }) => {
               </span>
             </div>
             <p>
-              USD Amount: <span className=" font-bold">{amount} USD</span>{" "}
+              USD Amount: <span className="font-bold">{amount} USD</span>{" "}
             </p>
             <p className="text-slate-200">
               You are to pay{" "}
@@ -130,12 +146,20 @@ const Confirmdeposit = ({ setActive }) => {
               </span>{" "}
               to: {userInfo?.depositAddress}
             </p>
+
+            {/* QR Code Component */}
+            {userInfo?.depositAddress && (
+              <div className="my-4 flex justify-center">
+                <QRCodeSVG value={generateQRCodeValue()} size={200} />
+              </div>
+            )}
+
             <span className="flex items-center gap-4">
               <input
                 type="text"
                 readOnly
                 value={userInfo?.depositAddress}
-                className="p-2 border border-stone-600 bg-transparent w-full text-slate-400 text-md font-light"
+                className="p-2 border outline-none border-stone-600 bg-transparent w-full text-slate-400 text-md font-light"
               />
               <button
                 onClick={handleCopy}
@@ -144,12 +168,11 @@ const Confirmdeposit = ({ setActive }) => {
                 {!copy ? "Copy" : "Copied."}
               </button>
             </span>
-            {/* <img src="" alt="qr-code" /> */}
           </span>
         </div>
 
         <small className="text-xs font-light text-slate-400">
-          Always double check the address before sending payment{" "}
+          Always double-check the address before sending payment.
         </small>
 
         <button

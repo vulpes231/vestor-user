@@ -1,11 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getLoginCode, resetLoginOtp } from "../features/otpSlice";
 import { ErrorModal, LoadingModal, Successmodal } from "../components";
-import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../constants/constant";
-import { getUserInfo } from "../features/userSlice";
 
 const Loginotp = () => {
   const accessToken = getAccessToken();
@@ -39,7 +36,7 @@ const Loginotp = () => {
 
     if (userInfo.otpCode === form.otp) {
       setSuccess(true);
-      dispatch(resetLoginOtp());
+
       window.location.href = "/dashboard";
     } else {
       setError("Incorrect OTP Code!");

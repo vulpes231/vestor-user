@@ -5,6 +5,7 @@ import { ErrorModal, LoadingModal, Successmodal } from "../components";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../constants/constant";
 import { getUserInfo } from "../features/userSlice";
+import { verifyEmailAddress } from "../features/verifySlice";
 
 const Verifyemail = () => {
   const accessToken = getAccessToken();
@@ -12,10 +13,13 @@ const Verifyemail = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ otp: "" });
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
 
   const emailCode = JSON.parse(sessionStorage.getItem("emailCode"));
+
+  const { emailVerified, verifyEmailLoading, verifyEmailError } = useSelector(
+    (state) => state.verify
+  );
 
   const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,13 +36,32 @@ const Verifyemail = () => {
       return;
     }
 
-    if (emailCode === form.otp) {
-      setSuccess(true);
-      navigate("/personal");
+    if (emailCode && form.otp) {
+      const data = {
+        serverCode: emailCode,
+        userCode: form.otp,
+      };
+
+      dispatch(verifyEmailAddress(data));
     } else {
       setError("Incorrect Verification Code!");
     }
   };
+
+  useEffect(() => {
+    if (verifyEmailError) {
+      setError(verifyEmailError);
+    }
+  }, [verifyEmailError]);
+
+  console.log(verifyEmailError);
+
+  useEffect(() => {
+    if (verifyEmailError === "Bad token!") {
+      sessionStorage.clear();
+      window.location.href = "/signin";
+    }
+  }, [verifyEmailError]);
 
   useEffect(() => {
     let timeout;
@@ -51,10 +74,13 @@ const Verifyemail = () => {
   }, [error]);
 
   useEffect(() => {
-    if (accessToken) {
-      dispatch(getUserInfo());
+    let timeout;
+    if (accessToken && emailVerified) {
+      timeout = setTimeout(() => {
+        navigate("/personal");
+      }, 3000);
     }
-  }, [dispatch, accessToken]);
+  }, [navigate, accessToken, emailVerified]);
 
   useEffect(() => {
     document.title = "Vestor - Verify Email";
@@ -81,6 +107,7 @@ const Verifyemail = () => {
           maxLength={6}
           required
           placeholder="123456"
+          autoComplete="off"
         />
         <small className="text-xs text-stone-400">
           Didn&apos;t receive the code? Check your spam or junk folder.
@@ -95,9 +122,9 @@ const Verifyemail = () => {
           Verify Email
         </button>
       </form>
-
+      {verifyEmailLoading && <LoadingModal text={"Verifying email..."} />}
       {error && <ErrorModal error={error} />}
-      {success && <Successmodal successText="Login verified!" />}
+      {emailVerified && <Successmodal successText="Login verified!" />}
     </section>
   );
 };

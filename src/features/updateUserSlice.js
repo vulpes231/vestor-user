@@ -17,7 +17,7 @@ const initialState = {
 export const updateUser = createAsyncThunk(
   "updateuser/updateUser",
   async (formData) => {
-    const url = `${liveServer}/user`;
+    const url = `${devServer}/user`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.put(url, formData, {
