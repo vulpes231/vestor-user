@@ -1,5 +1,6 @@
 import Ticketmodal from "../components/Ticketmodal";
 import Activateplan from "./Activateplan";
+import Chat from "./Chat";
 import Confirmdeposit from "./Confirmdeposit";
 import Dash from "./Dash";
 import Identification from "./Identification";
@@ -30,4 +31,5 @@ export {
   Verifyemail,
   Ticket,
   Ticketmodal,
+  Chat,
 };

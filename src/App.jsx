@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import {
+  Chat,
   Confirmdeposit,
   Dash,
   Identification,
@@ -21,11 +22,11 @@ import { getAccessToken } from "./constants/constant";
 
 const App = () => {
   const [activeLink, setActiveLink] = useState("dashboard");
-
+  const isAuth = sessionStorage.getItem("isAuth");
   const token = getAccessToken();
   return (
     <div className="bg-slate-700 h-screen text-white flex">
-      <div className={token ? "lg:flex" : "hidden"}>
+      <div className={token && isAuth ? "lg:flex" : "hidden"}>
         <Sidebar activeLink={activeLink} setActiveLink={setActiveLink} />
         <Mobilenav activeLink={activeLink} setActiveLink={setActiveLink} />
       </div>
@@ -61,6 +62,10 @@ const App = () => {
           <Route
             path="/confirm/:coin/:amount/:network"
             element={<Confirmdeposit setActive={setActiveLink} />}
+          />
+          <Route
+            path="/chat/:ticketId"
+            element={<Chat setActive={setActiveLink} />}
           />
           <Route
             path="/ticket"

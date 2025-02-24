@@ -37,6 +37,9 @@ const Loginotp = () => {
     if (userInfo.otpCode === form.otp) {
       setSuccess(true);
 
+      const isAuth = true;
+      sessionStorage.setItem("isAuth", isAuth);
+
       window.location.href = "/dashboard";
     } else {
       setError("Incorrect OTP Code!");

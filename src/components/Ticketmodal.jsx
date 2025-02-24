@@ -1,13 +1,26 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import LoadingModal from "./LoadingModal";
+import ErrorModal from "./ErrorModal";
+import Successmodal from "./Successmodal";
+import { createTicket, resetCreateTicket } from "../features/ticketSlice";
 
 const Ticketmodal = ({ close }) => {
+  const dispatch = useDispatch();
+
   const [form, setForm] = useState({
     subject: "",
     email: "",
     message: "",
   });
+
+  const [error, setError] = useState("");
+
+  const { createTicketLoading, createTicketError, ticketCreated } = useSelector(
+    (state) => state.ticket
+  );
 
   const handleInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,7 +29,37 @@ const Ticketmodal = ({ close }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(form);
+
+    dispatch(createTicket(form));
   };
+
+  useEffect(() => {
+    if (createTicketError) {
+      setError(createTicketError);
+    }
+  }, [createTicketError]);
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError("");
+        dispatch(resetCreateTicket());
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [error, dispatch]);
+
+  useEffect(() => {
+    let timeout;
+    if (ticketCreated) {
+      timeout = setTimeout(() => {
+        dispatch(resetCreateTicket());
+        window.location.reload();
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [ticketCreated, dispatch]);
 
   return (
     <div className="bg-white/80 h-screen fixed w-full flex items-center justify-center top-0 left-0">
@@ -70,6 +113,9 @@ const Ticketmodal = ({ close }) => {
           </button>
         </form>
       </div>
+      {createTicketLoading && <LoadingModal text={"creating ticket..."} />}
+      {error && <ErrorModal error={error} />}
+      {ticketCreated && <Successmodal successText={"Ticket created."} />}
     </div>
   );
 };
