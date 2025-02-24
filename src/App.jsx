@@ -12,6 +12,7 @@ import {
   Signin,
   Signup,
   Steptwo,
+  Ticket,
   Verifyemail,
   Wallet,
 } from "./pages";
@@ -60,6 +61,10 @@ const App = () => {
           <Route
             path="/confirm/:coin/:amount/:network"
             element={<Confirmdeposit setActive={setActiveLink} />}
+          />
+          <Route
+            path="/ticket"
+            element={<Ticket setActive={setActiveLink} />}
           />
         </Routes>
       </div>

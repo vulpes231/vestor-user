@@ -1,3 +1,4 @@
+import Ticketmodal from "../components/Ticketmodal";
 import Activateplan from "./Activateplan";
 import Confirmdeposit from "./Confirmdeposit";
 import Dash from "./Dash";
@@ -28,4 +29,5 @@ export {
   Settings,
   Verifyemail,
   Ticket,
+  Ticketmodal,
 };
