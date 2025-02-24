@@ -40,7 +40,7 @@ export const verifyUser = createAsyncThunk(
 export const verifyEmailAddress = createAsyncThunk(
   "otp/verifyEmailAddress",
   async (formData) => {
-    const url = `${devServer}/user/verifymail`;
+    const url = `${liveServer}/user/verifymail`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.post(url, formData, {

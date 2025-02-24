@@ -23,7 +23,7 @@ const initialState = {
 export const getUserTrades = createAsyncThunk(
   "trade/getUserTrades",
   async () => {
-    const url = `${devServer}/trade`;
+    const url = `${liveServer}/trade`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.get(url, {
