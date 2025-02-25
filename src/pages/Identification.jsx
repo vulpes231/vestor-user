@@ -89,9 +89,10 @@ const Identification = () => {
     let timeout;
     if (userUpdated) {
       timeout = setTimeout(() => {
-        navigate("/dashboard");
         dispatch(resetUpdateUser());
         sessionStorage.removeItem("personal");
+
+        window.location.href = "/dashboard";
       }, 3000);
     }
     return () => clearTimeout(timeout);

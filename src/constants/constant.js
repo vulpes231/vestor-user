@@ -80,6 +80,22 @@ const testData = [
 const liveServer = `https://server.vestor.markets`; //https://vestor-server.onrender.com //https://server.vestor.markets
 const devServer = `http://localhost:4000`;
 
+function formatCurrency(amount, currencyCode = "USD") {
+  // Check if the amount is undefined or null, return $0.00
+  if (amount === null || amount === undefined) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currencyCode,
+    }).format(0);
+  }
+
+  // Return formatted currency
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currencyCode,
+  }).format(amount);
+}
+
 export {
   sendError,
   getAccessToken,
@@ -87,4 +103,5 @@ export {
   devServer,
   authLinks,
   testData,
+  formatCurrency,
 };

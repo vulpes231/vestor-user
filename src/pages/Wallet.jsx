@@ -6,7 +6,7 @@ import { TbTransfer } from "react-icons/tb";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { PiHandDepositBold } from "react-icons/pi";
 import { Deposit, Transactions, Transfer, Withdraw } from "../components";
-import { getAccessToken } from "../constants/constant";
+import { formatCurrency, getAccessToken } from "../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserWallets } from "../features/walletSlice";
 
@@ -36,7 +36,7 @@ const Wallet = ({ setActive }) => {
             <h3 className="font-bold text-slate-400 capitalize">
               {wallet.walletName} wallet
             </h3>
-            <p className="text-4xl">${wallet.balance.toFixed(2)}</p>
+            <p className="text-4xl">{formatCurrency(wallet.balance)}</p>
           </div>
           <span className="bg-stone-800 p-2 flex items-center gap-6 ">
             <button

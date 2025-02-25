@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { getAccessToken } from "../constants/constant";
-import { bitcoin, eth, tether } from "../assets";
+import { formatCurrency, getAccessToken } from "../constants/constant";
+import { bitcoin, eth, tether, trf } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserTrnxs } from "../features/trnxSlice";
 import LoadingModal from "./LoadingModal";
+import { format } from "date-fns";
 
 const trxStyles = {
   td: "px-6 py-6",
@@ -71,7 +72,9 @@ const Transactions = () => {
                     key={data._id}
                     className="border-b border-slate-600 text-sm text-slate-200"
                   >
-                    <td className={trxStyles.td}>{data.date}</td>
+                    <td className={trxStyles.td}>
+                      {format(data.createdAt, "MMM dd yyyy")}
+                    </td>
                     <td className={trxStyles.td}>
                       <span className="flex items-center gap-1 uppercase">
                         <img
@@ -80,7 +83,9 @@ const Transactions = () => {
                               ? bitcoin
                               : data.coin === "usdt"
                               ? tether
-                              : eth
+                              : data.coin === "usdt"
+                              ? eth
+                              : trf
                           }
                           alt=""
                           className="w-[25px]"
@@ -88,15 +93,17 @@ const Transactions = () => {
                         {data.coin}
                       </span>
                     </td>
-                    <td className={trxStyles.td}>${data.amount.toFixed(2)}</td>
+                    <td className={trxStyles.td}>
+                      {formatCurrency(data.amount)}
+                    </td>
                     <td className={trxStyles.td}>
                       <span
                         className={
                           data.type === "deposit"
-                            ? "text-green-500"
+                            ? "text-green-500 capitalize"
                             : data.type === "withdraw"
-                            ? "text-red-500"
-                            : "text-yellow-500"
+                            ? "text-red-500 capitalize"
+                            : "text-yellow-500 capitalize"
                         }
                       >
                         {data.type}

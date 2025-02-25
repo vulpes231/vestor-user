@@ -86,15 +86,26 @@ const Signin = () => {
           email: "",
           password: "",
         });
-        if (!isProfileComplete) {
-          navigate("/personal");
-        }
 
-        navigate("/otpcode");
+        console.log(userData.isProfileComplete);
+
+        if (!userData.isProfileComplete) {
+          navigate("/personal");
+        } else {
+          navigate("/otpcode");
+        }
       }, 3000);
     }
     return () => clearTimeout(timeout);
-  }, [accessToken, navigate, country, isProfileComplete, email]);
+  }, [
+    accessToken,
+    navigate,
+    country,
+    isProfileComplete,
+    email,
+    otpCode,
+    isEmailVerified,
+  ]);
 
   useEffect(() => {
     document.title = "Vestor - Login";

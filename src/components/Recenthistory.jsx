@@ -1,9 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { bitcoin, eth, tether } from "../assets";
-import { getAccessToken, testData } from "../constants/constant";
+import { bitcoin, eth, tether, trf } from "../assets";
+import {
+  formatCurrency,
+  getAccessToken,
+  testData,
+} from "../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserTrnxs } from "../features/trnxSlice";
+
+import { format } from "date-fns";
 
 const tableStyle = {
   th: "px-8 py-2",
@@ -76,17 +82,19 @@ const Recenthistory = () => {
                   className="text-left text-sm font-light text-slate-300 border-b border-stone-600"
                 >
                   <td className={`${tableStyle.th} whitespace-nowrap`}>
-                    {data.date}
+                    {format(data.createdAt, "MMM dd yyyy")}
                   </td>
                   <td className={`${tableStyle.th} uppercase`}>
                     <span className="flex items-center gap-1">
                       <img
                         src={
-                          data.coin == "btc" || data.coin == "bitcoin"
+                          data.coin === "btc" || data.coin == "bitcoin"
                             ? bitcoin
-                            : data.coin == "usdt"
+                            : data.coin === "usdt"
                             ? tether
-                            : eth
+                            : data.coin === "usdt"
+                            ? eth
+                            : trf
                         }
                         alt=""
                         className="w-[25px]"
@@ -94,7 +102,9 @@ const Recenthistory = () => {
                       {data.coin}
                     </span>
                   </td>
-                  <td className={`${tableStyle.th}`}>{data.amount} USD</td>
+                  <td className={`${tableStyle.th}`}>
+                    {formatCurrency(data.amount)}
+                  </td>
                   <td className={`${tableStyle.th}`}>
                     <span
                       className={

@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import ErrorModal from "./ErrorModal";
+import { resetTransfer, transferFunds } from "../features/trnxSlice";
+import LoadingModal from "./LoadingModal";
+import Successmodal from "./Successmodal";
 
 const transferStyles = {
   formHolder: "flex flex-col gap-2",
@@ -14,9 +17,10 @@ const transferStyles = {
 const Transfermodal = () => {
   const dispatch = useDispatch();
   const [form, setForm] = useState({
-    from: "",
-    to: "",
+    sender: "",
+    receiver: "",
     amount: "",
+    memo: "",
   });
 
   const [error, setError] = useState("");
@@ -32,17 +36,19 @@ const Transfermodal = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!form.from || !form.to || !form.amount) {
+    console.log(form);
+
+    if (!form.sender || !form.receiver || !form.amount) {
       setError("Please fill in all fields.");
       return;
     }
 
-    if (form.from === form.to) {
-      setError("Select another account!");
+    if (form.sender === form.receiver) {
+      setError("Receiver cannot be sender!");
       return;
     }
 
-    console.log(form);
+    dispatch(transferFunds(form));
   };
 
   useEffect(() => {
@@ -55,11 +61,23 @@ const Transfermodal = () => {
     let timeout;
     if (error) {
       timeout = setTimeout(() => {
+        dispatch(resetTransfer());
         setError("");
       }, 3000);
     }
     return () => clearTimeout(timeout);
-  }, [error]);
+  }, [error, dispatch]);
+
+  useEffect(() => {
+    let timeout;
+    if (transferSucess) {
+      timeout = setTimeout(() => {
+        dispatch(resetTransfer());
+        window.location.reload();
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [transferSucess, dispatch]);
   return (
     <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-white text-slate-100 bg-opacity-30">
       <div className="bg-stone-900 rounded-md p-6 w-full md:w-[350px] border border-stone-600">
@@ -77,8 +95,8 @@ const Transfermodal = () => {
             </label>
             <select
               className={transferStyles.select}
-              name="from"
-              value={form.from}
+              name="sender"
+              value={form.sender}
               onChange={handleInput}
             >
               <option value="">Select Wallet</option>
@@ -93,8 +111,8 @@ const Transfermodal = () => {
             </label>
             <select
               className={transferStyles.select}
-              name="to"
-              value={form.to}
+              name="receiver"
+              value={form.receiver}
               onChange={handleInput}
             >
               <option value="">Select Wallet</option>
@@ -114,17 +132,20 @@ const Transfermodal = () => {
               name="amount"
               value={form.amount}
               onChange={handleInput}
+              autoComplete="off"
             />
           </div>
           <button
             type="submit"
             className="bg-green-600 text-slate-100 py-2 px-8 rounded-3xl mt-5"
           >
-            Withdraw
+            Transfer
           </button>
         </form>
       </div>
       {error && <ErrorModal error={error} />}
+      {transferLoading && <LoadingModal text={"Initiating transfer."} />}
+      {transferSucess && <Successmodal successText={"Transfer completed."} />}
     </div>
   );
 };

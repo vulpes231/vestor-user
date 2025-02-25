@@ -12,11 +12,12 @@ import Recenthistory from "./Recenthistory";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../constants/constant";
 import { getUserInfo } from "../features/userSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Dashcontent = () => {
   const accessToken = getAccessToken();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [showMenu, setShowMenu] = useState(false);
 
@@ -31,6 +32,16 @@ const Dashcontent = () => {
       dispatch(getUserInfo());
     }
   }, [dispatch, accessToken]);
+
+  useEffect(() => {
+    if (userInfo && !userInfo.isProfileComplete) {
+      navigate("/personal");
+    }
+    // if (!userInfo.isEmailVerified) {
+    //   navigate("/verifymail");
+    // }
+  }, [userInfo, navigate]);
+
   return (
     <section className="h-full p-6 w-full ">
       <div className="flex flex-col gap-6">
@@ -55,6 +66,8 @@ const Dashcontent = () => {
             </button>
           </div>
         </div>
+        {/* notifications */}
+        <div className="flex flex-col gap-4"></div>
         {/* assets */}
         <div>
           <Assets />

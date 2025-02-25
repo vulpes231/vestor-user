@@ -10,6 +10,7 @@ import tech from "./tech.png";
 import stock from "./stock.jpg";
 import loginbg from "./loginbg.jpg";
 import broker from "./broker.jpg";
+import trf from "./trf.svg";
 
 export {
   broker,
@@ -24,4 +25,5 @@ export {
   insp,
   secure,
   tech,
+  trf,
 };
