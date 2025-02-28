@@ -1,11 +1,25 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
+import { formatCurrency, getAccessToken } from "../constants/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { getActiveTradeCount, getTotalProfit } from "../features/tradeSlice";
 
 const style = {
   span: "flex justify-between items-center",
 };
 
 const Investstat = () => {
+  const dispatch = useDispatch();
+  const accessToken = getAccessToken();
+
+  const { totalProfit } = useSelector((state) => state.trade);
+
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getActiveTradeCount());
+      dispatch(getTotalProfit());
+    }
+  }, [accessToken, dispatch]);
   return (
     <div className=" p-6 flex flex-col gap-5 ">
       <h3 className="text-lg capitalize ">My Stats</h3>
@@ -16,7 +30,7 @@ const Investstat = () => {
         </span>
         <span className={style.span}>
           <p>total profit</p>
-          <p>$0.00</p>
+          <p>{formatCurrency(totalProfit)}</p>
         </span>
         <span className={style.span}>
           <p>total loss</p>

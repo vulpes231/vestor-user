@@ -52,7 +52,7 @@ export const getActiveTradeCount = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       sendError(error);
@@ -72,7 +72,7 @@ export const getTotalProfit = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       sendError(error);
