@@ -7,22 +7,47 @@ import { getAccessToken } from "../constants/constant";
 import { getUserInfo } from "../features/userSlice";
 import { FaUserLock } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { BsFillSave2Fill } from "react-icons/bs";
+import ErrorModal from "./ErrorModal";
+import LoadingModal from "./LoadingModal";
 
 const withdrawStyles = {
   formHolder: "flex flex-col gap-2",
-  label: "font-bold text-sm",
-  input: "border border-stone-500 bg-transparent p-2 outline-none",
-  select: "border border-stone-500 bg-transparent p-2",
+  label: "font-normal text-[12px] text-[#979797] lg:text-[13px] capitalize",
+  input:
+    "border border-[#dedede]/40 bg-black/40 p-2 rounded-[5px] h-[38px] lg:h-[40px] outline-none text-[16px] font-normal",
+  select:
+    "border border-[#dedede]/40 bg-black/40 p-2 h-[38px] lg:h-[40px] rounded-[5px] outline-none text-[16px] font-normal",
 };
+
+const withdrawMethods = [
+  {
+    id: "bank",
+    name: "bank",
+  },
+  {
+    id: "crypto",
+    name: "crypto",
+  },
+];
 
 const Withdrawmodal = ({ setWithdraw, setActive }) => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
+
   const [form, setForm] = useState({
-    from: "",
-    address: "",
+    withdrawFrom: "deposit",
+    walletAddress: "",
     amount: "",
+    bankName: "",
+    bankAddress: "",
+    routing: "",
+    account: "",
+    acctName: "",
+    coin: "btc",
   });
+  const [error, setError] = useState("");
+  const [method, setMethod] = useState("bank");
 
   const { withdrawLoading, withdrawError, withdrawSucess } = useSelector(
     (state) => state.trnx
@@ -35,10 +60,23 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!form.from || !form.address || !form.amount) {
-      alert("Please fill in all fields.");
-      return;
+    console.log(method);
+    if (method === "crypto") {
+      if (!form.withdrawFrom || !form.walletAddress || !form.amount) {
+        setError("Incomplete information!");
+        return;
+      }
+    }
+    if (method === "bank") {
+      if (
+        !form.bankName ||
+        !form.account ||
+        !form.routing ||
+        !form.bankAddress
+      ) {
+        setError("Fill in the required fields!");
+        return;
+      }
     }
 
     console.log(form);
@@ -55,7 +93,23 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
     setActive("withdraw");
   }, [setActive]);
 
-  if (!userInfo.isKYCVerified) {
+  useEffect(() => {
+    if (withdrawError) {
+      setError(withdrawError);
+    }
+  }, [withdrawError]);
+
+  useEffect(() => {
+    let timeout;
+    if (error) {
+      timeout = setTimeout(() => {
+        setError("");
+        // dispatch
+      }, 3000);
+    }
+  }, [error]);
+
+  if (userInfo && !userInfo.isKYCVerified) {
     return (
       <div className="p-6 flex flex-col gap-6 h-full items-center justify-center bg-black bg-opacity-50">
         <FaUserLock className="w-20 h-20" />
@@ -81,64 +135,189 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
   }
 
   return (
-    <div className=" w-full h-screen flex items-center justify-center bg-black bg-opacity-50 text-slate-100 p-6 md:p-0">
-      <div className="bg-black bg-opacity-45 rounded-md p-6 w-full md:w-[350px] border border-stone-600">
-        <div className="flex items-center justify-between">
-          <h3>Withdraw</h3>
+    <div className="w-full min-h-screen flex bg-black/70">
+      <div className="p-6 w-full flex flex-col gap-6">
+        <div className="flex items-center gap-2">
+          <BsFillSave2Fill />
+          <h3 className="text-[18px] lg:text-[23px] font-bold leading-[19.5px]">
+            Withdraw funds
+          </h3>
         </div>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className={withdrawStyles.formHolder}>
-            <label className={withdrawStyles.label} htmlFor="from">
-              From Wallet
-            </label>
-            <select
-              className={withdrawStyles.select}
-              name="from"
-              value={form.from}
-              onChange={handleInput}
-            >
-              <option value="">Select Wallet</option>
-              <option value="deposit">deposit wallet</option>
-              <option value="invest">Invest wallet</option>
-            </select>
-          </div>
+        <hr className="border-[1px] border-[#dedede]/40" />
+        <div className="flex items-center gap-4 lg:w-[420px] lg:mx-auto">
+          {withdrawMethods.map((mtd) => {
+            return (
+              <span
+                key={mtd.id}
+                className={`${
+                  method === mtd.id
+                    ? "border-[1px] border-green-500 text-green-500 rounded-[5px]"
+                    : "text-[#979797]"
+                } cursor-pointer font-normal  w-[100px] h-[38px] flex items-center justify-center capitalize`}
+                onClick={() => setMethod(mtd.id)}
+              >
+                <h6>{mtd.name}</h6>
+              </span>
+            );
+          })}
+        </div>
+        {method === "crypto" ? (
+          <form className="flex flex-col gap-4 lg:w-[420px] lg:mx-auto lg:bg-stone-900/40 lg:p-6 lg:rounded-[10px]">
+            <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="from">
+                From
+              </label>
+              <select
+                className={withdrawStyles.select}
+                name="withdrawFrom"
+                value={form.withdrawFrom}
+                onChange={handleInput}
+              >
+                <option value="deposit">Deposit wallet</option>
+              </select>
+            </div>
+            <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="coin">
+                Coin
+              </label>
+              <select
+                className={withdrawStyles.select}
+                name="coin"
+                value={form.coin}
+                onChange={handleInput}
+              >
+                <option value="btc">Bitcoin</option>
+                <option value="eth">Ethereum</option>
+                <option value="usdt(erc20)">USDT (ERC20)</option>
+                <option value="usdt(trc20)">USDT (TRC20)</option>
+              </select>
+            </div>
 
-          <div className={withdrawStyles.formHolder}>
-            <label className={withdrawStyles.label} htmlFor="Address">
-              Recipient Wallet Address
-            </label>
-            <input
-              className={withdrawStyles.input}
-              type="text"
-              placeholder="Enter address"
-              name="address"
-              value={form.address}
-              onChange={handleInput}
-              autoComplete="off"
-            />
-          </div>
+            <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="Address">
+                Wallet Address
+              </label>
+              <input
+                className={withdrawStyles.input}
+                type="text"
+                placeholder="0x1Ahjkdsweoiiwepsdyuis"
+                name="walletAddress"
+                value={form.walletAddress}
+                onChange={handleInput}
+                autoComplete="off"
+              />
+            </div>
 
-          <div className={withdrawStyles.formHolder}>
-            <label className={withdrawStyles.label} htmlFor="amount">
-              Amount
-            </label>
-            <input
-              className={withdrawStyles.input}
-              type="text"
-              placeholder="Amount"
-              name="amount"
-              value={form.amount}
-              onChange={handleInput}
-            />
-          </div>
+            <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="amount">
+                Amount
+              </label>
+              <input
+                className={withdrawStyles.input}
+                type="text"
+                placeholder="$0.00"
+                name="amount"
+                value={form.amount}
+                onChange={handleInput}
+              />
+            </div>
+          </form>
+        ) : (
+          <form
+            // onSubmit={handleSubmit}
+            className="flex flex-col gap-4 lg:w-[420px] lg:mx-auto lg:bg-stone-900/40 lg:p-6 lg:rounded-[10px]"
+          >
+            <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="from">
+                bank name
+              </label>
+              <input
+                className={withdrawStyles.input}
+                type="text"
+                name="bankName"
+                value={form.bankName}
+                onChange={handleInput}
+                autoComplete="off"
+              />
+            </div>
+
+            <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="Address">
+                account number
+              </label>
+              <input
+                className={withdrawStyles.input}
+                type="text"
+                name="account"
+                value={form.account}
+                onChange={handleInput}
+                autoComplete="off"
+              />
+            </div>
+
+            <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="amount">
+                routing number
+              </label>
+              <input
+                className={withdrawStyles.input}
+                type="text"
+                name="routing"
+                value={form.routing}
+                onChange={handleInput}
+              />
+            </div>
+            {/* <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="amount">
+                account name
+              </label>
+              <input
+                className={withdrawStyles.input}
+                type="text"
+                name="acctName"
+                value={form.acctName}
+                onChange={handleInput}
+              />
+            </div> */}
+            <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="amount">
+                bank address
+              </label>
+              <input
+                className={withdrawStyles.input}
+                type="text"
+                name="bankAddress"
+                value={form.bankAddress}
+                onChange={handleInput}
+              />
+            </div>
+            <div className={withdrawStyles.formHolder}>
+              <label className={withdrawStyles.label} htmlFor="amount">
+                Amount
+              </label>
+              <input
+                className={withdrawStyles.input}
+                type="text"
+                placeholder="$0.00"
+                name="amount"
+                value={form.amount}
+                onChange={handleInput}
+              />
+            </div>
+          </form>
+        )}
+        <div className="lg:w-[420px] lg:mx-auto">
           <button
+            onClick={handleSubmit}
             type="submit"
-            className="bg-green-600 text-slate-100 py-2 px-8 rounded-3xl mt-5"
+            className="bg-green-600 text-slate-100 py-2 px-8 rounded-[5px] mt-5 font-semibold"
           >
             Withdraw
           </button>
-        </form>
+        </div>
       </div>
+      {error && <ErrorModal error={error} />}
+      {withdrawLoading && <LoadingModal text={"Initiating withdrawal..."} />}
     </div>
   );
 };

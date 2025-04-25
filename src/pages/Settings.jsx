@@ -23,8 +23,11 @@ const Settings = ({ setActive }) => {
     document.title = "Vestor - Settings";
   }, [setActive]);
   return (
-    <div className="p-6 flex flex-col gap-6">
-      <h3 className="md:font-bold md:text-2xl">Settings</h3>
+    <div className="p-6 flex flex-col gap-6 bg-black/70 min-h-screen">
+      <h3 className="text-[18px] lg:text-[23px] font-bold leading-[19.5px]">
+        Settings
+      </h3>
+      <hr className="border-[1px] border-[#dedede]/40" />
       <div className="grid gap-6 md:grid-cols-2">
         <Userprofile userInfo={userInfo} />
         <Changepass />

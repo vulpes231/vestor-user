@@ -28,7 +28,7 @@ const Dashwallet = () => {
       return (
         <div
           key={plan._id}
-          className="p-6 bg-black bg-opacity-50 flex flex-col gap-2 border border-stone-600 justify-between"
+          className="p-6 bg-stone-900/40 flex flex-col gap-2 border border-stone-600 justify-between"
         >
           <span className="flex justify-between w-full">
             <p className="flex flex-col">
@@ -91,7 +91,7 @@ const Dashwallet = () => {
   if (getPlanLoading) {
     return (
       <div>
-        <div className="bg-black bg-opacity-50 border border-stone-600 p-6 flex-col flex ">
+        <div className="bg-stone-900/40 border border-stone-600 p-6 flex-col flex ">
           <div className="flex ">
             <h3 className={`${styles.dashTitle}`}>available plans</h3>
           </div>
@@ -104,7 +104,7 @@ const Dashwallet = () => {
   return (
     <div>
       <div className="  flex flex-col gap-4">
-        <div className="flex justify-between items-start p-2 bg-black bg-opacity-50">
+        <div className="flex justify-between items-start p-2 bg-stone-900/40">
           <h3 className={`${styles.dashTitle}`}>available plans</h3>
         </div>
         <div className="flex flex-col gap-4">{myPlans}</div>

@@ -72,7 +72,7 @@ const Wallet = ({ setActive }) => {
   }, [setActive]);
 
   return (
-    <section className="p-6">
+    <section className="p-6 bg-black/70 min-h-screen">
       <div className="flex flex-col gap-10">
         <h3 className="md:font-bold md:text-2xl">Wallets</h3>
         <div className="grid gap-6 md:grid-cols-3">{myWallets}</div>

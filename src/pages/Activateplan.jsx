@@ -77,7 +77,7 @@ const Activateplan = ({ planData, close }) => {
     return () => clearTimeout(timeout);
   }, [planBought, navigate]);
   return (
-    <section className="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-black bg-opacity-80  p-6 md:p-0">
+    <section className="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-stone-900/40  p-6 md:p-0">
       <div className="bg-stone-900 border border-stone-600 p-6 w-full md:w-[350px] rounded-lg">
         <span className="flex justify-between items-center mb-8">
           <h3 className="font-bold text-lg md:text-2xl capitalize">

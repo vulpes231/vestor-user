@@ -9,8 +9,11 @@ import Successmodal from "./Successmodal";
 
 const identityStyle = {
   formHolder: "flex flex-col gap-1 w-full",
-  input: "bg-transparent p-2 outline-none border border-stone-500",
-  select: "bg-transparent p-2.5 outline-none border border-stone-500",
+  input:
+    "bg-transparent p-2 outline-none border border-stone-500 h-[38px] lg:h-[43px] text-[16px] rounded-[5px]",
+  select:
+    "bg-transparent p-2.5 outline-none border border-stone-500 h-[38px] lg:h-[43px] text-[16px] rounded-[5px]",
+  label: "font-normal text-[12px] text-[#979797] lg:text-[13px] capitalize",
 };
 
 const Verifyidentity = ({ userInfo }) => {
@@ -114,7 +117,7 @@ const Verifyidentity = ({ userInfo }) => {
 
   return (
     <div className="bg-stone-900 bg-opacity-40 flex flex-col gap-6 p-6 text-slate-300 border border-stone-600 mb-20">
-      <h3 className="font-bold text-white">Account Verification</h3>
+      <h3 className="font-bold text-white"> Verification Info</h3>
       <p>
         Status:{" "}
         <span
@@ -125,85 +128,99 @@ const Verifyidentity = ({ userInfo }) => {
           {userInfo.isKYCVerified ? "verified" : "not verified"}
         </span>
       </p>
-      <form
-        encType="multipart/form-data"
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 lg:p-6"
-      >
-        <small>Upload a clear image of your government-issued ID Card</small>
-        <div className="flex flex-col md:flex-row gap-6 items-center">
-          <div className={identityStyle.formHolder}>
-            <label htmlFor="idType">ID type</label>
-            <select
-              className={identityStyle.select}
-              name="idType"
-              onChange={handleInput}
-              value={form.idType}
-            >
-              <option value="">Select ID</option>
-              <option value="license">Driver License</option>
-              <option value="passport">International Passport</option>
-              <option value="state">State ID</option>
-            </select>
-          </div>
-          <div className={identityStyle.formHolder}>
-            <label htmlFor="idNumber">ID Number</label>
-            <input
-              className={identityStyle.input}
-              type="text"
-              placeholder="Enter ID Number"
-              name="idNumber"
-              onChange={handleInput}
-              value={form.idNumber}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row gap-6 items-center">
-          <div className={identityStyle.formHolder}>
-            <label htmlFor="dob">DOB</label>
-            <input
-              className={identityStyle.input}
-              type="date"
-              name="dob"
-              onChange={handleInput}
-              value={form.dob}
-            />
-          </div>
-          <div className={identityStyle.formHolder}>
-            <label htmlFor="employment">Employment</label>
-            <select
-              className={identityStyle.select}
-              name="employment"
-              onChange={handleInput}
-              value={form.employment}
-            >
-              <option value="">Select Employment</option>
-              <option value="employed">Employed</option>
-              <option value="student">Student</option>
-              <option value="retired">Retired</option>
-              <option value="unemployed">Unemployed</option>
-            </select>
-          </div>
-        </div>
-
-        <div className={identityStyle.formHolder}>
-          <label htmlFor="image">Upload ID Image</label>
-          <input
-            className={identityStyle.input}
-            type="file"
-            name="image"
-            onChange={handleInput}
-          />
-          {imageError && <small className="text-red-500">{imageError}</small>}
-        </div>
-        <button
-          type="submit"
-          className="p-2 border-none bg-green-600 text-white rounded-3xl"
-          disabled={verifyUserLoading}
+      {userInfo && userInfo.isKYCVerified ? (
+        <div></div>
+      ) : (
+        <form
+          encType="multipart/form-data"
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 lg:p-6"
         >
-          {verifyUserLoading ? "Verifying..." : "Verify account"}
-        </button>
-      </form>
+          <small>Upload a clear image of your government-issued ID Card</small>
+          <div className="flex flex-col md:flex-row gap-6 items-center">
+            <div className={identityStyle.formHolder}>
+              <label className={identityStyle.label} htmlFor="idType">
+                ID type
+              </label>
+              <select
+                className={identityStyle.select}
+                name="idType"
+                onChange={handleInput}
+                value={form.idType}
+              >
+                <option value="">Select ID</option>
+                <option value="license">Driver License</option>
+                <option value="passport">International Passport</option>
+                <option value="state">State ID</option>
+              </select>
+            </div>
+            <div className={identityStyle.formHolder}>
+              <label className={identityStyle.label} htmlFor="idNumber">
+                ID Number
+              </label>
+              <input
+                className={identityStyle.input}
+                type="text"
+                placeholder="Enter ID Number"
+                name="idNumber"
+                onChange={handleInput}
+                value={form.idNumber}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-6 items-center">
+            <div className={identityStyle.formHolder}>
+              <label className={identityStyle.label} htmlFor="dob">
+                DOB
+              </label>
+              <input
+                className={identityStyle.input}
+                type="date"
+                name="dob"
+                onChange={handleInput}
+                value={form.dob}
+              />
+            </div>
+            <div className={identityStyle.formHolder}>
+              <label className={identityStyle.label} htmlFor="employment">
+                Employment
+              </label>
+              <select
+                className={identityStyle.select}
+                name="employment"
+                onChange={handleInput}
+                value={form.employment}
+              >
+                <option value="">Select Employment</option>
+                <option value="employed">Employed</option>
+                <option value="student">Student</option>
+                <option value="retired">Retired</option>
+                <option value="unemployed">Unemployed</option>
+              </select>
+            </div>
+          </div>
+
+          <div className={identityStyle.formHolder}>
+            <label className={identityStyle.label} htmlFor="image">
+              Upload ID Image
+            </label>
+            <input
+              className={identityStyle.input}
+              type="file"
+              name="image"
+              onChange={handleInput}
+            />
+            {imageError && <small className="text-red-500">{imageError}</small>}
+          </div>
+          <button
+            type="submit"
+            className="p-2 h-[38px] lg:h-[43px] w-full lg:w-[420px] border-none bg-green-600 text-white rounded-[5px] mt-8"
+            disabled={verifyUserLoading}
+          >
+            {verifyUserLoading ? "Verifying..." : "Verify account"}
+          </button>
+        </form>
+      )}
       {error && <ErrorModal error={error} />}
       {verifyUserLoading && (
         <LoadingModal text={"Sending verification request"} />

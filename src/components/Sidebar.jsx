@@ -57,7 +57,7 @@ const Sidebar = ({ activeLink, setActiveLink }) => {
   }, [loggedOut, dispatch]);
 
   return (
-    <aside className="max-h-screen hidden lg:flex w-[270px] ">
+    <aside className="max-h-screen hidden lg:flex w-[270px] bg-black/70 border-r-[1px] border-[#979797]">
       <div className="flex flex-col justify-between h-full p-4 w-full">
         <span className="flex gap-6 flex-col ">
           <Logo customClass={"flex items-center gap-1"} />

@@ -7,6 +7,7 @@ import Identification from "./Identification";
 import Landing from "./Landing";
 import Loginotp from "./Loginotp";
 import Portfolio from "./Portfolio";
+import Review from "./Review";
 import Settings from "./Settings";
 import Signin from "./Signin";
 import Signup from "./Signup";
@@ -32,4 +33,5 @@ export {
   Ticket,
   Ticketmodal,
   Chat,
+  Review,
 };

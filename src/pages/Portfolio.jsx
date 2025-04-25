@@ -71,10 +71,13 @@ const Portfolio = ({ setActive }) => {
   }
 
   return (
-    <div className="p-6 flex flex-col gap-6">
-      <h3 className="md:font-bold md:text-2xl">Portfolio</h3>
+    <div className="p-6 flex flex-col gap-6 bg-black/70 min-h-screen">
+      <h3 className="text-[18px] lg:text-[23px] font-bold leading-[19.5px]">
+        Portfolio
+      </h3>
+      {/* <hr className="border-[1px] border-[#dedede]/40" /> */}
       <div className="grid gap-6 md:grid-cols-3">
-        <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-4 justify-between border border-stone-600 p-6">
+        <div className="bg-stone-900/40  flex flex-col gap-4 justify-between border border-stone-600 p-6">
           <span className="flex items-center gap-2">
             <FaSignal className={portFolioStyle.icon} />
             <h3 className={portFolioStyle.title}>Portfolio Balance</h3>

@@ -8,7 +8,9 @@ import Successmodal from "./Successmodal";
 
 const changePassStyle = {
   formHolder: "flex flex-col gap-1",
-  input: "bg-transparent p-2 outline-none border border-stone-500",
+  input:
+    "bg-transparent p-2 outline-none border border-stone-500 h-[38px] lg:h-[43px] text-[16px]",
+  label: "font-normal text-[12px] text-[#979797] lg:text-[13px] capitalize",
 };
 
 const Changepass = () => {
@@ -71,7 +73,9 @@ const Changepass = () => {
     <div className="bg-stone-900 bg-opacity-40 p-6 border border-stone-600">
       <form action="" className="flex flex-col gap-6 ">
         <div className={changePassStyle.formHolder}>
-          <label htmlFor="">Current password</label>
+          <label className={changePassStyle.label} htmlFor="">
+            Current password
+          </label>
           <input
             className={changePassStyle.input}
             type="password"
@@ -81,7 +85,9 @@ const Changepass = () => {
           />
         </div>
         <div className={changePassStyle.formHolder}>
-          <label htmlFor="">New password</label>
+          <label className={changePassStyle.label} htmlFor="">
+            New password
+          </label>
           <input
             className={changePassStyle.input}
             type="password"
@@ -91,7 +97,9 @@ const Changepass = () => {
           />
         </div>
         <div className={changePassStyle.formHolder}>
-          <label htmlFor="">Confirm New password</label>
+          <label className={changePassStyle.label} htmlFor="">
+            Confirm New password
+          </label>
           <input
             className={changePassStyle.input}
             type="password"
@@ -102,7 +110,7 @@ const Changepass = () => {
         </div>
         <button
           onClick={handleChangePass}
-          className="p-2 border-none bg-green-600 text-white rounded-3xl"
+          className="p-2 h-[38px] lg:h-[43px] border-none bg-green-600 text-white rounded-[5px]"
         >
           Change password
         </button>

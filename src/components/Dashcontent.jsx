@@ -47,7 +47,9 @@ const Dashcontent = () => {
       <div className="flex flex-col gap-6">
         {/* nav */}
         <div className="flex justify-between items-center">
-          <h3 className="md:font-bold md:text-2xl ">Dashboard</h3>
+          <h3 className="text-[18px] lg:text-[23px] font-bold leading-[19.5px]">
+            Dashboard
+          </h3>
           <div className="flex items-center gap-6 lg:px-6">
             <span className="relative cursor-pointer">
               <MdNotifications />
@@ -78,10 +80,10 @@ const Dashcontent = () => {
         </div>
         {/* analytics */}
         <div className="grid gap-6 md:grid-cols-3 h-full">
-          <div className="md:col-span-1 border border-stone-700 bg-black bg-opacity-50">
+          <div className="md:col-span-1 border border-stone-700 bg-stone-900/40">
             <Investstat />
           </div>
-          <div className="md:col-span-2 border border-stone-700 overflow-auto mb-16 bg-black bg-opacity-50 h-full">
+          <div className="md:col-span-2 border border-stone-700 overflow-auto mb-16 bg-stone-900/40 h-full">
             <Recenthistory />
           </div>
         </div>
