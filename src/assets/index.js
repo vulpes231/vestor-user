@@ -11,6 +11,7 @@ import stock from "./stock.jpg";
 import loginbg from "./loginbg.jpg";
 import broker from "./broker.jpg";
 import trf from "./trf.svg";
+import wallet from "./wallet.svg";
 
 export {
   broker,
@@ -26,4 +27,5 @@ export {
   secure,
   tech,
   trf,
+  wallet,
 };

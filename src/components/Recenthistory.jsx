@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { bitcoin, eth, tether, trf } from "../assets";
+import { bitcoin, eth, tether, trf, wallet } from "../assets";
 import {
   formatCurrency,
   getAccessToken,
@@ -30,9 +30,13 @@ const Recenthistory = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentItems = Array.isArray(userTrnxs)
-    ? userTrnxs.slice(indexOfFirstItem, indexOfLastItem)
+  const sortedTrnxs = Array.isArray(userTrnxs)
+    ? [...userTrnxs].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      )
     : [];
+
+  const currentItems = sortedTrnxs.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNext = () => {
     if (currentPage < Math.ceil(userTrnxs?.length / itemsPerPage)) {
@@ -88,18 +92,22 @@ const Recenthistory = () => {
                     <span className="flex items-center gap-1">
                       <img
                         src={
-                          data.coin === "btc" || data.coin == "bitcoin"
+                          data.coin === "bitcoin" ||
+                          (data.coin === "btc" && data.method !== "bank")
                             ? bitcoin
-                            : data.coin === "usdt"
+                            : data.coin === "usdt(erc20)" ||
+                              data.coin === "usdt"
                             ? tether
-                            : data.coin === "usdt"
+                            : data.coin === "usdt(trc20)"
+                            ? tether
+                            : data.coin === "ethereum"
                             ? eth
-                            : trf
+                            : wallet
                         }
                         alt=""
                         className="w-[25px]"
                       />
-                      {data.coin}
+                      {data.coin && data.method !== "bank" ? data.coin : "bank"}
                     </span>
                   </td>
                   <td className={`${tableStyle.th}`}>
@@ -107,13 +115,13 @@ const Recenthistory = () => {
                   </td>
                   <td className={`${tableStyle.th}`}>
                     <span
-                      className={
+                      className={`${
                         data.type == "deposit"
                           ? "text-green-500"
                           : data.type == "withdraw"
                           ? "text-red-500"
                           : "text-yellow-500"
-                      }
+                      } capitalize text-[12px] lg:text-[13px] font-normal`}
                     >
                       {data.type}
                     </span>

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { formatCurrency, getAccessToken } from "../constants/constant";
-import { bitcoin, eth, tether, trf } from "../assets";
+import { bitcoin, eth, tether, trf, wallet } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserTrnxs } from "../features/trnxSlice";
 import LoadingModal from "./LoadingModal";
@@ -24,9 +24,19 @@ const Transactions = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentItems = Array.isArray(userTrnxs)
-    ? userTrnxs.slice(indexOfFirstItem, indexOfLastItem)
+  useEffect(() => {
+    if (userTrnxs) {
+      console.log(userTrnxs);
+    }
+  }, [userTrnxs]);
+
+  const sortedTrnxs = Array.isArray(userTrnxs)
+    ? [...userTrnxs].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      )
     : [];
+
+  const currentItems = sortedTrnxs.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNext = () => {
     if (currentPage < Math.ceil(userTrnxs?.length / itemsPerPage)) {
@@ -59,7 +69,7 @@ const Transactions = () => {
             <thead className="uppercase text-left border-b border-stone-400">
               <tr>
                 <th className={trxStyles.td}>date</th>
-                <th className={trxStyles.td}>coin</th>
+                <th className={trxStyles.td}>method</th>
                 <th className={trxStyles.td}>amount</th>
                 <th className={trxStyles.td}>type</th>
                 <th className={trxStyles.td}>status</th>
@@ -79,18 +89,24 @@ const Transactions = () => {
                       <span className="flex items-center gap-1 uppercase">
                         <img
                           src={
-                            data.coin === "btc" || data.coin == "bitcoin"
+                            data.coin === "bitcoin" ||
+                            (data.coin === "btc" && data.method !== "bank")
                               ? bitcoin
-                              : data.coin === "usdt"
+                              : data.coin === "usdt(erc20)" ||
+                                data.coin === "usdt"
                               ? tether
-                              : data.coin === "usdt"
+                              : data.coin === "usdt(trc20)"
+                              ? tether
+                              : data.coin === "ethereum"
                               ? eth
-                              : trf
+                              : wallet
                           }
                           alt=""
                           className="w-[25px]"
                         />
-                        {data.coin}
+                        {data.coin && data.method !== "bank"
+                          ? data.coin
+                          : "bank"}
                       </span>
                     </td>
                     <td className={trxStyles.td}>

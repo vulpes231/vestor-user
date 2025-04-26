@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { BsFillSave2Fill } from "react-icons/bs";
 import ErrorModal from "./ErrorModal";
 import LoadingModal from "./LoadingModal";
+import { resetWithdraw, withdrawFunds } from "../features/trnxSlice";
+import Successmodal from "./Successmodal";
 
 const withdrawStyles = {
   formHolder: "flex flex-col gap-2",
@@ -45,7 +47,9 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
     account: "",
     acctName: "",
     coin: "btc",
+    method: "",
   });
+
   const [error, setError] = useState("");
   const [method, setMethod] = useState("bank");
 
@@ -60,26 +64,55 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(method);
-    if (method === "crypto") {
-      if (!form.withdrawFrom || !form.walletAddress || !form.amount) {
-        setError("Incomplete information!");
-        return;
-      }
-    }
-    if (method === "bank") {
-      if (
-        !form.bankName ||
-        !form.account ||
-        !form.routing ||
-        !form.bankAddress
-      ) {
-        setError("Fill in the required fields!");
-        return;
-      }
+
+    const {
+      amount,
+      coin,
+      walletAddress,
+      withdrawFrom,
+      bankName,
+      account,
+      routing,
+      bankAddress,
+    } = form;
+
+    if (!amount || !coin) {
+      setError("Amount and coin are required!");
+      return;
     }
 
-    console.log(form);
+    let formData = null;
+
+    if (method === "crypto") {
+      if (!withdrawFrom || !walletAddress) {
+        setError("Incomplete crypto information!");
+        return;
+      }
+      formData = {
+        amount,
+        coin,
+        method,
+        paymentInfo: walletAddress,
+      };
+    } else if (method === "bank") {
+      if (!bankName || !account || !routing || !bankAddress) {
+        setError("Incomplete bank information!");
+        return;
+      }
+      formData = {
+        amount,
+        coin,
+        method,
+        paymentInfo: `${bankName} ${account} ${routing} ${bankAddress}`,
+      };
+    } else {
+      setError("Unsupported payment method.");
+      return;
+    }
+
+    console.log(formData);
+
+    dispatch(withdrawFunds(formData));
   };
 
   useEffect(() => {
@@ -104,10 +137,20 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
     if (error) {
       timeout = setTimeout(() => {
         setError("");
-        // dispatch
+        dispatch(resetWithdraw());
       }, 3000);
     }
-  }, [error]);
+  }, [error, dispatch]);
+
+  useEffect(() => {
+    let timeout;
+    if (withdrawSucess) {
+      timeout = setTimeout(() => {
+        dispatch(resetWithdraw());
+        window.location.href = "/wallet";
+      }, 3000);
+    }
+  }, [withdrawSucess, dispatch]);
 
   if (userInfo && !userInfo.isKYCVerified) {
     return (
@@ -219,6 +262,7 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
                 name="amount"
                 value={form.amount}
                 onChange={handleInput}
+                autoComplete="off"
               />
             </div>
           </form>
@@ -318,6 +362,9 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
       </div>
       {error && <ErrorModal error={error} />}
       {withdrawLoading && <LoadingModal text={"Initiating withdrawal..."} />}
+      {withdrawSucess && (
+        <Successmodal successText={"Withdrawal request created."} />
+      )}
     </div>
   );
 };
