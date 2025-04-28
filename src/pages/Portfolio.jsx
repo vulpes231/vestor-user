@@ -15,6 +15,7 @@ import {
 import { getUserInfo } from "../features/userSlice";
 import { Link } from "react-router-dom";
 import { getUserWallets } from "../features/walletSlice";
+import { getAvailableAssets } from "../features/assetSlice";
 
 const portFolioStyle = {
   title: "font-bold text-lg whitespace-nowrap",
@@ -28,6 +29,7 @@ const Portfolio = ({ setActive }) => {
   const { activeTradeCount, userTrades } = useSelector((state) => state.trade);
   const { userInfo } = useSelector((state) => state.user);
   const { userWallets } = useSelector((state) => state.wallet);
+  const { assets } = useSelector((state) => state.asset);
 
   const investWallet =
     userWallets && userWallets.find((wallet) => wallet.walletName === "invest");
@@ -38,6 +40,7 @@ const Portfolio = ({ setActive }) => {
       dispatch(getUserTrades());
       dispatch(getUserInfo());
       dispatch(getUserWallets());
+      dispatch(getAvailableAssets());
     }
   }, [dispatch, accessToken]);
 
@@ -45,6 +48,12 @@ const Portfolio = ({ setActive }) => {
     setActive("portfolio");
     document.title = "Vestor - Portfolio";
   }, [setActive]);
+
+  useEffect(() => {
+    if (assets) {
+      console.log(assets);
+    }
+  }, [assets]);
 
   if (!userInfo.isKYCVerified) {
     return (
@@ -70,46 +79,44 @@ const Portfolio = ({ setActive }) => {
     );
   }
 
+  const headers = [
+    {
+      id: "name",
+      title: "name",
+    },
+    {
+      id: "price",
+      title: "price",
+    },
+    {
+      id: "change",
+      title: "24Hr change",
+    },
+    {
+      id: "high",
+      title: "high",
+    },
+    {
+      id: "low",
+      title: "low",
+    },
+  ];
+
   return (
     <div className="p-6 flex flex-col gap-6 bg-black/70 min-h-screen">
       <h3 className="text-[18px] lg:text-[23px] font-bold leading-[19.5px]">
         Portfolio
       </h3>
-      {/* <hr className="border-[1px] border-[#dedede]/40" /> */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="bg-stone-900/40  flex flex-col gap-4 justify-between border border-stone-600 p-6">
-          <span className="flex items-center gap-2">
-            <FaSignal className={portFolioStyle.icon} />
-            <h3 className={portFolioStyle.title}>Portfolio Balance</h3>
-          </span>
-          <p className="text-4xl text-slate-400 px-2">
-            ${investWallet?.balance?.toFixed(2) || `0.00`}
-          </p>
-        </div>
-
-        <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-4 justify-between border border-stone-600 p-6">
-          <span className="flex items-center gap-2">
-            <RiSignalTowerLine className={portFolioStyle.icon} />
-            <h3 className={portFolioStyle.title}>Total Trades</h3>
-          </span>
-
-          <p className="text-4xl text-slate-400 px-2">
-            {userTrades?.length || 0}
-          </p>
-        </div>
-        <div className="bg-stone-900 bg-opacity-40  flex flex-col gap-4 justify-between border border-stone-600 p-6">
-          <span className="flex items-center gap-2">
-            <GrLineChart className={portFolioStyle.icon} />
-            <h3 className={portFolioStyle.title}>Active Trades</h3>
-          </span>
-          <p className="text-4xl text-slate-400 px-2">
-            {activeTradeCount || 0}
-          </p>
-        </div>
-      </div>
-      <div>
+      <table>
+        <thead>
+          {headers.map((hd) => {
+            return <th key={hd.id}>{hd.title}</th>;
+          })}
+        </thead>
+      </table>
+      {/* <div>
         <Trades />
-      </div>
+      </div> */}
     </div>
   );
 };

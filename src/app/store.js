@@ -9,6 +9,7 @@ import investReducer from "../features/investSlice";
 import tradeReducer from "../features/tradeSlice";
 import verifyReducer from "../features/verifySlice";
 import ticketReducer from "../features/ticketSlice";
+import assetReducer from "../features/assetSlice";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     trade: tradeReducer,
     verify: verifyReducer,
     ticket: ticketReducer,
+    asset: assetReducer,
   },
 });
 
