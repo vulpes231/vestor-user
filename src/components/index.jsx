@@ -21,6 +21,7 @@ import Trades from "./Trades";
 import Userprofile from "./Userprofile";
 import Changepass from "./Changepass";
 import Verifyidentity from "./Verifyidentity";
+import Tradeform from "./Tradeform";
 
 export {
   Trades,
@@ -46,5 +47,5 @@ export {
   About,
   Recenthistory,
   Investstat,
-  // Inves,
+  Tradeform,
 };

@@ -5,6 +5,7 @@ import {
   Chat,
   Confirmdeposit,
   Dash,
+  History,
   Identification,
   Landing,
   Loginotp,
@@ -14,6 +15,7 @@ import {
   Signup,
   Steptwo,
   Ticket,
+  Tradeasset,
   Verifyemail,
   Wallet,
 } from "./pages";
@@ -48,7 +50,7 @@ const App = () => {
             element={<Wallet setActive={setActiveLink} />}
           />
           <Route
-            path="/portfolio"
+            path="/markets"
             element={<Portfolio setActive={setActiveLink} />}
           />
           <Route
@@ -70,6 +72,14 @@ const App = () => {
           <Route
             path="/ticket"
             element={<Ticket setActive={setActiveLink} />}
+          />
+          <Route
+            path="/history"
+            element={<History setActive={setActiveLink} />}
+          />
+          <Route
+            path="/asset/:symbol"
+            element={<Tradeasset setActive={setActiveLink} />}
           />
         </Routes>
       </div>

@@ -22,7 +22,7 @@ const Dash = ({ active, setActive }) => {
     document.title = "Vestor - Dashboard";
   }, [setActive]);
   return (
-    <div className="min-h-screen bg-black/70">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6 space-y-8">
       <Dashcontent />
     </div>
   );

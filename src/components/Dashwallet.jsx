@@ -28,7 +28,7 @@ const Dashwallet = () => {
       return (
         <div
           key={plan._id}
-          className="p-6 bg-stone-900/40 flex flex-col gap-2 border border-stone-600 justify-between"
+          className="p-6 flex flex-col gap-2 justify-between bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700/50 hover:border-cyan-400/30 transition-all"
         >
           <span className="flex justify-between w-full">
             <p className="flex flex-col">

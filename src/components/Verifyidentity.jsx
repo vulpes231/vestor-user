@@ -116,7 +116,7 @@ const Verifyidentity = ({ userInfo }) => {
   }, [verifyRequested, dispatch]);
 
   return (
-    <div className="bg-stone-900 bg-opacity-40 flex flex-col gap-6 p-6 text-slate-300 border border-stone-600 mb-20">
+    <div className="flex flex-col gap-6 bg-gray-800/50 rounded-xl backdrop-blur-sm p-6 border border-gray-700/50 hover:border-cyan-400/30 transition-all mb-20">
       <h3 className="font-bold text-white"> Verification Info</h3>
       <p>
         Status:{" "}

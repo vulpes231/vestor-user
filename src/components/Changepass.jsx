@@ -70,7 +70,7 @@ const Changepass = () => {
     return () => clearTimeout(timeout);
   }, [passwordChanged, dispatch]);
   return (
-    <div className="bg-stone-900 bg-opacity-40 p-6 border border-stone-600">
+    <div className="bg-gray-800/50 rounded-xl backdrop-blur-sm p-6 border border-gray-700/50 hover:border-cyan-400/30 transition-all">
       <form action="" className="flex flex-col gap-6 ">
         <div className={changePassStyle.formHolder}>
           <label className={changePassStyle.label} htmlFor="">

@@ -13,6 +13,7 @@ import { logoutUser, resetLogout } from "../features/userSlice";
 import ErrorModal from "./ErrorModal";
 import LoadingModal from "./LoadingModal";
 import Successmodal from "./Successmodal";
+import { FaHistory } from "react-icons/fa";
 
 const Sidebar = ({ activeLink, setActiveLink }) => {
   const dispatch = useDispatch();
@@ -70,6 +71,8 @@ const Sidebar = ({ activeLink, setActiveLink }) => {
                   <FaPiggyBank />
                 ) : link.id === "portfolio" ? (
                   <MdHistoryEdu />
+                ) : link.id === "history" ? (
+                  <FaHistory />
                 ) : link.id === "settings" ? (
                   <FaGear />
                 ) : link.id === "withdraw" ? (

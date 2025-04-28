@@ -15,7 +15,7 @@ export const getAvailableAssets = createAsyncThunk(
   "asset/getAvailableAssets",
   async () => {
     try {
-      const url = `${devServer}/assets`;
+      const url = `${devServer}/assets/all`;
       const token = getAccessToken();
       const response = await axios.get(url, {
         headers: {
@@ -42,6 +42,7 @@ export const getAssetByParam = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       sendError(error);

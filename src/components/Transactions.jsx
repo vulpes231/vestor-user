@@ -6,6 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserTrnxs } from "../features/trnxSlice";
 import LoadingModal from "./LoadingModal";
 import { format } from "date-fns";
+import {
+  FiArrowLeft,
+  FiArrowRight,
+  FiTrendingDown,
+  FiTrendingUp,
+} from "react-icons/fi";
 
 const trxStyles = {
   td: "px-6 py-6",
@@ -63,121 +69,128 @@ const Transactions = () => {
   return (
     <section>
       <div className="flex flex-col gap-10 ">
-        <h3>Transactions</h3>
-        <div className="bg-stone-900 bg-opacity-40 mb-20 overflow-auto border border-stone-600">
-          <table className="min-w-full ">
-            <thead className="uppercase text-left border-b border-stone-400">
-              <tr>
-                <th className={trxStyles.td}>date</th>
-                <th className={trxStyles.td}>method</th>
-                <th className={trxStyles.td}>amount</th>
-                <th className={trxStyles.td}>type</th>
-                <th className={trxStyles.td}>status</th>
+        <h2 className="text-xl font-semibold text-white mb-6">
+          Recent Transactions
+        </h2>
+        <div className="overflow-x-auto rounded-xl backdrop-blur-sm  border border-gray-700/50 hover:border-cyan-400/30 transition-all">
+          <table className="w-full">
+            <thead className="border-b border-gray-700/50">
+              <tr className="text-gray-400 text-left text-sm">
+                <th className="px-4 py-3 pl-6">Date</th>
+                <th className="px-4 py-3">Method</th>
+                <th className="px-4 py-3">Amount</th>
+                <th className="px-4 py-3">Type</th>
+                <th className="px-4 py-3 pr-6">Status</th>
               </tr>
             </thead>
-            <tbody>
-              {currentItems.length > 0 ? (
-                currentItems.map((data) => (
-                  <tr
-                    key={data._id}
-                    className="border-b border-slate-600 text-sm text-slate-200"
-                  >
-                    <td className={trxStyles.td}>
-                      {format(data.createdAt, "MMM dd yyyy")}
-                    </td>
-                    <td className={trxStyles.td}>
-                      <span className="flex items-center gap-1 uppercase">
-                        <img
-                          src={
-                            data.coin === "bitcoin" ||
-                            (data.coin === "btc" && data.method !== "bank")
-                              ? bitcoin
-                              : data.coin === "usdt(erc20)" ||
-                                data.coin === "usdt"
-                              ? tether
-                              : data.coin === "usdt(trc20)"
-                              ? tether
-                              : data.coin === "ethereum"
-                              ? eth
-                              : wallet
-                          }
-                          alt=""
-                          className="w-[25px]"
-                        />
-                        {data.coin && data.method !== "bank"
-                          ? data.coin
-                          : "bank"}
-                      </span>
-                    </td>
-                    <td className={trxStyles.td}>
-                      {formatCurrency(data.amount)}
-                    </td>
-                    <td className={trxStyles.td}>
-                      <span
-                        className={
-                          data.type === "deposit"
-                            ? "text-green-500 capitalize"
-                            : data.type === "withdraw"
-                            ? "text-red-500 capitalize"
-                            : "text-yellow-500 capitalize"
-                        }
-                      >
-                        {data.type}
-                      </span>
-                    </td>
-                    <td className={trxStyles.td}>
-                      <span
-                        className={`${
-                          data.status === "completed"
-                            ? "bg-green-500 text-white px-6 py-2 rounded-3xl"
-                            : data.status === "failed"
-                            ? "bg-red-500 text-white px-6 py-2 rounded-3xl"
-                            : "bg-yellow-500 text-white px-6 py-2 rounded-3xl"
-                        } w-[150px]`}
-                      >
-                        {data.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))
+            <tbody className="divide-y divide-gray-700/50">
+              {userTrnxs?.length > 0 ? (
+                [...userTrnxs]
+                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                  .slice(0, 5)
+                  .map((data) => (
+                    <tr
+                      key={data._id}
+                      className="hover:bg-gray-700/30 transition"
+                    >
+                      <td className="py-4 pl-6 text-white/90">
+                        {format(new Date(data.createdAt), "MMM dd yyyy")}
+                      </td>
+                      <td className="py-4">
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={
+                              data.coin === "bitcoin" ||
+                              (data.coin === "btc" && data.method !== "bank")
+                                ? bitcoin
+                                : data.coin === "usdt(erc20)" ||
+                                  data.coin === "usdt"
+                                ? tether
+                                : data.coin === "usdt(trc20)"
+                                ? tether
+                                : data.coin === "ethereum"
+                                ? eth
+                                : wallet
+                            }
+                            alt=""
+                            className="w-6 h-6 rounded-full"
+                          />
+                          <span className="text-white/80 uppercase">
+                            {data.coin && data.method !== "bank"
+                              ? data.coin
+                              : "Bank"}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-4 text-white/90">
+                        {formatCurrency(data.amount)}
+                      </td>
+                      <td className="py-4">
+                        <div className="flex items-center gap-1">
+                          {data.type === "deposit" ? (
+                            <FiTrendingUp className="text-green-400" />
+                          ) : (
+                            <FiTrendingDown className="text-red-400" />
+                          )}
+                          <span
+                            className={`${
+                              data.type === "deposit"
+                                ? "text-green-400"
+                                : "text-red-400"
+                            } capitalize`}
+                          >
+                            {data.type}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-4 pr-6">
+                        <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                            data.status === "completed"
+                              ? "bg-green-900/50 text-green-400"
+                              : data.status === "failed"
+                              ? "bg-red-900/50 text-red-400"
+                              : "bg-yellow-900/50 text-yellow-400"
+                          }`}
+                        >
+                          {data.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
               ) : (
                 <tr>
-                  <td colSpan="5" className={`text-center ${trxStyles.td}`}>
-                    No transactions found.
+                  <td colSpan="5" className="py-8 text-center text-gray-400">
+                    No transactions found
                   </td>
                 </tr>
               )}
             </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan="5" className="px-6 py-4">
-                  <div className="flex justify-between">
-                    <button
-                      onClick={handlePrevious}
-                      className="px-4 py-2 bg-gray-700 text-white rounded-lg disabled:opacity-50"
-                      disabled={currentPage === 1}
-                    >
-                      Previous
-                    </button>
-                    <span className="self-center text-white">
-                      Page {currentPage} of{" "}
-                      {Math.ceil(userTrnxs?.length / itemsPerPage)}
-                    </span>
-                    <button
-                      onClick={handleNext}
-                      className="px-4 py-2 bg-gray-700 text-white rounded-lg disabled:opacity-50"
-                      disabled={
-                        currentPage ===
-                        Math.ceil(userTrnxs?.length / itemsPerPage)
-                      }
-                    >
-                      Next
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tfoot>
           </table>
+          {userTrnxs?.length > 5 && (
+            <div className="flex items-center justify-between mt-6 p-6">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700/50 text-gray-300 disabled:opacity-50 hover:bg-gray-700 transition"
+              >
+                <FiArrowLeft /> Previous
+              </button>
+              <span className="text-gray-400">
+                Page {currentPage} of{" "}
+                {Math.ceil(userTrnxs.length / itemsPerPage)}
+              </span>
+              <button
+                onClick={() => setCurrentPage((p) => p + 1)}
+                disabled={
+                  currentPage === Math.ceil(userTrnxs.length / itemsPerPage)
+                }
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700/50 text-gray-300 disabled:opacity-50 hover:bg-gray-700 transition"
+              >
+                Next <FiArrowRight />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>

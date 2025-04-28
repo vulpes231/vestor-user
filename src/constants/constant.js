@@ -35,8 +35,13 @@ const authLinks = [
   },
   {
     id: "portfolio",
-    name: "portfolio",
-    path: "/portfolio",
+    name: "markets",
+    path: "/markets",
+  },
+  {
+    id: "history",
+    name: "history",
+    path: "/history",
   },
   {
     id: "settings",

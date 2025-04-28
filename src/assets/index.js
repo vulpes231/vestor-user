@@ -10,6 +10,7 @@ import tech from "./tech.png";
 import stock from "./stock.jpg";
 import loginbg from "./loginbg.jpg";
 import broker from "./broker.jpg";
+// import svel from "./svel.jpeg";
 import trf from "./trf.svg";
 import wallet from "./wallet.svg";
 
@@ -28,4 +29,5 @@ export {
   tech,
   trf,
   wallet,
+  // svel,
 };

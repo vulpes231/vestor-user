@@ -12,7 +12,7 @@ const style = {
 
 const Userprofile = ({ userInfo }) => {
   return (
-    <div className="flex flex-col gap-4 bg-stone-900 bg-opacity-40 border border-stone-600 p-6">
+    <div className="flex flex-col gap-4 bg-gray-800/50 rounded-xl backdrop-blur-sm p-6 border border-gray-700/50 hover:border-cyan-400/30 transition-all6">
       <figure className="flex items-center justify-center mb-5 ">
         <img
           src={userpic}

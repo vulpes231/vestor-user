@@ -33,7 +33,7 @@ const Assets = () => {
       <div className="flex flex-col gap-2">
         <h3
           className={`${
-            userInfo?.canWithdraw ? "hidden" : " block "
+            userInfo && !userInfo?.canWithdraw ? "block" : "hidden"
           } border-[1px] border-red-500 rounded-[5px] p-6 border-l-4 text-[14px] flex items-center gap-2 text-red-500`}
         >
           <FiAlertOctagon size={20} />
@@ -41,7 +41,7 @@ const Assets = () => {
         </h3>
         <h3
           className={`${
-            userInfo?.isKYCVerified ? "hidden" : " block "
+            userInfo && !userInfo?.isKYCVerified ? "block" : "hidden"
           } border-[1px] border-yellow-500 rounded-[5px] p-6 border-l-4 text-[14px] flex items-center gap-2 text-yellow-500`}
         >
           <FiAlertOctagon size={20} />

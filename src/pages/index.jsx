@@ -3,6 +3,7 @@ import Activateplan from "./Activateplan";
 import Chat from "./Chat";
 import Confirmdeposit from "./Confirmdeposit";
 import Dash from "./Dash";
+import History from "./History";
 import Identification from "./Identification";
 import Landing from "./Landing";
 import Loginotp from "./Loginotp";
@@ -13,6 +14,7 @@ import Signin from "./Signin";
 import Signup from "./Signup";
 import Steptwo from "./Steptwo";
 import Ticket from "./Ticket";
+import Tradeasset from "./Tradeasset";
 import Verifyemail from "./Verifyemail";
 import Wallet from "./Wallet";
 
@@ -34,4 +36,6 @@ export {
   Ticketmodal,
   Chat,
   Review,
+  Tradeasset,
+  History,
 };

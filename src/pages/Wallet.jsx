@@ -26,39 +26,23 @@ const Wallet = ({ setActive }) => {
 
   const myWallets =
     userWallets &&
-    userWallets.map((wallet) => {
-      return (
-        <div
-          key={wallet._id}
-          className="bg-stone-900 bg-opacity-40 flex flex-col"
-        >
-          <div className="p-6 flex flex-col gap-2">
-            <h3 className="font-bold text-slate-400 capitalize">
-              {wallet.walletName} wallet
-            </h3>
-            <p className="text-4xl">{formatCurrency(wallet.balance)}</p>
-          </div>
-          <span className="bg-stone-800 p-2 flex items-center gap-6 ">
-            <button
-              onClick={() => {
-                setDepositModal(true);
-                console.log("depositactive");
-              }}
-              className={walletStyles.button}
-            >
-              <PiHandDepositBold /> deposit
-            </button>
-            <button
-              onClick={() => setTransferModal(true)}
-              className={walletStyles.button}
-            >
-              {" "}
-              <BiMoneyWithdraw /> transfer
-            </button>
-          </span>
+    userWallets.map((wallet, index) => (
+      <div
+        key={index}
+        className={`${wallet.color}  p-6 text-white shadow-lg hover:shadow-xl transition-shadow bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700/50`}
+      >
+        <h3 className="text-lg font-medium">{wallet.name}</h3>
+        <p className="text-2xl font-bold mt-2">${wallet.balance.toFixed(2)}</p>
+        <div className="flex gap-3 mt-4">
+          <button className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg text-sm hover:bg-white/20 transition">
+            Deposit
+          </button>
+          <button className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg text-sm hover:bg-white/20 transition">
+            Transfer
+          </button>
         </div>
-      );
-    });
+      </div>
+    ));
 
   useEffect(() => {
     if (accessToken) {
@@ -72,10 +56,13 @@ const Wallet = ({ setActive }) => {
   }, [setActive]);
 
   return (
-    <section className="p-6 bg-black/70 min-h-screen">
-      <div className="flex flex-col gap-10">
-        <h3 className="md:font-bold md:text-2xl">Wallets</h3>
-        <div className="grid gap-6 md:grid-cols-3">{myWallets}</div>
+    <section className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6">
+      <div className="max-w-7xl mx-auto space-y-8">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold text-white">Wallets</h1>
+          <p className="text-gray-400">Manage your funds and transactions</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{myWallets}</div>
         <div>
           <Transactions />
         </div>
