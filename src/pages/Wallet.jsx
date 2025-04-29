@@ -34,10 +34,16 @@ const Wallet = ({ setActive }) => {
         <h3 className="text-lg font-medium">{wallet.name}</h3>
         <p className="text-2xl font-bold mt-2">${wallet.balance.toFixed(2)}</p>
         <div className="flex gap-3 mt-4">
-          <button className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg text-sm hover:bg-white/20 transition">
+          <button
+            onClick={() => setDepositModal(true)}
+            className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg text-sm hover:bg-white/20 transition"
+          >
             Deposit
           </button>
-          <button className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg text-sm hover:bg-white/20 transition">
+          <button
+            onClick={() => setTransferModal(true)}
+            className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg text-sm hover:bg-white/20 transition"
+          >
             Transfer
           </button>
         </div>
@@ -56,7 +62,7 @@ const Wallet = ({ setActive }) => {
   }, [setActive]);
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6 mb-[70px]">
+    <section className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6 mb-[70px] lg:mb-0">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold text-white">Wallets</h1>

@@ -89,7 +89,7 @@ export const getTotalProfit = createAsyncThunk(
 export const openPosition = createAsyncThunk(
   "trade/openPosition",
   async (formData) => {
-    const url = `${devServer}/trade`;
+    const url = `${liveServer}/trade`;
     const accessToken = getAccessToken();
     try {
       const response = await axios.post(url, formData, {

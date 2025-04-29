@@ -1,5 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { devServer, getAccessToken, sendError } from "../constants/constant";
+import {
+  devServer,
+  getAccessToken,
+  liveServer,
+  sendError,
+} from "../constants/constant";
 import axios from "axios";
 
 const initialState = {
@@ -15,7 +21,7 @@ export const getAvailableAssets = createAsyncThunk(
   "asset/getAvailableAssets",
   async () => {
     try {
-      const url = `${devServer}/assets/all`;
+      const url = `${liveServer}/assets/all`;
       const token = getAccessToken();
       const response = await axios.get(url, {
         headers: {
@@ -34,7 +40,7 @@ export const getAssetByParam = createAsyncThunk(
   "asset/getAssetByParam",
   async (formData) => {
     try {
-      const url = `${devServer}/assets/${formData}`;
+      const url = `${liveServer}/assets/${formData}`;
       const token = getAccessToken();
       const response = await axios.get(url, {
         headers: {

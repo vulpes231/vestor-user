@@ -43,7 +43,7 @@ const Dashcontent = () => {
   }, [userInfo, navigate]);
 
   return (
-    <section className="h-full w-full ">
+    <section className="h-full w-full">
       <div className="flex flex-col gap-6">
         {/* nav */}
         <div className="flex justify-between items-center">

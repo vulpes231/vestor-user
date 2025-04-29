@@ -129,7 +129,7 @@ const Portfolio = ({ setActive }) => {
   // };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6 space-y-8 mb-[70px]">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6 space-y-8 mb-[70px] lg:mb-0">
       <div className="flex flex-col gap-4">
         <h1 className="text-3xl font-bold text-white">Portfolio</h1>
         <p className="text-gray-400"> Get access to trending markets</p>

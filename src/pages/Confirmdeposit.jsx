@@ -2,17 +2,22 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { bitcoin, tether } from "../assets";
+import { bitcoin, eth, tether } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
 import { depositFunds, resetDeposit } from "../features/trnxSlice";
 import { ErrorModal, LoadingModal, Successmodal } from "../components";
 import { getUserInfo } from "../features/userSlice";
 import { getAccessToken } from "../constants/constant";
 import { QRCodeSVG } from "qrcode.react";
+import { FiCopy, FiCheck } from "react-icons/fi";
+import { IoMdClose } from "react-icons/io";
 
 const Confirmdeposit = ({ setActive }) => {
   const dispatch = useDispatch();
-  const { coin, amount, memo, network } = useParams();
+  const { amount, method } = useParams();
+
+  const formData = sessionStorage.getItem("depositForm");
+  const form = JSON.parse(formData);
 
   const accessToken = getAccessToken();
 
@@ -25,7 +30,17 @@ const Confirmdeposit = ({ setActive }) => {
   const { userInfo } = useSelector((state) => state.user);
 
   const handleCopy = () => {
-    const textToCopy = userInfo?.depositAddress;
+    const textToCopy = form.coin.includes("btc")
+      ? userInfo.walletDepositInfo.btc
+      : form.coin.includes("ethArb")
+      ? userInfo.walletDepositInfo.ethArb
+      : form.coin.includes("ethErc")
+      ? userInfo.walletDepositInfo.ethErc
+      : form.coin.includes("usdtErc")
+      ? userInfo.walletDepositInfo.usdtErc
+      : form.coin.includes("usdtTrc : null")
+      ? userInfo.walletDepositInfo.usdtTrc
+      : null;
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy);
       setCopy(true);
@@ -34,11 +49,25 @@ const Confirmdeposit = ({ setActive }) => {
 
   const handleDeposit = (e) => {
     e.preventDefault();
-    const data = {
-      coin: coin,
-      amount: parseFloat(amount),
-    };
-    dispatch(depositFunds(data));
+    let formData;
+
+    if (method === "bank") {
+      formData = {
+        method: method,
+        amount: amount,
+        paymentInfo: ``,
+      };
+    } else {
+      formData = {
+        method: method,
+        amount: amount,
+        paymentInfo: ``,
+        coin: form.coin,
+        memo: form.memo || null,
+      };
+    }
+
+    dispatch(depositFunds(formData));
   };
 
   useEffect(() => {
@@ -52,10 +81,11 @@ const Confirmdeposit = ({ setActive }) => {
     if (error) {
       timeout = setTimeout(() => {
         setError("");
+        dispatch(resetDeposit());
       }, 3000);
     }
     return () => clearTimeout(timeout);
-  }, [error]);
+  }, [error, dispatch]);
 
   useEffect(() => {
     let timeout;
@@ -89,102 +119,229 @@ const Confirmdeposit = ({ setActive }) => {
     document.title = "Vestor - Confirm Payment";
   }, []);
 
-  // Format QR code URI for crypto payment
-  const generateQRCodeValue = () => {
-    if (coin === "btc" && userInfo?.depositAddress) {
-      // Bitcoin URI format
-      return `bitcoin:${userInfo.depositAddress}?amount=${amount}&label=${
-        memo || ""
-      }`;
-    } else if (coin === "usdt" && userInfo?.depositAddress) {
-      // Tether or other coin URI format (adjust accordingly)
-      return `ethereum:${userInfo.depositAddress}?amount=${amount}&label=${
-        memo || ""
-      }`;
-    } else {
-      return "";
-    }
-  };
-
   return (
-    <div className="flex md:items-center md:justify-center h-screen w-full">
-      <div className="bg-stone-900 text-slate-100 w-full md:w-[380px] lg:w-[480px] p-6 flex flex-col gap-4">
-        <h3 className="text-2xl font-bold">Complete payment</h3>
-        <ul className="text-xs pl-6 font-light text-slate-400 flex flex-col gap-2 list-disc">
-          <li>
-            After payment, funds will be added automatically to your account
-            after a minimum of 2 confirmations.
-          </li>
-
-          <li>
-            Do Not try to Send Less than the required amount of coin as it may
-            cause the transaction to fail.
-          </li>
-          <li>If there are any errors, contact admin to resolve.</li>
-        </ul>
-
-        <div>
-          <span className="flex flex-col gap-2">
-            <div className="flex gap-2">
-              <span> Payment method:</span>
-              <span className="uppercase font-bold flex items-center gap-1">
-                <img
-                  src={coin === "btc" ? bitcoin : tether}
-                  alt=""
-                  className="w-[20px]"
-                />
-                <span>{coin}</span>
-              </span>
-            </div>
-            <p>
-              USD Amount: <span className="font-bold">{amount} USD</span>{" "}
-            </p>
-            <p className="text-slate-200">
-              You are to pay{" "}
-              <span className="font-bold text-white uppercase">
-                {coin === "btc" ? "0.0000" : amount} {coin}
-              </span>{" "}
-              to: {userInfo?.depositAddress}
-            </p>
-
-            {/* QR Code Component */}
-            {userInfo?.depositAddress && (
-              <div className="my-4 flex justify-center">
-                <QRCodeSVG value={generateQRCodeValue()} size={200} />
-              </div>
-            )}
-
-            <span className="flex items-center gap-4">
-              <input
-                type="text"
-                readOnly
-                value={userInfo?.depositAddress}
-                className="p-2 border outline-none border-stone-600 bg-transparent w-full text-slate-400 text-md font-light"
-              />
-              <button
-                onClick={handleCopy}
-                className="px-4 py-2 rounded-sm bg-green-500 text-xs text-white"
-              >
-                {!copy ? "Copy" : "Copied."}
-              </button>
-            </span>
-          </span>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-4">
+      <div className="bg-gray-800 rounded-xl shadow-2xl w-full max-w-md overflow-hidden border border-gray-700">
+        {/* Header */}
+        <div className="bg-gray-900 p-6 border-b border-gray-700">
+          <div className="flex justify-between items-center">
+            <h3 className="text-2xl font-bold text-white">Complete Payment</h3>
+            <button
+              onClick={() => (window.location.href = "/wallet")}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <IoMdClose size={24} />
+            </button>
+          </div>
+          <p className="text-gray-400 mt-2 text-sm">
+            {method === "bank"
+              ? "Bank transfer instructions"
+              : "Crypto deposit details"}
+          </p>
         </div>
 
-        <small className="text-xs font-light text-slate-400">
-          Always double-check the address before sending payment.
-        </small>
+        {/* Body */}
+        <div className="p-6">
+          {/* Payment Info */}
+          <div className="mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-gray-400">Payment Method:</span>
+              {method === "bank" ? (
+                <span className="font-medium text-white">Bank Transfer</span>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <img
+                    src={
+                      form.coin === "btc"
+                        ? bitcoin
+                        : form.coin.includes("eth")
+                        ? eth
+                        : tether
+                    }
+                    alt={form.coin}
+                    className="w-6 h-6"
+                  />
+                  <span className="font-medium text-white uppercase">
+                    {form.coin.includes("btc")
+                      ? "BTC"
+                      : form.coin.includes("eth")
+                      ? "ETH"
+                      : "USDT"}
+                  </span>
+                </div>
+              )}
+            </div>
 
-        <button
-          onClick={handleDeposit}
-          className="bg-green-600 text-white p-2 rounded-3xl"
-        >
-          Paid
-        </button>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-400">Amount:</span>
+              <span className="font-bold text-white">
+                {amount} USD
+                {/* {method === "bank"
+                  ? "USD"
+                  : form.coin.includes("btc")
+                  ? "BTC"
+                  : form.coin.includes("eth")
+                  ? "ETH"
+                  : "USDT"} */}
+              </span>
+            </div>
+          </div>
+
+          {/* Instructions */}
+          <div className="bg-gray-700 rounded-lg p-4 mb-6">
+            <h4 className="text-white font-medium mb-2">Important Notes:</h4>
+            <ul className="text-gray-300 text-sm space-y-2">
+              <li className="flex items-start">
+                <span className="text-green-400 mr-2">•</span>
+                Funds will be added automatically after confirmation
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-400 mr-2">•</span>
+                Contact support if you encounter any issues
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-400 mr-2">•</span>
+                Double-check all payment details
+              </li>
+            </ul>
+          </div>
+
+          {/* Payment Details */}
+          {method === "bank" ? (
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className="block text-gray-400 text-sm mb-1">
+                  Bank Name
+                </label>
+                <div className="bg-gray-700 p-3 rounded-lg text-white">
+                  {userInfo?.bankDepositInfo?.bankName || "Chase Bank"}
+                </div>
+              </div>
+              <div>
+                <label className="block text-gray-400 text-sm mb-1">
+                  Account Number
+                </label>
+                <div className="bg-gray-700 p-3 rounded-lg text-white">
+                  {userInfo?.bankDepositInfo?.account || "2165789098"}
+                </div>
+              </div>
+              <div>
+                <label className="block text-gray-400 text-sm mb-1">
+                  Routing Number
+                </label>
+                <div className="bg-gray-700 p-3 rounded-lg text-white">
+                  {userInfo?.bankDepositInfo?.routing || "2129870098"}
+                </div>
+              </div>
+              <div>
+                <label className="block text-gray-400 text-sm mb-1">
+                  Bank Address
+                </label>
+                <div className="bg-gray-700 p-3 rounded-lg text-white">
+                  {userInfo?.bankDepositInfo?.address ||
+                    "124 West Ave, Cios OH 09876"}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4 mb-6">
+              <div className="text-center">
+                <p className="text-gray-300 mb-3">
+                  Send exactly{" "}
+                  <span className="font-bold text-white">
+                    {method !== "bank" ? "0.0000" : amount}{" "}
+                    {form.coin.includes("btc")
+                      ? "BTC"
+                      : form.coin.includes("eth")
+                      ? "ETH"
+                      : "USDT"}
+                  </span>{" "}
+                  to:
+                </p>
+
+                {userInfo?.walletDepositInfo && (
+                  <div className="my-4 flex justify-center">
+                    <QRCodeSVG
+                      value={
+                        form.coin === "btc"
+                          ? userInfo?.walletDepositInfo?.btc
+                          : form.coin === "ethErc"
+                          ? userInfo?.walletDepositInfo?.ethErc
+                          : form.coin === "ethArb"
+                          ? userInfo?.walletDepositInfo?.ethArb
+                          : form.coin === "ethArb"
+                          ? userInfo?.walletDepositInfo?.ethArb
+                          : form.coin === "usdtErc"
+                          ? userInfo?.walletDepositInfo?.usdtErc
+                          : form.coin === "usdtTrc"
+                          ? userInfo?.walletDepositInfo?.usdtTrc
+                          : null
+                      }
+                      size={180}
+                      bgColor="transparent"
+                      fgColor="#ffffff"
+                      level="H"
+                    />
+                  </div>
+                )}
+
+                <div className="relative">
+                  <input
+                    type="text"
+                    readOnly
+                    value={
+                      form.coin === "btc"
+                        ? userInfo?.walletDepositInfo?.btc
+                        : form.coin === "ethErc"
+                        ? userInfo?.walletDepositInfo?.ethErc
+                        : form.coin === "ethArb"
+                        ? userInfo?.walletDepositInfo?.ethArb
+                        : form.coin === "ethArb"
+                        ? userInfo?.walletDepositInfo?.ethArb
+                        : form.coin === "usdtErc"
+                        ? userInfo?.walletDepositInfo?.usdtErc
+                        : form.coin === "usdtTrc"
+                        ? userInfo?.walletDepositInfo?.usdtTrc
+                        : null
+                    }
+                    className="w-full bg-gray-700 p-3 pr-12 rounded-lg text-white text-sm font-mono truncate"
+                  />
+                  <button
+                    onClick={handleCopy}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white p-1"
+                  >
+                    {copy ? <FiCheck className="text-green-400" /> : <FiCopy />}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Action Button */}
+          <button
+            onClick={handleDeposit}
+            disabled={depositLoading}
+            className={`w-full py-3 rounded-lg font-medium text-white transition-all ${
+              depositLoading
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg"
+            }`}
+          >
+            {depositLoading ? "Processing..." : "I've Made This Payment"}
+          </button>
+
+          <p className="text-xs text-center text-gray-500 mt-4">
+            Transaction usually completes within 5-30 minutes
+          </p>
+        </div>
       </div>
+
+      {/* Modals */}
       {depositError && <ErrorModal error={error} />}
-      {depositLoading && <LoadingModal text={"Submitting deposit"} />}
-      {depositSucess && <Successmodal successText={"Deposit pending."} />}
+      {depositLoading && <LoadingModal text={"Confirming your payment"} />}
+      {depositSucess && (
+        <Successmodal successText={"Deposit received! Processing..."} />
+      )}
     </div>
   );
 };

@@ -173,12 +173,12 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
               Transfer money to your external account
             </p>
           </div>
-          <button
+          {/* <button
             onClick={() => setWithdraw(false)}
             className="p-2 rounded-full hover:bg-gray-800 transition-colors"
           >
             <MdClose className="w-6 h-6 text-gray-400" />
-          </button>
+          </button> */}
         </div>
 
         <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
@@ -378,7 +378,7 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
         </div>
 
         <div className="mt-6 text-sm text-gray-500">
-          <p>Withdrawals typically process within 1-3 business days.</p>
+          <p>Withdrawals typically process within 5-7 business days.</p>
           <p>Contact support if you encounter any issues.</p>
         </div>
       </div>

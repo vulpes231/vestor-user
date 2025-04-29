@@ -62,7 +62,7 @@ const App = () => {
             element={<Withdraw setActive={setActiveLink} />}
           />
           <Route
-            path="/confirm/:coin/:amount/:network"
+            path="/confirm/:amount/:method"
             element={<Confirmdeposit setActive={setActiveLink} />}
           />
           <Route

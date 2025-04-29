@@ -101,25 +101,30 @@ const Recenthistory = () => {
                       <div className="flex items-center gap-2">
                         <img
                           src={
-                            data.coin === "bitcoin" ||
-                            (data.coin === "btc" && data.method !== "bank")
+                            data?.coin?.includes("btc") &&
+                            data?.method !== "bank"
                               ? bitcoin
-                              : data.coin === "usdt(erc20)" ||
-                                data.coin === "usdt"
-                              ? tether
-                              : data.coin === "usdt(trc20)"
-                              ? tether
-                              : data.coin === "ethereum"
+                              : data?.coin?.includes("eth")
                               ? eth
+                              : data?.coin?.includes("usdt")
+                              ? tether
+                              : data?.method === "bank"
+                              ? wallet
                               : wallet
                           }
-                          alt={data.coin || "bank"}
+                          alt={data?.coin || "bank"}
                           className="w-6 h-6 rounded-full"
                         />
                         <span className="text-white/80 uppercase">
-                          {data.coin && data.method !== "bank"
-                            ? data.coin
-                            : "Bank"}
+                          {data?.method === "bank"
+                            ? "bank"
+                            : data?.coin?.includes("btc")
+                            ? "BTC"
+                            : data?.coin?.includes("eth")
+                            ? "ETH"
+                            : data?.coin?.includes("usdt")
+                            ? "USDT"
+                            : "transfer"}
                         </span>
                       </div>
                     </td>
