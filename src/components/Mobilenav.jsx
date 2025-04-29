@@ -3,7 +3,7 @@
 import React from "react";
 import { authLinks } from "../constants/constant";
 import { Link } from "react-router-dom";
-import { CgHomeAlt } from "react-icons/cg";
+import { CgChart, CgHomeAlt, CgTrending } from "react-icons/cg";
 import { MdHistoryEdu } from "react-icons/md";
 import { FaGear, FaMoneyBillTransfer, FaPiggyBank } from "react-icons/fa6";
 
@@ -18,9 +18,9 @@ const Mobilenav = ({ activeLink, setActiveLink }) => {
             ) : link.id === "wallet" ? (
               <FaPiggyBank size={20} />
             ) : link.id === "portfolio" ? (
-              <MdHistoryEdu size={20} />
-            ) : link.id === "settings" ? (
-              <FaGear size={20} />
+              <CgTrending size={20} />
+            ) : link.id === "history" ? (
+              <CgChart size={20} />
             ) : link.id === "withdraw" ? (
               <FaMoneyBillTransfer size={20} />
             ) : null;

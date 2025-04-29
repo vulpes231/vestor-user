@@ -56,7 +56,7 @@ const Wallet = ({ setActive }) => {
   }, [setActive]);
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6">
+    <section className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6 mb-[70px]">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold text-white">Wallets</h1>

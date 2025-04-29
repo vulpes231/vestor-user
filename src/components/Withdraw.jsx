@@ -5,33 +5,13 @@ import { MdClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../constants/constant";
 import { getUserInfo } from "../features/userSlice";
-import { FaUserLock } from "react-icons/fa6";
+import { FaUserLock, FaWallet, FaPiggyBank } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { BsFillSave2Fill } from "react-icons/bs";
+import { motion, AnimatePresence } from "framer-motion";
 import ErrorModal from "./ErrorModal";
 import LoadingModal from "./LoadingModal";
 import { resetWithdraw, withdrawFunds } from "../features/trnxSlice";
 import Successmodal from "./Successmodal";
-
-const withdrawStyles = {
-  formHolder: "flex flex-col gap-2",
-  label: "font-normal text-[12px] text-[#979797] lg:text-[13px] capitalize",
-  input:
-    "border border-[#dedede]/40 bg-black/40 p-2 rounded-[5px] h-[38px] lg:h-[40px] outline-none text-[16px] font-normal",
-  select:
-    "border border-[#dedede]/40 bg-black/40 p-2 h-[38px] lg:h-[40px] rounded-[5px] outline-none text-[16px] font-normal",
-};
-
-const withdrawMethods = [
-  {
-    id: "bank",
-    name: "bank",
-  },
-  {
-    id: "crypto",
-    name: "crypto",
-  },
-];
 
 const Withdrawmodal = ({ setWithdraw, setActive }) => {
   const dispatch = useDispatch();
@@ -110,8 +90,6 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
       return;
     }
 
-    console.log(formData);
-
     dispatch(withdrawFunds(formData));
   };
 
@@ -154,216 +132,269 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
 
   if (userInfo && !userInfo.isKYCVerified) {
     return (
-      <div className="p-6 flex flex-col gap-6 h-full items-center justify-center bg-black bg-opacity-50">
-        <FaUserLock className="w-20 h-20" />
-        <h3 className="text-xl">
-          Account status:{" "}
-          <span
-            className={
-              userInfo?.isKYCVerified ? "text-green-600" : "text-red-600"
-            }
-          >
-            {userInfo?.isKYCVerified ? "Verified" : "Not Verified"}
-          </span>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="p-8 flex flex-col gap-6 items-center justify-center bg-gray-900 rounded-xl text-center"
+      >
+        <div className="p-4 bg-red-500/20 rounded-full">
+          <FaUserLock className="w-12 h-12 text-red-500" />
+        </div>
+        <h3 className="text-2xl font-semibold text-white">
+          Account Verification Required
         </h3>
-        <p className="text-center">
-          Verify your account to enjoy full features.{" "}
-          <br className="sm:hidden" />
-          <Link to={"/settings"} className="text-green-600 underline">
-            Complete verification
-          </Link>{" "}
+        <p className="text-gray-400 max-w-md">
+          Your account needs to be verified before you can withdraw funds. This
+          helps us ensure the security of your transactions.
         </p>
-      </div>
+        <Link
+          to="/settings"
+          className="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg font-medium text-white transition-colors"
+        >
+          Complete Verification
+        </Link>
+      </motion.div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6 space-y-8">
-      <div className="p-6 w-full flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold text-white">Withdraw</h1>
-          <p className="text-gray-400">Withdraw funds.</p>
-        </div>
-        {/* <hr className="border-[1px] border-[#dedede]/40" /> */}
-        <div className="flex items-center gap-4">
-          {withdrawMethods.map((mtd) => {
-            return (
-              <span
-                key={mtd.id}
-                className={`${
-                  method === mtd.id
-                    ? "border-[1px] border-green-500 text-green-500 rounded-[5px]"
-                    : "text-[#979797]"
-                } cursor-pointer font-normal  w-[100px] h-[38px] flex items-center justify-center capitalize`}
-                onClick={() => setMethod(mtd.id)}
-              >
-                <h6>{mtd.name}</h6>
-              </span>
-            );
-          })}
-        </div>
-        {method === "crypto" ? (
-          <form className="flex flex-col gap-4 bg-gray-800/50 rounded-xl backdrop-blur-sm p-6 border border-gray-700/50 hover:border-cyan-400/30 transition-all md:w-[50%]">
-            <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="from">
-                From
-              </label>
-              <select
-                className={withdrawStyles.select}
-                name="withdrawFrom"
-                value={form.withdrawFrom}
-                onChange={handleInput}
-              >
-                <option value="deposit">Deposit wallet</option>
-              </select>
-            </div>
-            <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="coin">
-                Coin
-              </label>
-              <select
-                className={withdrawStyles.select}
-                name="coin"
-                value={form.coin}
-                onChange={handleInput}
-              >
-                <option value="btc">Bitcoin</option>
-                <option value="eth">Ethereum</option>
-                <option value="usdt(erc20)">USDT (ERC20)</option>
-                <option value="usdt(trc20)">USDT (TRC20)</option>
-              </select>
-            </div>
-
-            <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="Address">
-                Wallet Address
-              </label>
-              <input
-                className={withdrawStyles.input}
-                type="text"
-                placeholder="0x1Ahjkdsweoiiwepsdyuis"
-                name="walletAddress"
-                value={form.walletAddress}
-                onChange={handleInput}
-                autoComplete="off"
-              />
-            </div>
-
-            <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="amount">
-                Amount
-              </label>
-              <input
-                className={withdrawStyles.input}
-                type="text"
-                placeholder="$0.00"
-                name="amount"
-                value={form.amount}
-                onChange={handleInput}
-                autoComplete="off"
-              />
-            </div>
-          </form>
-        ) : (
-          <form
-            // onSubmit={handleSubmit}
-            className="flex flex-col gap-4 bg-gray-800/50 rounded-xl backdrop-blur-sm p-6 border border-gray-700/50 hover:border-cyan-400/30 transition-all md:w-[50%]"
-          >
-            <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="from">
-                bank name
-              </label>
-              <input
-                className={withdrawStyles.input}
-                type="text"
-                name="bankName"
-                value={form.bankName}
-                onChange={handleInput}
-                autoComplete="off"
-              />
-            </div>
-
-            <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="Address">
-                account number
-              </label>
-              <input
-                className={withdrawStyles.input}
-                type="text"
-                name="account"
-                value={form.account}
-                onChange={handleInput}
-                autoComplete="off"
-              />
-            </div>
-
-            <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="amount">
-                routing number
-              </label>
-              <input
-                className={withdrawStyles.input}
-                type="text"
-                name="routing"
-                value={form.routing}
-                onChange={handleInput}
-              />
-            </div>
-            {/* <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="amount">
-                account name
-              </label>
-              <input
-                className={withdrawStyles.input}
-                type="text"
-                name="acctName"
-                value={form.acctName}
-                onChange={handleInput}
-              />
-            </div> */}
-            <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="amount">
-                bank address
-              </label>
-              <input
-                className={withdrawStyles.input}
-                type="text"
-                name="bankAddress"
-                value={form.bankAddress}
-                onChange={handleInput}
-              />
-            </div>
-            <div className={withdrawStyles.formHolder}>
-              <label className={withdrawStyles.label} htmlFor="amount">
-                Amount
-              </label>
-              <input
-                className={withdrawStyles.input}
-                type="text"
-                placeholder="$0.00"
-                name="amount"
-                value={form.amount}
-                onChange={handleInput}
-              />
-            </div>
-          </form>
-        )}
-        <div className="">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="min-h-screen bg-gray-900 p-4 md:p-8"
+    >
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-white">
+              Withdraw Funds
+            </h1>
+            <p className="text-gray-400">
+              Transfer money to your external account
+            </p>
+          </div>
           <button
-            onClick={handleSubmit}
-            type="submit"
-            className="bg-green-600 text-slate-100 py-2 px-8 rounded-[5px] mt-5 font-semibold md:w-[250px]"
+            onClick={() => setWithdraw(false)}
+            className="p-2 rounded-full hover:bg-gray-800 transition-colors"
           >
-            Withdraw
+            <MdClose className="w-6 h-6 text-gray-400" />
           </button>
         </div>
+
+        <div className="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
+          {/* Method Selector */}
+          <div className="flex border-b border-gray-700">
+            <button
+              onClick={() => setMethod("bank")}
+              className={`flex-1 py-4 flex items-center justify-center gap-2 transition-colors ${
+                method === "bank"
+                  ? "bg-gray-700 text-cyan-400"
+                  : "text-gray-400 hover:bg-gray-700/50"
+              }`}
+            >
+              <FaPiggyBank className="w-5 h-5" />
+              <span className="font-medium">Bank Transfer</span>
+            </button>
+            <button
+              onClick={() => setMethod("crypto")}
+              className={`flex-1 py-4 flex items-center justify-center gap-2 transition-colors ${
+                method === "crypto"
+                  ? "bg-gray-700 text-cyan-400"
+                  : "text-gray-400 hover:bg-gray-700/50"
+              }`}
+            >
+              <FaWallet className="w-5 h-5" />
+              <span className="font-medium">Crypto Wallet</span>
+            </button>
+          </div>
+
+          {/* Form Content */}
+          <div className="p-6">
+            {method === "crypto" ? (
+              <form className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                      From
+                    </label>
+                    <select
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      name="withdrawFrom"
+                      value={form.withdrawFrom}
+                      onChange={handleInput}
+                    >
+                      <option value="deposit">Deposit Wallet</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                      Coin
+                    </label>
+                    <select
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      name="coin"
+                      value={form.coin}
+                      onChange={handleInput}
+                    >
+                      <option value="btc">Bitcoin (BTC)</option>
+                      <option value="eth">Ethereum (ETH)</option>
+                      <option value="usdt(erc20)">USDT (ERC20)</option>
+                      <option value="usdt(trc20)">USDT (TRC20)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
+                    Wallet Address
+                  </label>
+                  <input
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                    type="text"
+                    placeholder="Enter your wallet address"
+                    name="walletAddress"
+                    value={form.walletAddress}
+                    onChange={handleInput}
+                    autoComplete="off"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
+                    Amount
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      $
+                    </span>
+                    <input
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 pl-10 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      type="text"
+                      placeholder="0.00"
+                      name="amount"
+                      value={form.amount}
+                      onChange={handleInput}
+                      autoComplete="off"
+                    />
+                  </div>
+                </div>
+              </form>
+            ) : (
+              <form className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                      Bank Name
+                    </label>
+                    <input
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      type="text"
+                      placeholder="e.g. Chase Bank"
+                      name="bankName"
+                      value={form.bankName}
+                      onChange={handleInput}
+                      autoComplete="off"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                      Account Number
+                    </label>
+                    <input
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      type="text"
+                      placeholder="Enter account number"
+                      name="account"
+                      value={form.account}
+                      onChange={handleInput}
+                      autoComplete="off"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                      Routing Number
+                    </label>
+                    <input
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      type="text"
+                      placeholder="Enter routing number"
+                      name="routing"
+                      value={form.routing}
+                      onChange={handleInput}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                      Bank Address
+                    </label>
+                    <input
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      type="text"
+                      placeholder="Bank's physical address"
+                      name="bankAddress"
+                      value={form.bankAddress}
+                      onChange={handleInput}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
+                    Amount
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      $
+                    </span>
+                    <input
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 pl-10 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      type="text"
+                      placeholder="0.00"
+                      name="amount"
+                      value={form.amount}
+                      onChange={handleInput}
+                    />
+                  </div>
+                </div>
+              </form>
+            )}
+
+            <div className="mt-8">
+              <button
+                onClick={handleSubmit}
+                disabled={withdrawLoading}
+                className="w-full md:w-auto px-8 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg font-medium text-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {withdrawLoading ? "Processing..." : "Withdraw Funds"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 text-sm text-gray-500">
+          <p>Withdrawals typically process within 1-3 business days.</p>
+          <p>Contact support if you encounter any issues.</p>
+        </div>
       </div>
-      {error && <ErrorModal error={error} />}
-      {withdrawLoading && <LoadingModal text={"Initiating withdrawal..."} />}
-      {withdrawSucess && (
-        <Successmodal successText={"Withdrawal request created."} />
-      )}
-    </div>
+
+      <AnimatePresence>
+        {error && <ErrorModal error={error} />}
+        {withdrawLoading && (
+          <LoadingModal text={"Processing withdrawal request..."} />
+        )}
+        {withdrawSucess && (
+          <Successmodal
+            successText={"Withdrawal request submitted successfully!"}
+          />
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

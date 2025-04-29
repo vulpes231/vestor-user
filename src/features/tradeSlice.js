@@ -18,6 +18,12 @@ const initialState = {
   getProfitLoading: false,
   getProfitError: false,
   totalProfit: false,
+  openPositionLoading: false,
+  openPositionError: false,
+  positionOpened: false,
+  closePositionLoading: false,
+  closePositionError: false,
+  positionClosed: false,
 };
 
 export const getUserTrades = createAsyncThunk(
@@ -80,10 +86,61 @@ export const getTotalProfit = createAsyncThunk(
   }
 );
 
+export const openPosition = createAsyncThunk(
+  "trade/openPosition",
+  async (formData) => {
+    const url = `${devServer}/trade`;
+    const accessToken = getAccessToken();
+    try {
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      sendError(error);
+    }
+  }
+);
+
+export const closePosition = createAsyncThunk(
+  "trade/closePosition",
+  async (formData) => {
+    const url = `${liveServer}/trade`;
+    const accessToken = getAccessToken();
+    try {
+      const response = await axios.put(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      sendError(error);
+    }
+  }
+);
+
 const tradeSlice = createSlice({
   name: "trade",
   initialState,
-  reducers: {},
+  reducers: {
+    resetOpenPosition(state) {
+      state.openPositionError = false;
+      state.openPositionLoading = false;
+      state.positionOpened = false;
+    },
+    resetClosePosition(state) {
+      state.closePositionError = false;
+      state.closePositionLoading = false;
+      state.positionClosed = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserTrades.pending, (state) => {
@@ -129,7 +186,37 @@ const tradeSlice = createSlice({
         state.getProfitError = action.error.message;
         state.totalProfit = false;
       });
+    builder
+      .addCase(openPosition.pending, (state) => {
+        state.openPositionLoading = true;
+      })
+      .addCase(openPosition.fulfilled, (state) => {
+        state.openPositionLoading = false;
+        state.openPositionError = false;
+        state.positionOpened = true;
+      })
+      .addCase(openPosition.rejected, (state, action) => {
+        state.openPositionLoading = false;
+        state.openPositionError = action.error.message;
+        state.positionOpened = false;
+      });
+    builder
+      .addCase(closePosition.pending, (state) => {
+        state.closePositionLoading = true;
+      })
+      .addCase(closePosition.fulfilled, (state) => {
+        state.closePositionLoading = false;
+        state.closePositionError = false;
+        state.positionClosed = true;
+      })
+      .addCase(closePosition.rejected, (state, action) => {
+        state.closePositionLoading = false;
+        state.closePositionError = action.error.message;
+        state.positionClosed = false;
+      });
   },
 });
+
+export const { resetClosePosition, resetOpenPosition } = tradeSlice.actions;
 
 export default tradeSlice.reducer;

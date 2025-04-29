@@ -1,10 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
-import { styles } from "../constants/styles";
 import { MdOutlineSavings, MdAttachMoney } from "react-icons/md";
 import { FaChartLine } from "react-icons/fa";
 import { FiAlertOctagon } from "react-icons/fi";
-
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { getAccessToken } from "../constants/constant";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,52 +26,81 @@ const Assets = () => {
       dispatch(getUserInfo());
     }
   }, [dispatch, accessToken]);
+
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <h3
-          className={`${
-            userInfo && !userInfo?.canWithdraw ? "block" : "hidden"
-          } border-[1px] border-red-500 rounded-[5px] p-6 border-l-4 text-[14px] flex items-center gap-2 text-red-500`}
-        >
-          <FiAlertOctagon size={20} />
-          {userInfo?.customWithdrawalMsg}
-        </h3>
-        <h3
-          className={`${
-            userInfo && !userInfo?.isKYCVerified ? "block" : "hidden"
-          } border-[1px] border-yellow-500 rounded-[5px] p-6 border-l-4 text-[14px] flex items-center gap-2 text-yellow-500`}
-        >
-          <FiAlertOctagon size={20} />
-          <span>Verify your account to enjoy full features of the app.</span>
-        </h3>
+    <div className="space-y-6">
+      {/* Alert Messages */}
+      <div className="space-y-3">
+        {userInfo && !userInfo?.canWithdraw && (
+          <div className="flex items-start gap-3 p-4 bg-red-500/10 border-l-4 border-red-500 rounded-lg backdrop-blur-sm">
+            <FiAlertOctagon
+              className="mt-0.5 flex-shrink-0 text-red-500"
+              size={20}
+            />
+            <p className="text-sm text-red-100">
+              {userInfo?.customWithdrawalMsg}
+            </p>
+          </div>
+        )}
+
+        {userInfo && !userInfo?.isKYCVerified && (
+          <div className="flex items-start gap-3 p-4 bg-yellow-500/10 border-l-4 border-yellow-500 rounded-lg backdrop-blur-sm">
+            <FiAlertOctagon
+              className="mt-0.5 flex-shrink-0 text-yellow-500"
+              size={20}
+            />
+            <p className="text-sm text-yellow-100">
+              Verify your account to enjoy full features of the app.
+            </p>
+          </div>
+        )}
       </div>
-      <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
-        <span className={`${styles.card} lg:col-span-2`}>
-          <span className="flex items-center gap-2">
-            <MdOutlineSavings size={25} />
-            <h5 className="font-bold">Total Balance</h5>
-          </span>
-          <h3 className={styles.money}>
-            {(balance && balance.toFixed(2)) || 0} USD
-          </h3>
-        </span>
-        <span className={styles.card}>
-          <span className="flex items-center gap-2">
-            <RiMoneyDollarCircleFill size={25} />
-            <h5 className="font-bold">Profits</h5>
-          </span>
-          <h3 className={` text-green-600 ${styles.money}`}>
-            {totalProfit || `0.00`} USD
-          </h3>
-        </span>
-        <span className={styles.card}>
-          <span className="flex items-center gap-2">
-            <FaChartLine size={25} />
-            <h5 className="font-bold">Trades</h5>
-          </span>
-          <h3 className={styles.money}>{userTrades?.length || 0}</h3>
-        </span>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Total Balance Card */}
+        <div className="lg:col-span-2 bg-gradient-to-br from-indigo-900/50 to-indigo-800/30 p-6 rounded-xl border border-indigo-700/50 backdrop-blur-sm hover:shadow-lg transition-all">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-indigo-600/20 rounded-lg">
+              <MdOutlineSavings className="text-indigo-300" size={24} />
+            </div>
+            <h3 className="text-lg font-medium text-gray-200">Total Balance</h3>
+          </div>
+          <p className="text-3xl font-bold text-white">
+            ${(balance && balance.toFixed(2)) || "0.00"}
+            <span className="text-sm font-normal text-gray-400 ml-1">USD</span>
+          </p>
+        </div>
+
+        {/* Profits Card */}
+        <div className="bg-gradient-to-br from-emerald-900/50 to-emerald-800/30 p-6 rounded-xl border border-emerald-700/50 backdrop-blur-sm hover:shadow-lg transition-all">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-emerald-600/20 rounded-lg">
+              <RiMoneyDollarCircleFill className="text-emerald-300" size={24} />
+            </div>
+            <h3 className="text-lg font-medium text-gray-200">Profits</h3>
+          </div>
+          <p className="text-3xl font-bold text-emerald-400">
+            +${totalProfit || "0.00"}
+            <span className="text-sm font-normal text-gray-400 ml-1">USD</span>
+          </p>
+        </div>
+
+        {/* Trades Card */}
+        <div className="bg-gradient-to-br from-purple-900/50 to-purple-800/30 p-6 rounded-xl border border-purple-700/50 backdrop-blur-sm hover:shadow-lg transition-all">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-purple-600/20 rounded-lg">
+              <FaChartLine className="text-purple-300" size={24} />
+            </div>
+            <h3 className="text-lg font-medium text-gray-200">Trades</h3>
+          </div>
+          <p className="text-3xl font-bold text-white">
+            {userTrades?.length || 0}
+            <span className="text-sm font-normal text-gray-400 ml-1">
+              total
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

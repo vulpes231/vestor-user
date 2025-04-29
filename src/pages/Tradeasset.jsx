@@ -124,7 +124,7 @@ const Tradeasset = ({ setActive }) => {
         </div>
 
         {/* Trading Panel */}
-        <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl backdrop-blur-sm overflow-hidden">
+        <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl backdrop-blur-sm overflow-hidden mb-20">
           {/* Action Tabs */}
           <div className="flex border-b border-gray-700/50">
             {["buy", "sell"].map((btn) => (

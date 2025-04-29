@@ -43,11 +43,11 @@ const authLinks = [
     name: "history",
     path: "/history",
   },
-  {
-    id: "settings",
-    name: "settings",
-    path: "/settings",
-  },
+  // {
+  //   id: "settings",
+  //   name: "settings",
+  //   path: "/settings",
+  // },
   {
     id: "withdraw",
     name: "withdraw",

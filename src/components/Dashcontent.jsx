@@ -43,7 +43,7 @@ const Dashcontent = () => {
   }, [userInfo, navigate]);
 
   return (
-    <section className="h-full p-6 w-full ">
+    <section className="h-full w-full ">
       <div className="flex flex-col gap-6">
         {/* nav */}
         <div className="flex justify-between items-center">
@@ -80,10 +80,10 @@ const Dashcontent = () => {
         </div>
         {/* analytics */}
         <div className="grid gap-6 md:grid-cols-3 h-full">
-          <div className="md:col-span-1 bg-gray-800/50 rounded-xl backdrop-blur-sm p-6 border border-gray-700/50 hover:border-cyan-400/30 transition-all">
+          <div className="md:col-span-1">
             <Investstat />
           </div>
-          <div className="md:col-span-2 overflow-auto mb-16 h-full bg-gray-800/50 rounded-xl backdrop-blur-sm p-6 border border-gray-700/50 hover:border-cyan-400/30 transition-all">
+          <div className="md:col-span-2 overflow-auto">
             <Recenthistory />
           </div>
         </div>

@@ -28,28 +28,32 @@ const Dashwallet = () => {
       return (
         <div
           key={plan._id}
-          className="p-6 flex flex-col gap-2 justify-between bg-gray-800/50 rounded-xl backdrop-blur-sm border border-gray-700/50 hover:border-cyan-400/30 transition-all"
+          className="p-6 flex flex-col gap-6 justify-between bg-black/30 backdrop-blur-md rounded-2xl border border-gray-700 hover:border-cyan-400/50 transition-all duration-300 shadow-md hover:shadow-lg"
         >
-          <span className="flex justify-between w-full">
-            <p className="flex flex-col">
-              <small className="text-xs text-slate-400">Level</small>
-              <span className="capitalize">{plan.packageName}</span>
-            </p>
-            <p className="flex flex-col">
-              <small className="text-xs text-slate-400">ROI(%)</small>
-              <span className="capitalize">{plan.yield}%</span>
-            </p>
-            <p className="flex flex-col">
-              <small className="text-xs text-slate-400">Period</small>
-              <span className="capitalize">{plan.period}days</span>
-            </p>
-          </span>
+          <div className="flex justify-between items-center text-sm text-slate-300">
+            <div className="flex flex-col">
+              <small className="text-xs text-gray-400">Level</small>
+              <span className="capitalize font-semibold">
+                {plan.packageName}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <small className="text-xs text-gray-400">ROI (%)</small>
+              <span className="capitalize font-semibold">{plan.yield}%</span>
+            </div>
+            <div className="flex flex-col">
+              <small className="text-xs text-gray-400">Period</small>
+              <span className="capitalize font-semibold">
+                {plan.period} days
+              </span>
+            </div>
+          </div>
           <button
             type="button"
             onClick={() => handleActivate(plan)}
-            className="px-5 py-2 bg-green-600 text-white text-[11px] rounded-3xl"
+            className="px-6 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-semibold rounded-full hover:from-green-600 hover:to-green-700 transition-all duration-300"
           >
-            Activate
+            Activate Plan
           </button>
         </div>
       );
@@ -63,7 +67,6 @@ const Dashwallet = () => {
 
     setPlanData(plan);
     setActivatePlanModal(true);
-    console.log(activatePlanModal);
   }
 
   function closeModal() {
@@ -90,25 +93,22 @@ const Dashwallet = () => {
 
   if (getPlanLoading) {
     return (
-      <div>
-        <div className="bg-stone-900/40 border border-stone-600 p-6 flex-col flex ">
-          <div className="flex ">
-            <h3 className={`${styles.dashTitle}`}>available plans</h3>
-          </div>
-          <p>Fetching plans...</p>
-        </div>
+      <div className="bg-black/30 backdrop-blur-md p-8 rounded-xl border border-gray-700 flex flex-col gap-4">
+        <h3 className={`${styles.dashTitle} text-white`}>Available Plans</h3>
+        <p className="text-gray-400 animate-pulse">
+          Fetching investment plans...
+        </p>
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="  flex flex-col gap-4">
-        <div className="flex justify-between items-start p-2 bg-stone-900/40">
-          <h3 className={`${styles.dashTitle}`}>available plans</h3>
-        </div>
-        <div className="flex flex-col gap-4">{myPlans}</div>
+    <div className="flex flex-col gap-6">
+      <div className="flex justify-between items-center p-4 bg-black/30 backdrop-blur-md rounded-xl border border-gray-700">
+        <h3 className={`${styles.dashTitle} text-white`}>Available Plans</h3>
       </div>
+      <div className="grid grid-cols-1 gap-6">{myPlans}</div>
+
       {activatePlanModal && (
         <Activateplan planData={planData} close={closeModal} />
       )}
