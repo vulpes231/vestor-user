@@ -8,6 +8,7 @@ import Identification from "./Identification";
 import Landing from "./Landing";
 import Loginotp from "./Loginotp";
 import Portfolio from "./Portfolio";
+import Resetpassword from "./Resetpassword";
 import Review from "./Review";
 import Settings from "./Settings";
 import Signin from "./Signin";
@@ -16,6 +17,7 @@ import Steptwo from "./Steptwo";
 import Ticket from "./Ticket";
 import Tradeasset from "./Tradeasset";
 import Verifyemail from "./Verifyemail";
+import Verifyresettoken from "./Verifyresettoken";
 import Wallet from "./Wallet";
 
 export {
@@ -38,4 +40,6 @@ export {
   Review,
   Tradeasset,
   History,
+  Resetpassword,
+  Verifyresettoken,
 };

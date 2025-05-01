@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { styles } from "../constants/styles";
 import { ErrorModal, LoadingModal, Successmodal } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../features/loginSlice";
+import { loginUser, resetLogin } from "../features/loginSlice";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -61,6 +61,7 @@ const Signin = () => {
     if (error) {
       timeout = setTimeout(() => {
         setError("");
+        dispatch(resetLogin());
       }, 3000);
     }
     return () => clearTimeout(timeout);
@@ -156,7 +157,9 @@ const Signin = () => {
             >
               Sign In
             </button>
-            <Link className={styles.formLink}>Forgot Password?</Link>
+            <Link to={"/reset-pass"} className={styles.formLink}>
+              Forgot Password?
+            </Link>
           </form>
           <div className="flex flex-col gap-1">
             <p>Need a vestor account?</p>

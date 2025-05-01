@@ -10,6 +10,7 @@ import {
   Landing,
   Loginotp,
   Portfolio,
+  Resetpassword,
   Settings,
   Signin,
   Signup,
@@ -17,6 +18,7 @@ import {
   Ticket,
   Tradeasset,
   Verifyemail,
+  Verifyresettoken,
   Wallet,
 } from "./pages";
 import { Mobilenav, Sidebar, Withdraw } from "./components";
@@ -41,6 +43,8 @@ const App = () => {
           <Route path="/identity" element={<Identification />} />
           <Route path="/verifymail" element={<Verifyemail />} />
           <Route path="/otpcode" element={<Loginotp />} />
+          <Route path="/reset-pass" element={<Resetpassword />} />
+          <Route path="/validate" element={<Verifyresettoken />} />
           <Route
             path="/dashboard"
             element={<Dash setActive={setActiveLink} />}

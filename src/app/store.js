@@ -10,6 +10,7 @@ import tradeReducer from "../features/tradeSlice";
 import verifyReducer from "../features/verifySlice";
 import ticketReducer from "../features/ticketSlice";
 import assetReducer from "../features/assetSlice";
+import resetPassReducer from "../features/resetPassSlice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     verify: verifyReducer,
     ticket: ticketReducer,
     asset: assetReducer,
+    resetpass: resetPassReducer,
   },
 });
 
