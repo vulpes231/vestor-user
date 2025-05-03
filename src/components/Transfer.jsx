@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
@@ -14,7 +15,7 @@ const transferStyles = {
   select: "border border-stone-500 bg-transparent p-2",
 };
 
-const Transfermodal = () => {
+const Transfermodal = ({ setWithdraw }) => {
   const dispatch = useDispatch();
   const [form, setForm] = useState({
     sender: "",
@@ -85,7 +86,7 @@ const Transfermodal = () => {
           <h3>Transfer</h3>
           <MdClose
             className="cursor-pointer"
-            // onClick={() => setWithdraw(false)}
+            onClick={() => setWithdraw(false)}
           />
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

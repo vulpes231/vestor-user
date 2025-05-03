@@ -135,7 +135,7 @@ const Withdrawmodal = ({ setWithdraw, setActive }) => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="p-8 flex flex-col gap-6 items-center justify-center bg-gray-900 rounded-xl text-center"
+        className="p-8 flex flex-col gap-6 items-center justify-center bg-gray-900 rounded-xl text-center min-h-screen"
       >
         <div className="p-4 bg-red-500/20 rounded-full">
           <FaUserLock className="w-12 h-12 text-red-500" />

@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getUserWallets } from "../features/walletSlice";
 import { getAvailableAssets } from "../features/assetSlice";
 import { PiChartLineDownThin, PiChartLineUpLight } from "react-icons/pi";
+import { motion } from "framer-motion";
 
 const portFolioStyle = {
   title: "font-bold text-lg whitespace-nowrap",
@@ -94,25 +95,28 @@ const Portfolio = ({ setActive }) => {
 
   if (userInfo && !userInfo.isKYCVerified) {
     return (
-      <div className="p-6 flex flex-col gap-6 h-full items-center justify-center bg-black bg-opacity-50">
-        <FaUserLock className="w-20 h-20" />
-        <h3 className="text-xl">
-          Account status:{" "}
-          <span
-            className={
-              userInfo?.isKYCVerified ? "text-green-600" : "text-red-600"
-            }
-          >
-            {userInfo?.isKYCVerified ? "Verified" : "Not Verified"}
-          </span>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="p-8 flex flex-col gap-6 items-center justify-center bg-gray-900 rounded-xl text-center min-h-screen"
+      >
+        <div className="p-4 bg-red-500/20 rounded-full">
+          <FaUserLock className="w-12 h-12 text-red-500" />
+        </div>
+        <h3 className="text-2xl font-semibold text-white">
+          Account Verification Required
         </h3>
-        <p>
-          Verify your account to enjoy full features.{" "}
-          <Link to={"/settings"} className="text-green-600 underline">
-            Complete verification
-          </Link>{" "}
+        <p className="text-gray-400 max-w-md">
+          Your account needs to be verified before you can withdraw funds. This
+          helps us ensure the security of your transactions.
         </p>
-      </div>
+        <Link
+          to="/settings"
+          className="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg font-medium text-white transition-colors"
+        >
+          Complete Verification
+        </Link>
+      </motion.div>
     );
   }
 

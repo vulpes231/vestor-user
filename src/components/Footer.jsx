@@ -46,8 +46,8 @@ const Footer = () => {
             &copy; {year} vestor. All rights reserved.
           </h3>
           <span>
-            Copyrights, logos, and trademarks are property of tastytrade, Inc.
-            All rights reserved. tastytrade, Inc., member
+            Copyrights, logos, and trademarks are property of Vestor, Inc. All
+            rights reserved. Vestor, Inc., member
           </span>
           <span>FINRA | SIPC | NFA</span>
         </div>
