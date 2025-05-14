@@ -209,7 +209,7 @@ const Confirmdeposit = ({ setActive }) => {
           {/* Payment Details */}
           {method === "bank" ? (
             <div className="space-y-4 mb-6">
-              <div>
+              {/* <div>
                 <label className="block text-gray-400 text-sm mb-1">
                   Bank Name
                 </label>
@@ -241,7 +241,7 @@ const Confirmdeposit = ({ setActive }) => {
                   {userInfo?.bankDepositInfo?.address ||
                     "124 West Ave, Cios OH 09876"}
                 </div>
-              </div>
+              </div> */}
             </div>
           ) : (
             <div className="space-y-4 mb-6">
@@ -327,7 +327,11 @@ const Confirmdeposit = ({ setActive }) => {
                 : "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg"
             }`}
           >
-            {depositLoading ? "Processing..." : "I've Made This Payment"}
+            {depositLoading
+              ? "Processing..."
+              : method === "bank"
+              ? "Request deposit details"
+              : "I've Made This Payment"}
           </button>
 
           <p className="text-xs text-center text-gray-500 mt-4">

@@ -97,7 +97,7 @@ const DepositModal = ({ setDeposit }) => {
 
         {activeMethod === "bank" ? (
           <form className="space-y-5" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Bank Name
@@ -131,9 +131,9 @@ const DepositModal = ({ setDeposit }) => {
                   // autoComplete={"off"}
                 />
               </div>
-            </div>
+            </div> */}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Routing Number
@@ -168,7 +168,7 @@ const DepositModal = ({ setDeposit }) => {
                   readOnly
                 />
               </div>
-            </div>
+            </div> */}
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
