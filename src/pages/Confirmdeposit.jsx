@@ -342,10 +342,8 @@ const Confirmdeposit = ({ setActive }) => {
 
       {/* Modals */}
       {depositError && <ErrorModal error={error} />}
-      {depositLoading && <LoadingModal text={"Confirming your payment"} />}
-      {depositSucess && (
-        <Successmodal successText={"Deposit received! Processing..."} />
-      )}
+      {depositLoading && <LoadingModal text={"Wait..."} />}
+      {depositSucess && <Successmodal successText={"Deposit Pending."} />}
     </div>
   );
 };

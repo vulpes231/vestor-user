@@ -8,7 +8,7 @@ const Dashchart = () => {
   return (
     <div className="grid md:grid-cols-3 gap-6">
       <BitcoinChart />
-      <Dashwallet />
+      {/* <Dashwallet /> */}
     </div>
   );
 };
