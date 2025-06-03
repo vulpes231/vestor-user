@@ -81,7 +81,7 @@ const Assets = () => {
             <h3 className="text-lg font-medium text-gray-200">Profits</h3>
           </div>
           <p className="text-3xl font-bold text-emerald-400">
-            +${totalProfit || "0.00"}
+            +${(totalProfit && parseFloat(totalProfit).toFixed(2)) || "0.00"}
             <span className="text-sm font-normal text-gray-400 ml-1">USD</span>
           </p>
         </div>
